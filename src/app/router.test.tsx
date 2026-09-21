@@ -13,6 +13,7 @@ import FlashcardPage from '@/pages/FlashcardPage';
 import QuizPage from '@/pages/QuizPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { TemaProvider } from '@/app/TemaProvider';
+import { ProgresProvider } from '@/features/progres/ProgresProvider';
 
 /**
  * Uji rute: setiap rute harus merender halaman yang tepat.
@@ -69,7 +70,9 @@ function renderRute(initialPath: string) {
   return render(
     <QueryClientProvider client={queryClient}>
       <TemaProvider>
-        <RouterProvider router={router} />
+        <ProgresProvider>
+          <RouterProvider router={router} />
+        </ProgresProvider>
       </TemaProvider>
     </QueryClientProvider>,
   );
