@@ -1,7 +1,21 @@
 # 14 — Keputusan Akhir: Arsitektur Data
 
-> **Koreksi penting** terhadap rencana sebelumnya setelah membaca Neon agent skills.
+> **KEPUTUSAN FINAL: Supabase.** Dokumen ini mencatat alasan dan riwayat pertimbangannya.
 > Status: `[FINAL]` · Menggantikan asumsi di `12-ANALISIS-NEON.md` §6
+
+---
+
+## 0. Ringkasan untuk Pembaca yang Buru-buru
+
+| Pertanyaan | Jawaban |
+|------------|---------|
+| Database apa yang dipakai? | **Supabase** (PostgreSQL + PostgREST) |
+| Kenapa bukan Neon? | Neon sendiri tidak merekomendasikan Data API untuk aplikasi baru |
+| Kenapa bukan Firebase? | Firestore NoSQL, tidak cocok untuk data relasional |
+| Apakah masalah pause Supabase sudah teratasi? | **Ya** — dicegah dengan Vercel Cron gratis (lihat §3.2) |
+| Apa yang perlu dilakukan sekarang? | Setup project Supabase, ikuti `09-PANDUAN-SETUP.md` §3 |
+
+**Riwayat singkat:** rencana sempat berpindah ke Neon, lalu dikoreksi setelah membaca panduan resmi Neon yang terpasang sebagai agent skill. Detail di §1.
 
 ---
 
