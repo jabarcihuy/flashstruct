@@ -1,9 +1,16 @@
 /**
- * Tipe data hasil query Supabase.
+ * Tipe database FlashStruct.
  *
- * Ditulis manual (bukan hasil generate) agar bisa dibaca dan
- * disesuaikan. Bentuknya mengikuti skema di docs/05-SKEMA-DATABASE.md §3.
+ * Struktur ini sudah diverifikasi cocok dengan skema nyata di Supabase
+ * (6 tabel, 4 enum). Tipe ditulis manual, bukan hasil generate, agar
+ * bisa dibaca dan disesuaikan.
+ *
+ * Sumber kebenaran skema: supabase/migrations/001_initial_schema.sql
  */
+
+/* =========================================================
+   Enum
+   ========================================================= */
 
 export type TopikModul = 'array' | 'struct' | 'pointer';
 
@@ -21,7 +28,7 @@ export type TipeSoal = 'PG' | 'TRACE' | 'ANALISIS';
 export type BahasaKode = 'cpp' | 'python';
 
 /* =========================================================
-   Baris tabel (bentuk dasar, tanpa relasi)
+   Baris tabel (bentuk dasar)
    ========================================================= */
 
 export interface Modul {
@@ -32,6 +39,8 @@ export interface Modul {
   deskripsi: string;
   estimasi_menit: number;
   urutan: number;
+  dibuat_pada: string;
+  diperbarui_pada: string;
 }
 
 export interface BagianModul {
@@ -86,39 +95,108 @@ export interface OpsiSoal {
 }
 
 /* =========================================================
-   Hasil query dengan relasi (embedding)
+   Hasil query dengan relasi (embedding Supabase)
    ========================================================= */
 
-/** Modul + jumlah anak, untuk halaman daftar materi */
-export interface ModulRingkas extends Modul {
+/** Untuk halaman daftar materi — hanya butuh jumlah anak */
+export interface ModulRingkas {
+  id: string;
+  slug: string;
+  judul: string;
+  topik: TopikModul;
+  deskripsi: string;
+  estimasi_menit: number;
+  urutan: number;
   bagian_modul: { id: string }[] | null;
   flashcard: { id: string }[] | null;
   soal: { id: string }[] | null;
 }
 
-/** Modul lengkap dengan isi bagian dan video, untuk halaman baca */
-export interface ModulLengkap extends Modul {
+/** Untuk halaman baca modul */
+export interface ModulLengkap {
+  id: string;
+  slug: string;
+  judul: string;
+  topik: TopikModul;
+  deskripsi: string;
+  estimasi_menit: number;
+  urutan: number;
   bagian_modul: BagianModul[] | null;
   video: Video[] | null;
 }
 
-/** Kartu dengan info modulnya, untuk sesi flashcard */
+/** Untuk sesi flashcard */
 export interface KartuDenganModul extends Flashcard {
   modul: { slug: string; judul: string; topik: TopikModul };
 }
 
-/** Soal dengan opsi dan info modul, untuk sesi quiz */
+/** Untuk sesi quiz */
 export interface SoalDenganOpsi extends Soal {
   modul: { slug: string };
   opsi_soal: OpsiSoal[] | null;
 }
 
-/** Video dengan info modulnya, untuk halaman video */
+/** Untuk halaman video */
 export interface VideoDenganModul extends Video {
   modul: {
     slug: string;
     judul: string;
     topik: TopikModul;
     urutan: number;
+  };
+}
+
+/* =========================================================
+   Tipe Supabase client
+   ========================================================= */
+
+/**
+ * Definisi skema untuk Supabase client.
+ *
+ * Bentuknya mengikuti `Database` generic dari supabase-js agar
+ * query mendapat type-safety. Ditulis manual karena kita tidak
+ * memakai CLI codegen (tidak memakai Docker).
+ */
+export interface Database {
+  public: {
+    Tables: {
+      modul: {
+        Row: Modul;
+        Insert: Omit<Modul, 'id' | 'dibuat_pada' | 'diperbarui_pada'> &
+          Partial<Pick<Modul, 'id' | 'dibuat_pada' | 'diperbarui_pada'>>;
+        Update: Partial<Modul>;
+      };
+      bagian_modul: {
+        Row: BagianModul;
+        Insert: Omit<BagianModul, 'id'> & Partial<Pick<BagianModul, 'id'>>;
+        Update: Partial<BagianModul>;
+      };
+      video: {
+        Row: Video;
+        Insert: Omit<Video, 'id'> & Partial<Pick<Video, 'id'>>;
+        Update: Partial<Video>;
+      };
+      flashcard: {
+        Row: Flashcard;
+        Insert: Omit<Flashcard, 'id'> & Partial<Pick<Flashcard, 'id'>>;
+        Update: Partial<Flashcard>;
+      };
+      soal: {
+        Row: Soal;
+        Insert: Omit<Soal, 'id'> & Partial<Pick<Soal, 'id'>>;
+        Update: Partial<Soal>;
+      };
+      opsi_soal: {
+        Row: OpsiSoal;
+        Insert: Omit<OpsiSoal, 'id'> & Partial<Pick<OpsiSoal, 'id'>>;
+        Update: Partial<OpsiSoal>;
+      };
+    };
+    Enums: {
+      topik_modul: TopikModul;
+      tipe_kartu: TipeKartu;
+      tipe_soal: TipeSoal;
+      bahasa_kode: BahasaKode;
+    };
   };
 }

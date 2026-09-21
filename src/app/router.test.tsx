@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,6 +20,25 @@ import { TemaProvider } from '@/app/TemaProvider';
  * Catatan: memakai createMemoryRouter (bukan createBrowserRouter) karena
  * jsdom tidak punya riwayat browser sungguhan.
  */
+
+/**
+ * Mock Supabase client.
+ *
+ * Halaman Materi butuh kredensial dan koneksi database. Untuk uji
+ * routing, yang diuji hanya "apakah rute merender halaman yang benar",
+ * bukan apakah database mengembalikan data. Jadi Supabase di-mock agar
+ * uji tidak bergantung pada jaringan atau kredensial.
+ */
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: () => ({
+      select: () => ({
+        order: () => Promise.resolve({ data: [], error: null }),
+        eq: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }),
+      }),
+    }),
+  },
+}));
 
 function renderRute(initialPath: string) {
   const router = createMemoryRouter(
@@ -79,7 +98,10 @@ describe('routing', () => {
 
   it('merender detail modul di rute /materi/:slug', async () => {
     renderRute('/materi/array-dasar');
-    expect(await screen.findByRole('heading', { level: 1, name: /detail modul/i })).toBeInTheDocument();
+    // Mock Supabase mengembalikan data null, jadi halaman menampilkan
+    // empty state "Modul tidak ditemukan" — yang penting rutenya
+    // merender halaman detail, bukan 404.
+    expect(await screen.findByText(/modul tidak ditemukan/i)).toBeInTheDocument();
   });
 
   it('merender Video di rute /video', async () => {

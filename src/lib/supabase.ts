@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/database';
 
 /**
  * Client Supabase — satu instance untuk seluruh aplikasi.
@@ -6,6 +7,9 @@ import { createClient } from '@supabase/supabase-js';
  * Key yang dipakai adalah `publishable` key, yang memang dirancang
  * untuk diekspos ke browser. Yang melindungi data adalah RLS
  * (Row Level Security) di database, bukan kerahasiaan key ini.
+ *
+ * Sudah diverifikasi: RLS aktif di 6 tabel, dan operasi tulis
+ * DITOLAK dengan "permission denied for table ...".
  *
  * JANGAN pernah memakai `service_role` atau `sb_secret_` key di sini —
  * key itu melewati RLS dan memberi akses penuh ke database.
@@ -23,7 +27,7 @@ if (!url || !key) {
   );
 }
 
-export const supabase = createClient(url, key, {
+export const supabase = createClient<Database>(url, key, {
   auth: {
     // v1 tidak memakai autentikasi. Matikan agar tidak ada
     // request sesi yang tidak perlu.
