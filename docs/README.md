@@ -50,6 +50,7 @@ Baca dokumen dalam urutan ini. Setiap dokumen adalah sumber kebenaran untuk topi
 | 13 | [`13-PANDUAN-SETUP-NEON.md`](./13-PANDUAN-SETUP-NEON.md) | Panduan setup Neon (jika memilih Neon) | Semua |
 | 14 | [`14-KEPUTUSAN-ARSITEKTUR-DATA.md`](./14-KEPUTUSAN-ARSITEKTUR-DATA.md) | **Keputusan akhir: Supabase** + riwayat pertimbangan | Semua |
 | 15 | [`15-SETUP-SUPABASE-UNTUK-ANDA.md`](./15-SETUP-SUPABASE-UNTUK-ANDA.md) | **Panduan setup Supabase langkah demi langkah** | Anda |
+| 16 | [`16-KENAPA-RLS-WAJIB.md`](./16-KENAPA-RLS-WAJIB.md) | **Kenapa RLS wajib** + bukti demonstrasi serangan | Semua |
 
 Dokumen riset pendukung ada di [`riset/`](./riset/) dan **tidak perlu dibaca rutin** — hanya dirujuk saat butuh justifikasi teknis:
 
@@ -212,6 +213,7 @@ Ini keputusan sadar untuk v1 (lihat `01-PRD.md` §9). Mitigasinya adalah fitur e
 | `13-PANDUAN-SETUP-NEON.md` | `[PANDUAN]` | Langkah setup Neon (jika memilih Neon) |
 | `14-KEPUTUSAN-ARSITEKTUR-DATA.md` | `[FINAL]` | **Keputusan akhir: Supabase** |
 | `15-SETUP-SUPABASE-UNTUK-ANDA.md` | `[PANDUAN]` | **Mulai di sini untuk setup database** |
+| `16-KENAPA-RLS-WAJIB.md` | `[PENTING]` | **Baca sebelum setup** — kenapa RLS tidak boleh dilewati |
 | `riset/01-RISET-TEKNIS.md` | `[REFERENSI]` | Fakta dari sumber resmi; tidak perlu dibaca rutin |
 | `riset/02-RISET-DEPLOY-GRATIS.md` | `[REFERENSI]` | Perbandingan hosting gratis |
 | `riset/03-RISET-NEON.md` | `[REFERENSI]` | Fakta Neon Data API dari dokumentasi resmi |
