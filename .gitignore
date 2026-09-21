@@ -46,3 +46,9 @@ coverage/
 .vite/
 *.tsbuildinfo
 node_modules/.tmp/
+
+# Salinan skills untuk berbagai agen — sumber aslinya di .agents/skills/
+# Tool `npx skills add` membuat salinan ini untuk kompatibilitas,
+# tapi isinya identik. Cukup simpan satu agar repo bersih.
+/agent/
+/.claude/skills/
