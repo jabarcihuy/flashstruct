@@ -47,6 +47,7 @@ Baca dokumen dalam urutan ini. Setiap dokumen adalah sumber kebenaran untuk topi
 | 10 | [`10-KEPUTUSAN-DEPLOY.md`](./10-KEPUTUSAN-DEPLOY.md) | Stack final, hosting gratis, batasan Vercel Hobby | Semua |
 | 11 | [`11-ANALISIS-FIREBASE.md`](./11-ANALISIS-FIREBASE.md) | Analisis: bisakah Firebase menggantikan Supabase? | Semua |
 | 12 | [`12-ANALISIS-NEON.md`](./12-ANALISIS-NEON.md) | Analisis: bisakah Neon menggantikan Supabase? | Semua |
+| 13 | [`13-PANDUAN-SETUP-NEON.md`](./13-PANDUAN-SETUP-NEON.md) | **Panduan setup Neon langkah demi langkah** | Semua |
 
 Dokumen riset pendukung ada di [`riset/`](./riset/) dan **tidak perlu dibaca rutin** — hanya dirujuk saat butuh justifikasi teknis:
 
@@ -206,6 +207,7 @@ Ini keputusan sadar untuk v1 (lihat `01-PRD.md` §9). Mitigasinya adalah fitur e
 | `10-KEPUTUSAN-DEPLOY.md` | `[FINAL]` | Keputusan stack dan hosting gratis |
 | `11-ANALISIS-FIREBASE.md` | `[ANALISIS]` | Jawaban "bisakah pakai Firebase?" — bisa, tapi tidak direkomendasikan |
 | `12-ANALISIS-NEON.md` | `[ANALISIS]` | Jawaban "bagaimana jika pakai Neon?" — bisa, dan lebih cocok untuk idle |
+| `13-PANDUAN-SETUP-NEON.md` | `[PANDUAN]` | **Langkah setup Neon dari nol** — mulai di sini untuk setup database |
 | `riset/01-RISET-TEKNIS.md` | `[REFERENSI]` | Fakta dari sumber resmi; tidak perlu dibaca rutin |
 | `riset/02-RISET-DEPLOY-GRATIS.md` | `[REFERENSI]` | Perbandingan hosting gratis |
 | `riset/03-RISET-NEON.md` | `[REFERENSI]` | Fakta Neon Data API dari dokumentasi resmi |

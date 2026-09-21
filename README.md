@@ -32,7 +32,7 @@ Tahap berikutnya **terkunci** sampai tahap sebelumnya selesai.
 | Routing | React Router 7 |
 | Styling | Tailwind CSS 4 |
 | Data | TanStack Query 5 |
-| Backend | Supabase (PostgreSQL) |
+| Backend | **Neon** (PostgreSQL + Data API) |
 | Animasi | Motion |
 | Ikon | Lucide React |
 | Validasi | Zod 4 |
@@ -67,7 +67,7 @@ npm run dev
 
 Buka `http://localhost:5173`.
 
-**Catatan:** pada M0, aplikasi belum memakai Supabase, jadi `.env.local` belum wajib. Baru diperlukan mulai M2.
+**Catatan:** pada M0, aplikasi belum memakai database, jadi `.env.local` belum wajib. Baru diperlukan mulai M2 — lihat `docs/13-PANDUAN-SETUP-NEON.md` untuk menyiapkan Neon.
 
 ---
 
@@ -125,7 +125,7 @@ flashstruct/
 **Aturan struktur:**
 
 - `components/ui/` tidak boleh punya logika bisnis
-- `features/*/api.ts` adalah satu-satunya tempat query Supabase
+- `features/*/api.ts` adalah satu-satunya tempat query ke Neon
 - `pages/` hanya menyusun, tidak berisi logika
 - Tidak ada impor lintas fitur kecuali lewat `components/`
 
