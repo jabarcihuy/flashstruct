@@ -130,6 +130,10 @@ a {
   position: fixed;
   left: var(--space-2);
   top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  /* Target sentuh minimum 44px (docs/03-DESIGN-SYSTEM.md §4.7) */
+  min-height: 44px;
   padding: var(--space-3) var(--space-4);
   background-color: var(--primary);
   color: var(--on-primary);

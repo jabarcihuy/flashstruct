@@ -17,6 +17,13 @@ const QuizPage = lazy(() => import('@/pages/QuizPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 /**
+ * Halaman demo komponen — HANYA untuk pengembangan.
+ * Di build produksi rute ini tidak terdaftar, sehingga tidak
+ * bisa diakses publik (lihat docs/08-CHECKLIST-QA.md §12.1).
+ */
+const DemoPage = import.meta.env.DEV ? lazy(() => import('@/pages/DemoPage')) : null;
+
+/**
  * Catatan: createBrowserRouter dipakai (bukan HashRouter) agar URL bersih.
  * Vercel/Netlify perlu SPA rewrite — lihat vercel.json.
  * Jika deploy ke GitHub Pages, ganti ke createHashRouter.
@@ -34,6 +41,7 @@ export const router = createBrowserRouter([
       { path: 'soal', element: <SoalPage /> },
       { path: 'soal/flashcard/:slug', element: <FlashcardPage /> },
       { path: 'soal/quiz/:slug', element: <QuizPage /> },
+      ...(DemoPage ? [{ path: 'demo', element: <DemoPage /> }] : []),
       { path: '*', element: <NotFoundPage /> },
     ],
   },

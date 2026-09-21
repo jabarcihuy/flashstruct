@@ -39,7 +39,7 @@ export function Header() {
       <div className="container-wide flex h-14 items-center justify-between gap-4">
         <NavLink
           to="/"
-          className="font-heading text-lg font-bold text-fg no-underline"
+          className="inline-flex h-11 items-center font-heading text-lg font-bold text-fg no-underline md:h-10"
           aria-label="FlashStruct — ke beranda"
         >
           FlashStruct

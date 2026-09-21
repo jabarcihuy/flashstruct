@@ -22,8 +22,12 @@ const VARIAN: Record<VarianTombol, string> = {
 };
 
 const UKURAN: Record<UkuranTombol, string> = {
-  // Tinggi minimum 44px untuk mobile (target sentuh), 40px cukup untuk desktop.
-  sm: 'h-9 px-3 text-sm',
+  /**
+   * Tinggi minimum 44px di mobile (target sentuh jari),
+   * boleh lebih rapat di desktop karena mouse lebih presisi.
+   * Lihat docs/03-DESIGN-SYSTEM.md §4.7
+   */
+  sm: 'h-11 px-3 text-sm md:h-9',
   md: 'h-11 px-4 text-sm md:h-10',
   lg: 'h-12 px-6 text-base',
 };
