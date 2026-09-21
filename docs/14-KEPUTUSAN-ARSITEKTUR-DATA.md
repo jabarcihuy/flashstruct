@@ -102,15 +102,35 @@ Ada tiga pilihan. Saya bandingkan dengan jujur.
 
 Kelemahan Supabase tetap ada: **pause setelah 7 hari idle, resume manual.**
 
-**Mitigasi yang cukup:**
+**TAPI ada kabar baik yang saya temukan saat memverifikasi ulang:**
 
-| Cara | Usaha | Efektivitas |
-|------|-------|-------------|
-| Kunjungi situs seminggu sekali | Nol | Cukup saat aktif dikembangkan |
-| UptimeRobot ping tiap 3 hari | 10 menit sekali setup | Efektif |
-| Terima risiko | Nol | Tidak ideal, tapi data tidak hilang |
+#### Pause Supabase Mudah Dicegah, dan Gratis
 
-**Yang menenangkan:** pause **tidak menghilangkan data**. Kalau terjadi, Anda cukup klik "Restore project" dan situs kembali normal dalam beberapa menit.
+Dokumentasi resmi Supabase menyatakan:
+
+> "Typically **a few user requests to the database each day** over the previous week is enough to keep the project from being paused."
+> — [Supabase: Project Pausing](https://supabase.com/docs/guides/platform/free-project-pausing)
+
+Dan **Vercel Hobby punya Cron Jobs gratis** — sekali per hari:
+
+| Platform | Cron gratis? | Interval |
+|----------|--------------|----------|
+| **Vercel Hobby** | **Ya** | Sekali per hari |
+| Vercel Pro | Ya | Sekali per menit |
+
+Artinya: **satu cron job harian sudah cukup** untuk mencegah pause. Kombinasi Vercel Cron + Supabase menyelesaikan masalah ini sepenuhnya, tanpa biaya.
+
+**Tambahan lagi:** Supabase mengirim **email peringatan 1 minggu sebelum pause**. Jadi Anda tidak akan kaget — ada waktu untuk mencegahnya.
+
+#### Tiga Lapis Mitigasi
+
+| Lapis | Cara | Usaha |
+|-------|------|-------|
+| 1 | Cron job harian di Vercel | Setup 10 menit, sekali saja |
+| 2 | Email peringatan dari Supabase | Otomatis, tidak perlu apa-apa |
+| 3 | Kunjungi dashboard saat ada peringatan | 1 menit |
+
+**Dengan tiga lapis ini, risiko pause praktis hilang.**
 
 ### 3.3 Kapan Neon Justru Lebih Tepat
 
