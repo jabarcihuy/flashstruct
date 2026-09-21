@@ -51,6 +51,8 @@ Baca dokumen dalam urutan ini. Setiap dokumen adalah sumber kebenaran untuk topi
 | 14 | [`14-KEPUTUSAN-ARSITEKTUR-DATA.md`](./14-KEPUTUSAN-ARSITEKTUR-DATA.md) | **Keputusan akhir: Supabase** + riwayat pertimbangan | Semua |
 | 15 | [`15-SETUP-SUPABASE-UNTUK-ANDA.md`](./15-SETUP-SUPABASE-UNTUK-ANDA.md) | **Panduan setup Supabase langkah demi langkah** | Anda |
 | 16 | [`16-KENAPA-RLS-WAJIB.md`](./16-KENAPA-RLS-WAJIB.md) | **Kenapa RLS wajib** + bukti demonstrasi serangan | Semua |
+| 17 | [`17-KONTROL-DATABASE-LOKAL.md`](./17-KONTROL-DATABASE-LOKAL.md) | Kontrol database dari laptop (4 cara) | Anda |
+| 18 | [`18-MCP-ATAU-CONNECTION-STRING.md`](./18-MCP-ATAU-CONNECTION-STRING.md) | **MCP vs connection string** + rekomendasi | Anda |
 
 Dokumen riset pendukung ada di [`riset/`](./riset/) dan **tidak perlu dibaca rutin** — hanya dirujuk saat butuh justifikasi teknis:
 
@@ -214,6 +216,8 @@ Ini keputusan sadar untuk v1 (lihat `01-PRD.md` §9). Mitigasinya adalah fitur e
 | `14-KEPUTUSAN-ARSITEKTUR-DATA.md` | `[FINAL]` | **Keputusan akhir: Supabase** |
 | `15-SETUP-SUPABASE-UNTUK-ANDA.md` | `[PANDUAN]` | **Mulai di sini untuk setup database** |
 | `16-KENAPA-RLS-WAJIB.md` | `[PENTING]` | **Baca sebelum setup** — kenapa RLS tidak boleh dilewati |
+| `17-KONTROL-DATABASE-LOKAL.md` | `[PANDUAN]` | Kontrol database dari laptop |
+| `18-MCP-ATAU-CONNECTION-STRING.md` | `[PANDUAN]` | MCP vs connection string |
 | `riset/01-RISET-TEKNIS.md` | `[REFERENSI]` | Fakta dari sumber resmi; tidak perlu dibaca rutin |
 | `riset/02-RISET-DEPLOY-GRATIS.md` | `[REFERENSI]` | Perbandingan hosting gratis |
 | `riset/03-RISET-NEON.md` | `[REFERENSI]` | Fakta Neon Data API dari dokumentasi resmi |
