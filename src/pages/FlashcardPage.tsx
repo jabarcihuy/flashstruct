@@ -1,3 +1,4 @@
+import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Layers, Lock } from 'lucide-react';
@@ -26,6 +27,7 @@ import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
  * dilewati — dan itu merusak inti produk.
  */
 export default function FlashcardPage() {
+  useJudulHalaman("Flashcard");
   const { slug = '' } = useParams();
   const {
     state,
@@ -103,10 +105,10 @@ export default function FlashcardPage() {
           pesan="Kartu hafalan untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca modulnya atau mencoba modul lain."
           aksi={
             <div className="flex flex-wrap justify-center gap-2">
-              <Link to={`/materi/${slug}`} className="no-underline">
+              <Link to={`/materi/${slug}`} className="inline-flex no-underline">
                 <Button>Baca Modul</Button>
               </Link>
-              <Link to="/soal" className="no-underline">
+              <Link to="/soal" className="inline-flex no-underline">
                 <Button varian="secondary">Pilih Modul Lain</Button>
               </Link>
             </div>
@@ -142,10 +144,10 @@ export default function FlashcardPage() {
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Link to={`/materi/${slug}`} className="no-underline">
+            <Link to={`/materi/${slug}`} className="inline-flex no-underline">
               <Button>Baca Modul</Button>
             </Link>
-            <Link to="/soal" className="no-underline">
+            <Link to="/soal" className="inline-flex no-underline">
               <Button varian="secondary">Kembali ke Soal</Button>
             </Link>
           </div>

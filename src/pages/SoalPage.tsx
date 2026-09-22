@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { ClipboardCheck, Layers, Lock } from 'lucide-react';
 import { Card, Badge, PageHeader } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
@@ -20,6 +21,7 @@ import type { ModulRingkas } from '@/types/database';
  * bukan sekadar "terkunci".
  */
 export default function SoalPage() {
+  useJudulHalaman("Soal");
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { ambilModul, sedangMemuat: progresMemuat } = useProgres();
 
@@ -230,7 +232,7 @@ function PanelTahap({
             Terkunci
           </span>
         ) : (
-          <Link to={ke} className="no-underline">
+          <Link to={ke} className="inline-flex no-underline">
             <span
               className={cn(
                 'inline-flex h-11 w-full items-center justify-center rounded-md',

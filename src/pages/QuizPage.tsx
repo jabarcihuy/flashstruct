@@ -1,36 +1,104 @@
-import { useParams, Link } from 'react-router-dom';
-import { Lock } from 'lucide-react';
-import { Card, PageHeader } from '@/components/ui/Card';
+import { useJudulHalaman } from '@/lib/useJudulHalaman';
+import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { ArrowLeft, ClipboardCheck, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Skeleton } from '@/components/ui/States';
+import { Card } from '@/components/ui/Card';
+import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
+import { Dialog } from '@/components/ui/Dialog';
+import { ProgressBar } from '@/components/ui/Progress';
+import { useSesiQuiz } from '@/features/quiz/useSesiQuiz';
+import { SoalPilihanGanda } from '@/features/quiz/SoalPilihanGanda';
+import { UmpanBalik } from '@/features/quiz/UmpanBalik';
+import { HasilQuiz } from '@/features/quiz/HasilQuiz';
 import { useDaftarModul } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
-import { statusTahap, alasanTerkunci } from '@/features/progres/aturan';
+import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
 
 /**
- * Halaman Quiz — Tahap 3 (Buktikan).
- *
- * Pada M5, halaman ini hanya menampilkan PENGUNCIAN. Sesi quiz
- * sebenarnya dikerjakan di M6.
+ * Halaman sesi quiz — Tahap 3 (Buktikan).
  *
  * PENGUNCIAN PENTING:
  * Halaman ini memeriksa status tahap 2. Kalau kartu belum dikuasai
  * semua, pengguna TIDAK bisa mengerjakan quiz walaupun mengetik URL
  * langsung.
+ *
+ * Catatan: Tahap 3 dianggap SELESAI apapun nilainya. Yang dikunci
+ * hanya pembukaan tahap ini, bukan kelulusannya.
  */
 export default function QuizPage() {
+  useJudulHalaman("Quiz");
   const { slug = '' } = useParams();
-  const { data: daftarModul, isPending } = useDaftarModul();
-  const { ambilModul, sedangMemuat: progresMemuat } = useProgres();
+  const {
+    state,
+    soal,
+    hasil,
+    akurasiTopik,
+    isPending,
+    isError,
+    error,
+    refetch,
+    jawab,
+    lanjut,
+    soalTerakhir,
+    modulId,
+    jumlahSoalBank,
+  } = useSesiQuiz(slug);
 
-  if (isPending || progresMemuat) return <QuizSkeleton />;
+  const { data: daftarModul, isPending: modulMemuat } = useDaftarModul();
+  const { ambilModul, sedangMemuat: progresMemuat } = useProgres();
+  const [dialogKeluar, setDialogKeluar] = useState(false);
 
   const modul = daftarModul?.find((m) => m.slug === slug);
-  const progresModul = modul ? ambilModul(modul.id) : undefined;
-  const status = statusTahap(progresModul, 3);
-  const terkunci = status === 'terkunci';
+  const progresModul = modulId ? ambilModul(modulId) : modul ? ambilModul(modul.id) : undefined;
 
-  if (terkunci) {
+  const sudahDijawab = Object.keys(state.jawaban).length;
+  const totalSoal = state.soal.length;
+
+  /* =========================================================
+     Keluar
+     ========================================================= */
+
+  function cobaKeluar() {
+    if (sudahDijawab === 0 || state.fase === 'selesai') {
+      window.location.href = '/soal';
+      return;
+    }
+    setDialogKeluar(true);
+  }
+
+  /* =========================================================
+     State: memuat
+     ========================================================= */
+
+  if (isPending || progresMemuat || modulMemuat) return <QuizSkeleton />;
+
+  /* =========================================================
+     State: error
+     ========================================================= */
+
+  if (isError) {
+    return (
+      <div className="container-narrow py-8">
+        <ErrorState
+          judul="Gagal memuat soal"
+          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          onCobaLagi={() => void refetch()}
+        />
+        {import.meta.env.DEV && error && (
+          <p className="mt-4 text-center text-xs text-fg-muted">Detail: {error.message}</p>
+        )}
+      </div>
+    );
+  }
+
+  /* =========================================================
+     PENGUNCIAN: tahap 2 harus selesai dulu
+     ========================================================= */
+
+  const statusTahap3 = statusTahap(progresModul, 3);
+
+  if (statusTahap3 === 'terkunci') {
     return (
       <div className="container-narrow py-12">
         <Card className="border-dashed p-6 text-center sm:p-8">
@@ -56,10 +124,10 @@ export default function QuizPage() {
           </p>
 
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Link to={`/soal/flashcard/${slug}`} className="no-underline">
+            <Link to={`/soal/flashcard/${slug}`} className="inline-flex no-underline">
               <Button>Mulai Flashcard</Button>
             </Link>
-            <Link to="/soal" className="no-underline">
+            <Link to="/soal" className="inline-flex no-underline">
               <Button varian="secondary">Kembali ke Soal</Button>
             </Link>
           </div>
@@ -68,30 +136,171 @@ export default function QuizPage() {
     );
   }
 
-  // Sesi quiz sebenarnya dikerjakan di M6
+  /* =========================================================
+     State: bank soal kosong
+     ========================================================= */
+
+  if (jumlahSoalBank === 0) {
+    return (
+      <div className="container-narrow py-8">
+        <EmptyState
+          ikon={<ClipboardCheck className="size-12" strokeWidth={1.5} />}
+          judul="Modul ini belum punya soal"
+          pesan="Bank soal untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca ulang modulnya."
+          aksi={
+            <div className="flex flex-wrap justify-center gap-2">
+              <Link to={`/materi/${slug}`} className="inline-flex no-underline">
+                <Button>Baca Modul</Button>
+              </Link>
+              <Link to="/soal" className="inline-flex no-underline">
+                <Button varian="secondary">Pilih Modul Lain</Button>
+              </Link>
+            </div>
+          }
+        />
+      </div>
+    );
+  }
+
+  /* =========================================================
+     State: selesai
+     ========================================================= */
+
+  if (state.fase === 'selesai') {
+    return (
+      <div className="container-base py-8">
+        <HasilQuiz
+          hasil={hasil}
+          akurasiTopik={akurasiTopik}
+          modulSlug={slug}
+          modulJudul={modul?.judul ?? ''}
+          onUlangi={() => window.location.reload()}
+        />
+      </div>
+    );
+  }
+
+  /* =========================================================
+     State: mengerjakan
+     ========================================================= */
+
+  const jawabanDipilih = soal ? state.jawaban[soal.id] : undefined;
+
   return (
-    <div className="container-narrow py-8">
-      <PageHeader
-        judul="Quiz"
-        deskripsi={modul ? `${modul.judul} · ${modul.soal?.length ?? 0} soal` : undefined}
-      />
-      <Card className="border-dashed p-6">
-        <p className="text-sm text-fg-muted">
-          <strong className="text-fg">Sesi quiz belum tersedia.</strong> Tahap 3 kamu sudah
-          terbuka, tetapi pengerjaan soal dikerjakan pada milestone berikutnya (M6).
+    <div className="container-narrow py-6">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
+        <Link
+          to={`/materi/${slug}`}
+          className="inline-flex h-11 items-center gap-2 text-sm text-fg-muted no-underline hover:text-fg md:h-9"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Kembali</span>
+        </Link>
+
+        <div className="min-w-0 flex-1 text-center">
+          <p className="truncate text-sm font-medium text-fg">{modul?.judul ?? ''}</p>
+          <p className="text-xs text-fg-muted">
+            Soal {state.indeks + 1} dari {totalSoal}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={cobaKeluar}
+          className="inline-flex h-11 cursor-pointer items-center px-3 text-sm text-fg-muted hover:text-fg"
+        >
+          Keluar
+        </button>
+      </div>
+
+      {/* Progres */}
+      <div className="mt-4">
+        <ProgressBar
+          nilai={sudahDijawab}
+          maks={totalSoal}
+          label={`Soal ${state.indeks + 1} dari ${totalSoal}`}
+          tanpaLabelVisual
+        />
+      </div>
+
+      {/* Soal */}
+      <div className="mt-6">
+        {soal && (
+          <SoalPilihanGanda
+            soal={soal}
+            dipilih={jawabanDipilih}
+            sudahDijawab={state.sudahDijawab}
+            onPilih={jawab}
+          />
+        )}
+      </div>
+
+      {/* Umpan balik — muncul segera setelah menjawab */}
+      {state.sudahDijawab && soal && jawabanDipilih && (
+        <div className="mt-5">
+          <UmpanBalik
+            soal={soal}
+            dipilih={jawabanDipilih}
+            onLanjut={lanjut}
+            soalTerakhir={soalTerakhir}
+          />
+        </div>
+      )}
+
+      {/* Petunjuk keyboard — desktop saja */}
+      {!state.sudahDijawab && (
+        <p className="mt-5 hidden text-center text-xs text-fg-muted md:block">
+          Tekan <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">1</kbd>
+          {' – '}
+          <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">4</kbd>
+          {' '}untuk memilih jawaban
         </p>
-      </Card>
+      )}
+
+      {/* Dialog konfirmasi keluar */}
+      <Dialog
+        terbuka={dialogKeluar}
+        onTutup={() => setDialogKeluar(false)}
+        judul="Keluar dari quiz?"
+        deskripsi={`Kamu sudah menjawab ${sudahDijawab} dari ${totalSoal} soal. Jawaban akan hilang.`}
+        ukuran="sm"
+      >
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <Button varian="secondary" onClick={() => setDialogKeluar(false)}>
+            Lanjut Mengerjakan
+          </Button>
+          <Button
+            varian="danger"
+            onClick={() => {
+              window.location.href = '/soal';
+            }}
+          >
+            Keluar
+          </Button>
+        </div>
+      </Dialog>
     </div>
   );
 }
 
 function QuizSkeleton() {
   return (
-    <div className="container-narrow py-8" aria-busy="true" aria-live="polite">
+    <div className="container-narrow py-6" aria-busy="true" aria-live="polite">
       <span className="sr-only">Memuat quiz…</span>
-      <Skeleton className="h-9 w-24" />
-      <Skeleton className="mt-3 h-4 w-64" />
-      <Skeleton className="mt-6 h-32 rounded-lg" />
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-9 w-24" />
+        <Skeleton className="h-5 w-32" />
+        <Skeleton className="h-9 w-16" />
+      </div>
+      <Skeleton className="mt-4 h-2 w-full" />
+      <Skeleton className="mt-6 h-6 w-24" />
+      <Skeleton className="mt-3 h-16 w-full" />
+      <div className="mt-5 space-y-2.5">
+        {[0, 1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-16 rounded-lg" />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { BookOpen, PlayCircle } from 'lucide-react';
 import { Card, Badge, PageHeader } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
@@ -17,6 +18,7 @@ import type { TopikModul, VideoDenganModul } from '@/types/database';
  * sedikit video, dengan pesan yang jujur dan mengarahkan.
  */
 export default function VideoPage() {
+  useJudulHalaman("Video");
   const { data: daftarVideo, isPending, isError, error, refetch } = useSemuaVideo();
   const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
 
@@ -54,7 +56,7 @@ export default function VideoPage() {
           judul="Video sedang disiapkan"
           pesan="Untuk saat ini, semua konsep sudah dijelaskan lengkap di halaman Materi. Video hanya pendukung, dan tidak wajib untuk menyelesaikan tahap belajar."
           aksi={
-            <Link to="/materi" className="no-underline">
+            <Link to="/materi" className="inline-flex no-underline">
               <span className="inline-flex h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-on-primary md:h-10">
                 <BookOpen className="size-4" aria-hidden="true" />
                 Buka Halaman Materi

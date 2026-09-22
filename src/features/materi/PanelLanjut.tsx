@@ -46,7 +46,7 @@ export function PanelLanjut({
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link to={`/soal/flashcard/${modulSlug}`} className="no-underline">
+              <Link to={`/soal/flashcard/${modulSlug}`} className="inline-flex no-underline">
                 <Button ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}>
                   Lanjut ke Flashcard
                 </Button>
@@ -96,7 +96,7 @@ export function PanelLanjut({
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <Button onClick={onTandaiSelesai}>Tandai Selesai</Button>
-        <Link to={`/soal/flashcard/${modulSlug}`} className="no-underline">
+        <Link to={`/soal/flashcard/${modulSlug}`} className="inline-flex no-underline">
           <Button varian="ghost" disabled aria-disabled="true" ikonKiri={<Lock className="size-4" aria-hidden="true" />}>
             Flashcard
           </Button>

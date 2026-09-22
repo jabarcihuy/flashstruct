@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { BookOpen, Lock } from 'lucide-react';
 import { PageHeader, Card, Badge } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
@@ -17,6 +18,7 @@ import type { ModulRingkas, TopikModul } from '@/types/database';
  * beserta indikator tiga tahap dari progres pengguna.
  */
 export default function MateriPage() {
+  useJudulHalaman("Materi");
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { sedangMemuat: progresMemuat, ambilModul } = useProgres();
 

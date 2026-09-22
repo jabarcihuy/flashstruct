@@ -82,7 +82,7 @@ export function RingkasanSesi({
                 quiz.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <Link to={`/soal/quiz/${modulSlug}`} className="no-underline">
+                <Link to={`/soal/quiz/${modulSlug}`} className="inline-flex no-underline">
                   <Button ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}>
                     Mulai Quiz
                   </Button>

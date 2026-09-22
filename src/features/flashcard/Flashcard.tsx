@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 import { CodeBlock } from '@/components/code/CodeBlock';
 import { Badge } from '@/components/ui/Card';
 import { LABEL_TIPE_KARTU, LABEL_TOPIK } from '@/lib/constants';
-import type { KartuDenganModul } from '@/types/database';
+import type { KartuDenganModul, TopikModul } from '@/types/database';
 
 /**
  * Kartu flashcard dengan animasi flip.
@@ -144,7 +144,7 @@ function KepalaKartu({
   total,
 }: {
   warnaTopik: string;
-  topik: string;
+  topik: TopikModul;
   tipe: string;
   nomor: number;
   total: number;

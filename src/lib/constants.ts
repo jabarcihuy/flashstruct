@@ -42,8 +42,8 @@ export const LABEL_TIPE_KARTU: Record<string, string> = {
 };
 
 /** Label tampilan untuk topik */
-export const LABEL_TOPIK: Record<string, string> = {
+export const LABEL_TOPIK = {
   array: 'Array',
   struct: 'Struct',
   pointer: 'Pointer',
-};
+} as const satisfies Record<string, string>;
