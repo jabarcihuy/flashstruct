@@ -50,7 +50,7 @@ export function RootLayout() {
         Footer disembunyikan di mobile: layar sempit sudah punya bottom nav,
         dan menumpuk keduanya membuat ruang baca habis untuk chrome.
       */}
-      <footer className="site-footer container-wide max-md:hidden">
+      <footer className="site-footer container-wide">
         <span>Progres tersimpan di browser ini</span>
         <span>FlashStruct &bull; Belajar Data Structures, Lebih Terarah</span>
       </footer>

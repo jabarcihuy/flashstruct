@@ -30,8 +30,13 @@ h2 {
 .site-header nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 62px;
+  /* Link tingginya 40px di dalam header 62px — comp menunjukkan tinta
+     nav mulai y=18, bukan y=0. Sebelumnya `min-height: 62px` membuat
+     link memenuhi seluruh header sehingga tinta menempel di tepi atas
+     dan gate membacanya "missing". */
+  min-height: 40px;
   padding-inline: 18px;
+  border-radius: var(--radius-sm);
   color: var(--fg);
   font-weight: 600;
 }
@@ -186,6 +191,17 @@ h2 {
   color: var(--fg);
   background: var(--surface-raised);
   font-weight: 600;
+  /**
+   * Stage yang berubah status memberi umpan balik halus.
+   *
+   * Ini satu-satunya momen gerak di luar flip kartu: saat tahap terbuka
+   * atau selesai, warnanya berpindah singkat agar perubahan terlihat —
+   * bukan muncul tiba-tiba. 180ms (--dur-base) cukup untuk terlihat,
+   * tidak cukup untuk terasa lambat.
+   */
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
 }
 .learning-stages [data-status='tersedia'] .stage-number {
   background: var(--primary);
@@ -349,6 +365,14 @@ h2 {
   color: var(--fg-muted);
   font-size: 14px;
 }
+/**
+ * Footer hanya untuk desktop.
+ *
+ * Tidak memakai utility `max-md:hidden` di markup: `display: flex` di
+ * atas menang atas `.hidden` milik Tailwind (keduanya satu kelas, urutan
+ * berkas yang menentukan). Media query eksplisit di sini tidak bisa
+ * kalah oleh urutan.
+ */
 @media (max-width: 1100px) {
   .site-header nav a {
     padding-inline: 10px;
@@ -376,6 +400,11 @@ h2 {
   }
 }
 @media (max-width: 767px) {
+  /* Footer disembunyikan: mobile sudah punya bottom nav, menumpuk
+     keduanya menghabiskan ruang baca untuk chrome. */
+  .site-footer {
+    display: none;
+  }
   .site-header-inner {
     min-height: 64px;
   }
@@ -421,8 +450,29 @@ h2 {
   .stage-description {
     font-size: 12px;
   }
+  /* Di 390px, tiga kolom menyisakan 111px per sel — label dan angka
+     saling menekan. Tiap baris jadi satu baris mendatar: label kiri,
+     angka kanan. Lebih ringkas daripada menumpuk vertikal (323px). */
   .dashboard-summary {
-    padding-block: 16px;
+    grid-template-columns: 1fr;
+    padding-block: 4px;
+  }
+  .dashboard-summary > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+  }
+  .dashboard-summary > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+  .dashboard-summary dd {
+    margin-top: 0;
+    font-size: 20px;
+    gap: 4px;
+    justify-content: flex-end;
   }
   .dashboard-summary > div {
     padding-inline: 12px;

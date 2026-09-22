@@ -187,14 +187,27 @@ a {
   border-width: 0;
 }
 
-/* Hormati preferensi pengurangan gerak */
+/**
+ * Hormati preferensi pengurangan gerak.
+ *
+ * SENGAJA tidak memakai `transition-duration: 0.01ms !important` untuk
+ * semua elemen. Pola itu mematikan transisi sampai tidak terlihat,
+ * tetapi juga menghapus umpan balik yang penting (mis. perubahan state
+ * tombol) — dan karena `!important`, ia menimpa aturan pengganti yang
+ * lebih baik di bawah.
+ *
+ * Yang dilakukan di sini: hentikan animasi berulang dan gulir halus,
+ * yang memang sumber ketidaknyamanan. Transisi singkat satu kali
+ * (warna, opacity) dibiarkan — itu tidak memicu motion sickness.
+ * Animasi besar (flip kartu) punya aturan penggantinya sendiri di
+ * blok .flashcard di bawah.
+ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }

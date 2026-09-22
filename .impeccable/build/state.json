@@ -6,7 +6,7 @@
   "direction": "dfe3ca3d",
   "breakpoint": "1505x1045",
   "artifact": null,
-  "phase": "sections",
+  "phase": "review",
   "phases": {
     "comps": {
       "status": "closed",
@@ -267,42 +267,63 @@
       "records": 3
     },
     "sections": {
-      "status": "open",
+      "status": "closed",
       "openedAt": "2026-09-22T17:12:05.286Z",
-      "closedAt": null,
-      "attempts": 0,
+      "closedAt": "2026-09-22T17:38:38.737Z",
+      "attempts": 1,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-22T17:38:38.737Z"
+      },
       "forced": null
     },
     "motion": {
-      "status": "pending",
-      "openedAt": null,
-      "closedAt": null,
-      "attempts": 0,
+      "status": "closed",
+      "openedAt": "2026-09-22T17:38:38.737Z",
+      "closedAt": "2026-09-22T17:40:39.921Z",
+      "attempts": 1,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no mechanical gate",
+        "at": "2026-09-22T17:40:39.921Z"
+      },
       "forced": null
     },
     "responsive": {
-      "status": "pending",
-      "openedAt": null,
-      "closedAt": null,
-      "attempts": 0,
+      "status": "closed",
+      "openedAt": "2026-09-22T17:40:39.921Z",
+      "closedAt": "2026-09-22T17:55:33.212Z",
+      "attempts": 6,
       "notes": [],
-      "gate": null,
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "desktop 88% (match)",
+        "score": 0.8842,
+        "sideBySide": "/home/ael/DATA/project on linux/webapp/webhanipakim/.impeccable/review/diff/desktop/side-by-side.png",
+        "at": "2026-09-22T17:55:33.212Z"
+      },
       "forced": null
     },
     "review": {
-      "status": "pending",
-      "openedAt": null,
-      "closedAt": null,
+      "status": "closed",
+      "openedAt": "2026-09-22T17:55:33.212Z",
+      "closedAt": "2026-09-22T19:36:08.783Z",
       "attempts": 0,
       "notes": [],
       "gate": null,
       "forced": null
     }
   },
-  "finish": null,
+  "finish": {
+    "disposition": "ship",
+    "at": "2026-09-22T19:36:08.783Z",
+    "phaseAtFinish": "review"
+  },
   "plates": {}
 }

@@ -125,12 +125,15 @@ function KartuModul({
 
   return (
     <Card className="flex flex-col p-5">
+      {/*
+        Bahasa visual disamakan dengan baris modul di Dashboard:
+        kotak nomor + badge topik, bukan batang aksen kiri.
+        Comp A memakai kotak nomor sebagai penanda urutan modul.
+      */}
       <div className="flex items-start gap-3">
-        <span
-          className="mt-1 h-10 w-1 shrink-0 rounded-full"
-          style={{ backgroundColor: warnaTopik }}
-          aria-hidden="true"
-        />
+        <span className="module-index shrink-0" aria-hidden="true">
+          {modul.urutan}
+        </span>
         <div className="min-w-0 flex-1">
           <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
           <h3 className="mt-2 font-semibold text-fg">{modul.judul}</h3>
