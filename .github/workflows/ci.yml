@@ -46,9 +46,23 @@ jobs:
         run: npm run test
 
   # =========================================================
-  # Gerbang 2: E2E + aksesibilitas. Lebih lambat (~5 menit).
+  # Gerbang 2: E2E + aksesibilitas. Lebih lambat (~10 menit).
   # Dijalankan setelah gerbang 1 lulus — tidak ada gunanya menguji
   # browser bila kode saja tidak lolos typecheck.
+  #
+  # PENTING: job ini LEWAT (bukan gagal) bila secrets Supabase belum
+  # diset. Alasannya: tanpa kredensial, aplikasi gagal start dan SEMUA
+  # test E2E gagal sekaligus — kegagalan yang tidak informatif dan
+  # membuat orang mengabaikan status CI.
+  #
+  # Cara mengaktifkan (sekali saja):
+  #   Settings > Secrets and variables > Actions > New repository secret
+  #     VITE_SUPABASE_URL               = https://<project-ref>.supabase.co
+  #     VITE_SUPABASE_PUBLISHABLE_KEY   = sb_publishable_...
+  #
+  # Catatan: repo ini PUBLIK. Publishable key memang dirancang untuk
+  # browser dan dilindungi RLS, tetapi tetap diperlakukan sebagai
+  # kredensial: disimpan sebagai secret, bukan di dalam repo.
   # =========================================================
   e2e:
     name: E2E & Aksesibilitas
@@ -67,16 +81,29 @@ jobs:
       - name: Pasang dependensi
         run: npm ci
 
+      - name: Cek ketersediaan secrets
+        id: cek-secrets
+        run: |
+          if [ -z "${{ secrets.VITE_SUPABASE_URL }}" ] || [ -z "${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}" ]; then
+            echo "tersedia=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::E2E DILEWATI — secrets Supabase belum diset."
+            echo "::warning::Tambahkan VITE_SUPABASE_URL dan VITE_SUPABASE_PUBLISHABLE_KEY di Settings > Secrets and variables > Actions."
+            echo "::warning::Sampai itu dilakukan, jalur kritis TIDAK terverifikasi di CI."
+          else
+            echo "tersedia=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Pasang browser Playwright
+        if: steps.cek-secrets.outputs.tersedia == 'true'
         run: npx playwright install --with-deps chromium firefox
 
       - name: Jalankan E2E
+        if: steps.cek-secrets.outputs.tersedia == 'true'
         run: npx playwright test --project=chromium --project=firefox
         env:
-          # Kredensial Supabase diperlukan karena aplikasi memuat
-          # konten dari sana. Disimpan sebagai repository secret.
+          # Nama variabel HARUS cocok dengan yang dibaca `src/lib/supabase.ts`.
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           CI: true
 
       - name: Simpan laporan bila gagal
