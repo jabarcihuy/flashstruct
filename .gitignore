@@ -52,3 +52,8 @@ node_modules/.tmp/
 # tapi isinya identik. Cukup simpan satu agar repo bersih.
 /agent/
 /.claude/skills/
+
+# Skill tambahan yang dipasang otomatis (bukan bagian proyek)
+/.claude/
+/.codex/
+/.agents/skills/impeccable/
