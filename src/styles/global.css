@@ -1,5 +1,9 @@
 @import 'tailwindcss';
 @import './tokens.css';
+@font-face { font-family: 'Encode Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/encode-sans-400.ttf') format('truetype'); }
+@font-face { font-family: 'Encode Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/encode-sans-500.ttf') format('truetype'); }
+@font-face { font-family: 'Encode Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/encode-sans-600.ttf') format('truetype'); }
+@font-face { font-family: 'Encode Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/encode-sans-700.ttf') format('truetype'); }
 
 /* =========================================================
    Petakan token design system ke nama Tailwind
@@ -36,8 +40,8 @@
   --color-code-bg: var(--code-bg);
   --color-code-fg: var(--code-fg);
 
-  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-ui: 'Encode Sans', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Encode Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
   --radius-sm: var(--radius-sm);
@@ -78,7 +82,11 @@ body {
     color var(--dur-base) var(--ease-out);
 }
 
-/* Heading memakai font judul */
+/* Heading memakai font judul.
+   margin TIDAK di-reset di sini: reset margin heading milik Tailwind
+   preflight, dan menuliskannya ulang di sini menimpa utility seperti
+   `mt-10` pada heading markdown — terukur: semua heading di halaman
+   modul jadi margin 0 dan teks menempel tanpa jarak. */
 h1,
 h2,
 h3,
@@ -87,7 +95,6 @@ h5,
 h6 {
   font-family: var(--font-heading);
   line-height: 1.25;
-  margin: 0;
 }
 
 /* Kode memakai font mono dengan ligatur */
@@ -109,10 +116,7 @@ samp {
   border-radius: var(--radius-sm);
 }
 
-/* Tautan
-   Memakai --link, BUKAN --primary: --primary gagal kontras 4.5:1 di
-   permukaan gelap (terukur 3.48–4.33:1). --link dipilih agar lolos di
-   SEMUA permukaan di kedua tema. Lihat src/styles/tokens.css. */
+/* Link memiliki token sendiri agar tetap terbaca pada semua permukaan. */
 a {
   color: var(--link);
   text-decoration-thickness: 1px;
@@ -182,13 +186,13 @@ a {
 }
 
 .container-base {
-  max-width: 1080px;
+  max-width: 1280px;
   margin-inline: auto;
   padding-inline: var(--space-4);
 }
 
 .container-wide {
-  max-width: 1320px;
+  max-width: 1600px;
   margin-inline: auto;
   padding-inline: var(--space-4);
 }

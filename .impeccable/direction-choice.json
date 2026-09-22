@@ -1,0 +1,30 @@
+{
+  "questionKey": "3c0fe4ab",
+  "seedKey": "dfe3ca3d",
+  "optionId": "canon",
+  "label": "Pola aplikasi belajar familiar",
+  "comp": ".impeccable/mocks/komposisi-a.png",
+  "buildPath": "comp",
+  "buildPathFlipped": false,
+  "directionApproved": true,
+  "compositionApproved": true,
+  "referenceProducts": [
+    {
+      "name": "Exercism",
+      "url": "https://exercism.org/docs/building/product/unlocking-exercises",
+      "quality": "Kejelasan prasyarat dan latihan berikutnya"
+    },
+    {
+      "name": "GitBook",
+      "url": "https://gitbook.com/docs/guides/docs-best-practices/documentation-structure-tips",
+      "quality": "Daftar isi, orientasi halaman, dan kenyamanan membaca"
+    },
+    {
+      "name": "Khan Academy",
+      "url": "https://support.khanacademy.org/hc/en-us/articles/115002552631-What-are-Course-and-Unit-Mastery",
+      "quality": "Kejelasan progres penguasaan materi"
+    }
+  ],
+  "referenceSelection": "delegated by user",
+  "composition": "a"
+}

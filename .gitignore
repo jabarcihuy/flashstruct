@@ -68,3 +68,27 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+
+# =========================================================
+# Artefak kerja redesign (skill impeccable)
+#
+# Yang DI-COMMIT (kecil, jadi rujukan):
+#   .impeccable/HANDOFF.md        — catatan sesi redesign
+#   .impeccable/direction-choice.json — keputusan arah yang disetujui
+#   .impeccable/surfaces/         — kontrak per halaman
+#   .impeccable/build/spec.json   — hasil ukur comp
+#   .impeccable/mocks/komposisi-a.png — comp YANG DISETUJUI (otoritas desain)
+#
+# Yang TIDAK di-commit (besar, bisa dibuat ulang):
+#   comp B/C yang tidak disetujui, mock keputusan, screenshot review,
+#   grid comp, crop font-match. Total ~12 MB dan semuanya regenerable
+#   dengan menjalankan ulang tool impeccable.
+# =========================================================
+.impeccable/mocks/komposisi-b.png
+.impeccable/mocks/komposisi-c.png
+.impeccable/mocks/decision/
+.impeccable/review/
+.impeccable/build/comp-grid.png
+.impeccable/build/font-match/
+.impeccable/questions/
+.impeccable/live/

@@ -1,0 +1,308 @@
+{
+  "tool": "build-phase",
+  "version": 2,
+  "startedAt": "2026-09-22T16:43:57.699Z",
+  "comp": ".impeccable/mocks/komposisi-a.png",
+  "direction": "dfe3ca3d",
+  "breakpoint": "1505x1045",
+  "artifact": null,
+  "phase": "sections",
+  "phases": {
+    "comps": {
+      "status": "closed",
+      "openedAt": "2026-09-22T16:43:57.699Z",
+      "closedAt": "2026-09-22T16:49:22.253Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "3 comps, 1 approved",
+        "approved": ".impeccable/mocks/komposisi-a.png",
+        "at": "2026-09-22T16:49:22.253Z"
+      },
+      "forced": null
+    },
+    "spec": {
+      "status": "closed",
+      "openedAt": "2026-09-22T16:49:22.300Z",
+      "closedAt": "2026-09-22T16:50:51.304Z",
+      "attempts": 3,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "26 regions, 0 plates, 11 text regions measured",
+        "at": "2026-09-22T16:50:51.304Z"
+      },
+      "forced": null
+    },
+    "plates": {
+      "status": "closed",
+      "openedAt": "2026-09-22T16:50:51.304Z",
+      "closedAt": "2026-09-22T16:50:51.331Z",
+      "attempts": 1,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "no plates owed",
+        "at": "2026-09-22T16:50:51.331Z"
+      },
+      "forced": null
+    },
+    "hero": {
+      "status": "closed",
+      "openedAt": "2026-09-22T16:50:51.331Z",
+      "closedAt": "2026-09-22T17:12:05.286Z",
+      "attempts": 2,
+      "notes": [],
+      "gate": {
+        "ok": true,
+        "reasons": [],
+        "summary": "hero 88% (match)",
+        "score": 0.8841,
+        "verdict": "match",
+        "report": ".impeccable/review/diff/hero/report.json",
+        "sideBySide": "/home/ael/DATA/project on linux/webapp/webhanipakim/.impeccable/review/diff/hero/side-by-side.png",
+        "worst": [
+          "lesson-description drift 63%",
+          "filters drift 68%",
+          "theme drift 68%"
+        ],
+        "worstIds": [
+          "lesson-description",
+          "filters",
+          "theme"
+        ],
+        "worstCrops": [
+          {
+            "id": "lesson-description",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6344,
+              "structure": 0.7716,
+              "color": 0.9487,
+              "colorIntersection": 0.8937,
+              "paletteMatch": 0.9783,
+              "detail": 0.0764,
+              "detailRaw": 0.1597,
+              "detailAdded": 0.1667,
+              "bands": 0
+            },
+            "file": ".impeccable/review/diff/hero/regions/lesson-description.png"
+          },
+          {
+            "id": "filters",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6788,
+              "structure": 0.6736,
+              "color": 0.8644,
+              "colorIntersection": 0.761,
+              "paletteMatch": 0.9201,
+              "detail": 0.3657,
+              "detailRaw": 0.5115,
+              "detailAdded": 0.2917,
+              "bands": 0.2
+            },
+            "file": ".impeccable/review/diff/hero/regions/filters.png"
+          },
+          {
+            "id": "theme",
+            "verdict": "drift",
+            "score": {
+              "overall": 0.6803,
+              "structure": 0.8299,
+              "color": 0.8094,
+              "colorIntersection": 0.6289,
+              "paletteMatch": 0.9066,
+              "detail": 0.1177,
+              "detailRaw": 0.1646,
+              "detailAdded": 0.0938,
+              "bands": 0.6
+            },
+            "file": ".impeccable/review/diff/hero/regions/theme.png"
+          }
+        ],
+        "advisories": [
+          "(advisory, above the 72% bar) region theme: its ink sits in a 47x14px box in the comp and 18x17px in the build (padding, row height, or size); match the box, not only the position",
+          "(advisory, above the 72% bar) region stage-3: its ink sits in a 126x100px box in the comp and 152x89px in the build (padding, row height, or size); match the box, not only the position",
+          "(advisory, above the 72% bar; fix in the polish pass before responsive) 1 reading:",
+          "  text footer: cap height 5.2px in the build, 10.4px in the comp (-50%); set font-size so the cap height renders at 10.4px",
+          "(advisory, unchanged for 3+ attempts) text summary-total: ink is #181838 in the build, #9aa0b2 in the comp; use the comp's colour"
+        ],
+        "regionVerdicts": {
+          "header": "match",
+          "brand": "drift",
+          "navigation": "drift",
+          "theme": "drift",
+          "heading": "drift",
+          "intro": "drift",
+          "recommendation-frame": "drift",
+          "recommendation-label": "drift",
+          "lesson-title": "drift",
+          "lesson-description": "drift",
+          "lesson-action": "drift",
+          "lesson-progress": "match",
+          "stage-1": "match",
+          "stage-2": "drift",
+          "stage-3": "drift",
+          "summary": "match",
+          "summary-total": "match",
+          "summary-completed": "match",
+          "summary-progress": "drift",
+          "list-title": "match",
+          "filters": "drift",
+          "module-1": "match",
+          "module-2": "match",
+          "module-3": "match",
+          "module-4": "drift",
+          "footer": "drift"
+        },
+        "at": "2026-09-22T17:12:05.286Z"
+      },
+      "forced": null,
+      "readingsSeen": {
+        "text intro: cap height 4.1px in the build, 14.6px in the comp (-72%); set font-size so the cap height renders at 14.6px": 1,
+        "text list-title: cap height 12.3px in the build, 16.7px in the comp (-26%); set font-size so the cap height renders at 16.7px": 1,
+        "text brand: ink is #2858b8 in the build, #0b102a in the comp; use the comp's colour": 1,
+        "text heading: ink is #6a7a8c in the build, #090f26 in the comp; use the comp's colour": 1,
+        "text recommendation-label: ink is #64707a in the build, #375a9c in the comp; use the comp's colour": 1,
+        "text lesson-title: ink is #5e6c85 in the build, #0a1029 in the comp; use the comp's colour": 1,
+        "text list-title: ink is #9a9fab in the build, #0b112a in the comp; use the comp's colour": 1,
+        "text intro: its first line starts 18px lower than in the comp (21px vs 3px into the region box); the spacing above it is too large": 1,
+        "text list-title: it starts 50px further right than in the comp": 1,
+        "control lesson-action: its rule sits 1px into the box in the comp and 38px in the build (+37px), so the strip is taller than the comp's; match the height, not only the position": 1,
+        "chrome summary: its ink is 103px tall in the build and 57px in the comp (+46px); match the height, not only the position": 1,
+        "control module-1: its ink is 83px tall in the build and 43px in the comp (+40px); match the height, not only the position": 1,
+        "control module-2: its ink is 79px tall in the build and 42px in the comp (+37px); match the height, not only the position": 1,
+        "control module-3: its ink is 76px tall in the build and 41px in the comp (+35px); match the height, not only the position": 1,
+        "control module-4: its ink is 81px tall in the build and 43px in the comp (+38px); match the height, not only the position": 1,
+        "text list-title: cap height 12.2px in the build, 16.7px in the comp (-27%); set font-size so the cap height renders at 16.7px": 1,
+        "text footer: cap height 5.2px in the build, 10.4px in the comp (-50%); set font-size so the cap height renders at 10.4px": 3,
+        "text summary-total: ink is #181838 in the build, #9aa0b2 in the comp; use the comp's colour": 4,
+        "text summary-progress: ink is #6f7e90 in the build, #080c24 in the comp; use the comp's colour": 1,
+        "control lesson-action: its rule sits 1px into the box in the comp and 49px in the build (+48px), so the strip is taller than the comp's; match the height, not only the position": 1,
+        "control lesson-action: its rule sits 1px into the box in the comp and 16px in the build (+15px), so the strip is taller than the comp's; match the height, not only the position": 1
+      },
+      "history": [
+        {
+          "at": "2026-09-22T16:56:42.653Z",
+          "score": 0.6539,
+          "worstIds": [
+            "lesson-action",
+            "brand",
+            "recommendation-label"
+          ],
+          "regionVerdicts": {
+            "header": "drift",
+            "brand": "contradicted",
+            "navigation": "missing",
+            "theme": "missing",
+            "heading": "drift",
+            "intro": "missing",
+            "recommendation-frame": "drift",
+            "recommendation-label": "missing",
+            "lesson-title": "missing",
+            "lesson-description": "missing",
+            "lesson-action": "missing",
+            "lesson-progress": "missing",
+            "stage-1": "missing",
+            "stage-2": "missing",
+            "stage-3": "missing",
+            "summary": "drift",
+            "summary-total": "drift",
+            "summary-completed": "missing",
+            "summary-progress": "missing",
+            "list-title": "drift",
+            "filters": "missing",
+            "module-1": "drift",
+            "module-2": "drift",
+            "module-3": "missing",
+            "module-4": "drift",
+            "footer": "missing"
+          },
+          "artifactHash": "ce076b529602"
+        },
+        {
+          "at": "2026-09-22T17:12:05.286Z",
+          "score": 0.8841,
+          "worstIds": [
+            "lesson-description",
+            "filters",
+            "theme"
+          ],
+          "regionVerdicts": {
+            "header": "match",
+            "brand": "drift",
+            "navigation": "drift",
+            "theme": "drift",
+            "heading": "drift",
+            "intro": "drift",
+            "recommendation-frame": "drift",
+            "recommendation-label": "drift",
+            "lesson-title": "drift",
+            "lesson-description": "drift",
+            "lesson-action": "drift",
+            "lesson-progress": "match",
+            "stage-1": "match",
+            "stage-2": "drift",
+            "stage-3": "drift",
+            "summary": "match",
+            "summary-total": "match",
+            "summary-completed": "match",
+            "summary-progress": "drift",
+            "list-title": "match",
+            "filters": "drift",
+            "module-1": "match",
+            "module-2": "match",
+            "module-3": "match",
+            "module-4": "drift",
+            "footer": "drift"
+          },
+          "artifactHash": "ce076b529602"
+        }
+      ],
+      "records": 3
+    },
+    "sections": {
+      "status": "open",
+      "openedAt": "2026-09-22T17:12:05.286Z",
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "motion": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "responsive": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    },
+    "review": {
+      "status": "pending",
+      "openedAt": null,
+      "closedAt": null,
+      "attempts": 0,
+      "notes": [],
+      "gate": null,
+      "forced": null
+    }
+  },
+  "finish": null,
+  "plates": {}
+}

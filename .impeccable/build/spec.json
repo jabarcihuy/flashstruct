@@ -1,0 +1,1548 @@
+{
+  "tool": "comp-spec",
+  "version": 1,
+  "createdAt": "2026-09-22T16:50:12.097Z",
+  "comp": ".impeccable/mocks/komposisi-a.png",
+  "warnings": [],
+  "uncoveredInkCells": [
+    "A5",
+    "H5",
+    "B9"
+  ],
+  "compSize": {
+    "width": 1505,
+    "height": 1045
+  },
+  "aspect": 1.4402,
+  "orientation": "landscape",
+  "palette": [
+    {
+      "hex": "#f7f7f8",
+      "coverage": 0.9703
+    },
+    {
+      "hex": "#2868cd",
+      "coverage": 0.0091
+    },
+    {
+      "hex": "#b1b5c1",
+      "coverage": 0.008
+    },
+    {
+      "hex": "#747e90",
+      "coverage": 0.0075
+    },
+    {
+      "hex": "#080f26",
+      "coverage": 0.0052
+    }
+  ],
+  "bands": [
+    {
+      "y": 0.0225,
+      "strength": 0.323
+    },
+    {
+      "y": 0.1011,
+      "strength": 0.367
+    },
+    {
+      "y": 0.1236,
+      "strength": 0.3722
+    },
+    {
+      "y": 0.236,
+      "strength": 0.3346
+    },
+    {
+      "y": 0.2584,
+      "strength": 0.3465
+    },
+    {
+      "y": 0.2809,
+      "strength": 0.2675
+    },
+    {
+      "y": 0.3371,
+      "strength": 0.2266
+    },
+    {
+      "y": 0.3933,
+      "strength": 0.2854
+    },
+    {
+      "y": 0.5955,
+      "strength": 0.2526
+    },
+    {
+      "y": 0.6404,
+      "strength": 0.2517
+    },
+    {
+      "y": 0.7191,
+      "strength": 0.2213
+    }
+  ],
+  "regions": [
+    {
+      "id": "header",
+      "kind": "chrome",
+      "note": "Horizontal white header with thin bottom border",
+      "grid": null,
+      "box": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.0603
+      },
+      "px": {
+        "x": 0,
+        "y": 0,
+        "w": 1505,
+        "h": 63
+      },
+      "aspect": 23.8889,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9777
+        },
+        {
+          "hex": "#0b1333",
+          "coverage": 0.0082
+        },
+        {
+          "hex": "#cbd0db",
+          "coverage": 0.0047
+        },
+        {
+          "hex": "#9ab6e3",
+          "coverage": 0.0047
+        },
+        {
+          "hex": "#989ca8",
+          "coverage": 0.0046
+        }
+      ],
+      "detail": {
+        "energy": 15.9495
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "brand",
+      "kind": "text",
+      "note": "FlashStruct brand wordmark",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.0163,
+        "w": 0.0963,
+        "h": 0.0278
+      },
+      "px": {
+        "x": 50,
+        "y": 17,
+        "w": 145,
+        "h": 29
+      },
+      "aspect": 5,
+      "palette": [
+        {
+          "hex": "#f7f7f7",
+          "coverage": 0.6618
+        },
+        {
+          "hex": "#0b102a",
+          "coverage": 0.2521
+        },
+        {
+          "hex": "#9a9eac",
+          "coverage": 0.0441
+        },
+        {
+          "hex": "#c3cad2",
+          "coverage": 0.021
+        },
+        {
+          "hex": "#60657d",
+          "coverage": 0.021
+        }
+      ],
+      "detail": {
+        "energy": 55.9576
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 11,
+          "capHeightPx": 21.3,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5644,
+          "advTall": 0.5879,
+          "advX": 0.6115,
+          "gap": 0.0706,
+          "xRatio": 0.6944,
+          "stemW": 0.2092,
+          "contrast": 1.23,
+          "serif": 0.946,
+          "densTall": 0.6014,
+          "densX": 0.6376,
+          "weight": 0.6014
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "navigation",
+      "kind": "control",
+      "note": "Five navigation text links",
+      "grid": null,
+      "box": {
+        "x": 0.1581,
+        "y": 0.0163,
+        "w": 0.3056,
+        "h": 0.0411
+      },
+      "px": {
+        "x": 238,
+        "y": 17,
+        "w": 460,
+        "h": 43
+      },
+      "aspect": 10.6977,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9336
+        },
+        {
+          "hex": "#253345",
+          "coverage": 0.0211
+        },
+        {
+          "hex": "#1a5ace",
+          "coverage": 0.0184
+        },
+        {
+          "hex": "#0c0f27",
+          "coverage": 0.0179
+        },
+        {
+          "hex": "#626779",
+          "coverage": 0.009
+        }
+      ],
+      "detail": {
+        "energy": 30.0779
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "theme",
+      "kind": "control",
+      "note": "Theme control replaces unsupported avatar from generated comp",
+      "grid": null,
+      "box": {
+        "x": 0.9223,
+        "y": 0.0124,
+        "w": 0.0419,
+        "h": 0.0383
+      },
+      "px": {
+        "x": 1388,
+        "y": 13,
+        "w": 63,
+        "h": 40
+      },
+      "aspect": 1.575,
+      "palette": [
+        {
+          "hex": "#f1f1f3",
+          "coverage": 0.9456
+        },
+        {
+          "hex": "#c8cbd5",
+          "coverage": 0.0204
+        },
+        {
+          "hex": "#0b1222",
+          "coverage": 0.017
+        },
+        {
+          "hex": "#586474",
+          "coverage": 0.0136
+        },
+        {
+          "hex": "#9898a8",
+          "coverage": 0.0034
+        }
+      ],
+      "detail": {
+        "energy": 5.4896
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "heading",
+      "kind": "text",
+      "note": "Lanjutkan belajarmu",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.088,
+        "w": 0.3455,
+        "h": 0.0392
+      },
+      "px": {
+        "x": 50,
+        "y": 92,
+        "w": 520,
+        "h": 41
+      },
+      "aspect": 12.6829,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.7812
+        },
+        {
+          "hex": "#090f26",
+          "coverage": 0.1577
+        },
+        {
+          "hex": "#0d0f0f",
+          "coverage": 0.0236
+        },
+        {
+          "hex": "#6f7787",
+          "coverage": 0.0223
+        },
+        {
+          "hex": "#a8acb8",
+          "coverage": 0.0152
+        }
+      ],
+      "detail": {
+        "energy": 89.6178
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 18,
+          "capHeightPx": 28.9,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6218,
+          "advTall": 0.6046,
+          "advX": 0.6218,
+          "gap": 0.1036,
+          "xRatio": 0.7052,
+          "stemW": 0.2092,
+          "contrast": 1.2689,
+          "serif": 0.6414,
+          "densTall": 0.6021,
+          "densX": 0.6976,
+          "weight": 0.6021
+        },
+        "widthClass": "normal",
+        "weightClass": "bold",
+        "chosen": {
+          "family": "Encode Sans",
+          "weight": 700,
+          "fontSizePx": 37,
+          "source": "index",
+          "fp": {
+            "lines": 1,
+            "glyphs": 18,
+            "capHeightPx": 29.5,
+            "inkIsDark": true,
+            "allCaps": false,
+            "advance": 0.6102,
+            "advTall": 0.6441,
+            "advX": 0.6102,
+            "gap": 0.1356,
+            "xRatio": 0.678,
+            "stemW": 0.2007,
+            "contrast": 1.2413,
+            "serif": 1,
+            "densTall": 0.5297,
+            "densX": 0.6892,
+            "weight": 0.5297
+          },
+          "stamp": "1daf72c6ea29"
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "kind": "text",
+      "note": "Short supporting sentence",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.1349,
+        "w": 0.4053,
+        "h": 0.0239
+      },
+      "px": {
+        "x": 50,
+        "y": 141,
+        "w": 610,
+        "h": 25
+      },
+      "aspect": 24.4,
+      "palette": [
+        {
+          "hex": "#f7f7f7",
+          "coverage": 0.8272
+        },
+        {
+          "hex": "#c4c8d2",
+          "coverage": 0.0569
+        },
+        {
+          "hex": "#5f6b7b",
+          "coverage": 0.0503
+        },
+        {
+          "hex": "#9298a7",
+          "coverage": 0.0388
+        },
+        {
+          "hex": "#5c6080",
+          "coverage": 0.0268
+        }
+      ],
+      "detail": {
+        "energy": 51.1434
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 53,
+          "capHeightPx": 14.6,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5475,
+          "advTall": 0.5817,
+          "advX": 0.5475,
+          "gap": 0.1027,
+          "xRatio": 0.7059,
+          "stemW": 0.1572,
+          "contrast": 1.0784,
+          "serif": 0.366,
+          "densTall": 0.4948,
+          "densX": 0.5857,
+          "weight": 0.4948
+        },
+        "widthClass": "condensed",
+        "weightClass": "medium"
+      }
+    },
+    {
+      "id": "recommendation-frame",
+      "kind": "chrome",
+      "note": "Single thin bordered recommendation container",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.1837,
+        "w": 0.9336,
+        "h": 0.244
+      },
+      "px": {
+        "x": 50,
+        "y": 192,
+        "w": 1405,
+        "h": 255
+      },
+      "aspect": 5.5098,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9418
+        },
+        {
+          "hex": "#2868cc",
+          "coverage": 0.0297
+        },
+        {
+          "hex": "#6e788b",
+          "coverage": 0.0103
+        },
+        {
+          "hex": "#cdd1d9",
+          "coverage": 0.0097
+        },
+        {
+          "hex": "#a2a8b6",
+          "coverage": 0.0085
+        }
+      ],
+      "detail": {
+        "energy": 20.0952
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "recommendation-label",
+      "kind": "text",
+      "note": "Modul yang disarankan",
+      "grid": null,
+      "box": {
+        "x": 0.0485,
+        "y": 0.2067,
+        "w": 0.1262,
+        "h": 0.0172
+      },
+      "px": {
+        "x": 73,
+        "y": 216,
+        "w": 190,
+        "h": 18
+      },
+      "aspect": 10.5556,
+      "palette": [
+        {
+          "hex": "#f6f7f8",
+          "coverage": 0.7105
+        },
+        {
+          "hex": "#375a9c",
+          "coverage": 0.1072
+        },
+        {
+          "hex": "#5e77a6",
+          "coverage": 0.0751
+        },
+        {
+          "hex": "#bec9dd",
+          "coverage": 0.067
+        },
+        {
+          "hex": "#7d96ba",
+          "coverage": 0.0402
+        }
+      ],
+      "detail": {
+        "energy": 53.0197
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 18,
+          "capHeightPx": 11.4,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6124,
+          "advTall": 0.6562,
+          "advX": 0.6124,
+          "gap": 0.1167,
+          "xRatio": 0.7224,
+          "stemW": 0.2051,
+          "contrast": 1.1412,
+          "serif": 0.5088,
+          "densTall": 0.6362,
+          "densX": 0.66,
+          "weight": 0.6362
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "lesson-title",
+      "kind": "text",
+      "note": "Dasar Array & Indeks",
+      "grid": null,
+      "box": {
+        "x": 0.0485,
+        "y": 0.2316,
+        "w": 0.3787,
+        "h": 0.0325
+      },
+      "px": {
+        "x": 73,
+        "y": 242,
+        "w": 570,
+        "h": 34
+      },
+      "aspect": 16.7647,
+      "palette": [
+        {
+          "hex": "#f7f8f8",
+          "coverage": 0.8436
+        },
+        {
+          "hex": "#0a1029",
+          "coverage": 0.1022
+        },
+        {
+          "hex": "#6f7583",
+          "coverage": 0.0262
+        },
+        {
+          "hex": "#c0c6cd",
+          "coverage": 0.0149
+        },
+        {
+          "hex": "#2a3949",
+          "coverage": 0.0131
+        }
+      ],
+      "detail": {
+        "energy": 76.1604
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 17,
+          "capHeightPx": 24.7,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6079,
+          "advTall": 0.7295,
+          "advX": 0.5876,
+          "gap": 0.0811,
+          "xRatio": 0.696,
+          "stemW": 0.2106,
+          "contrast": 1.2328,
+          "serif": 0.5675,
+          "densTall": 0.6103,
+          "densX": 0.6499,
+          "weight": 0.6103
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "lesson-description",
+      "kind": "text",
+      "note": "Lesson description over two lines",
+      "grid": null,
+      "box": {
+        "x": 0.0485,
+        "y": 0.2766,
+        "w": 0.4219,
+        "h": 0.0411
+      },
+      "px": {
+        "x": 73,
+        "y": 289,
+        "w": 635,
+        "h": 43
+      },
+      "aspect": 14.7674,
+      "palette": [
+        {
+          "hex": "#f6f7f7",
+          "coverage": 0.8753
+        },
+        {
+          "hex": "#71788b",
+          "coverage": 0.0595
+        },
+        {
+          "hex": "#adb2be",
+          "coverage": 0.0567
+        },
+        {
+          "hex": "#4e5975",
+          "coverage": 0.0085
+        }
+      ],
+      "detail": {
+        "energy": 36.5453
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 65,
+          "capHeightPx": 13.1,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.5736,
+          "advTall": 0.5353,
+          "advX": 0.5736,
+          "gap": 0.1147,
+          "xRatio": 0.7156,
+          "stemW": 0.1796,
+          "contrast": 1.0489,
+          "serif": 0.6384,
+          "densTall": 0.5617,
+          "densX": 0.6283,
+          "weight": 0.5617
+        },
+        "widthClass": "condensed",
+        "weightClass": "bold"
+      }
+    },
+    {
+      "id": "lesson-action",
+      "kind": "control",
+      "note": "Baca Modul blue button",
+      "grid": null,
+      "box": {
+        "x": 0.0485,
+        "y": 0.3445,
+        "w": 0.1422,
+        "h": 0.0526
+      },
+      "px": {
+        "x": 73,
+        "y": 360,
+        "w": 214,
+        "h": 55
+      },
+      "aspect": 3.8909,
+      "palette": [
+        {
+          "hex": "#2868cc",
+          "coverage": 0.8452
+        },
+        {
+          "hex": "#afc9ec",
+          "coverage": 0.0851
+        },
+        {
+          "hex": "#eef3f8",
+          "coverage": 0.0352
+        },
+        {
+          "hex": "#3c7ccb",
+          "coverage": 0.0249
+        },
+        {
+          "hex": "#79a6df",
+          "coverage": 0.0095
+        }
+      ],
+      "detail": {
+        "energy": 14.1246
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "lesson-progress",
+      "kind": "control",
+      "note": "Progres modul, Belum dimulai and horizontal progress bar",
+      "grid": null,
+      "box": {
+        "x": 0.5196,
+        "y": 0.2067,
+        "w": 0.4319,
+        "h": 0.0431
+      },
+      "px": {
+        "x": 782,
+        "y": 216,
+        "w": 650,
+        "h": 45
+      },
+      "aspect": 14.4444,
+      "palette": [
+        {
+          "hex": "#f4f4f4",
+          "coverage": 0.9679
+        },
+        {
+          "hex": "#606b80",
+          "coverage": 0.016
+        },
+        {
+          "hex": "#bcbecc",
+          "coverage": 0.0099
+        },
+        {
+          "hex": "#8b92a2",
+          "coverage": 0.0034
+        },
+        {
+          "hex": "#434d6d",
+          "coverage": 0.0028
+        }
+      ],
+      "detail": {
+        "energy": 14.1191
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "stage-1",
+      "kind": "control",
+      "note": "Pahami stage and availability description",
+      "grid": null,
+      "box": {
+        "x": 0.5196,
+        "y": 0.2708,
+        "w": 0.1375,
+        "h": 0.1301
+      },
+      "px": {
+        "x": 782,
+        "y": 283,
+        "w": 207,
+        "h": 136
+      },
+      "aspect": 1.5221,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9328
+        },
+        {
+          "hex": "#2766ce",
+          "coverage": 0.0237
+        },
+        {
+          "hex": "#798594",
+          "coverage": 0.0189
+        },
+        {
+          "hex": "#acb0bc",
+          "coverage": 0.0183
+        },
+        {
+          "hex": "#777797",
+          "coverage": 0.0064
+        }
+      ],
+      "detail": {
+        "energy": 12.3326
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "stage-2",
+      "kind": "control",
+      "note": "Hafalkan stage and availability description",
+      "grid": null,
+      "box": {
+        "x": 0.6664,
+        "y": 0.2708,
+        "w": 0.1375,
+        "h": 0.1301
+      },
+      "px": {
+        "x": 1003,
+        "y": 283,
+        "w": 207,
+        "h": 136
+      },
+      "aspect": 1.5221,
+      "palette": [
+        {
+          "hex": "#f6f7f8",
+          "coverage": 0.9457
+        },
+        {
+          "hex": "#757d90",
+          "coverage": 0.0292
+        },
+        {
+          "hex": "#b5bac7",
+          "coverage": 0.0159
+        },
+        {
+          "hex": "#0b0b15",
+          "coverage": 0.006
+        },
+        {
+          "hex": "#485060",
+          "coverage": 0.0032
+        }
+      ],
+      "detail": {
+        "energy": 15.2788
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "stage-3",
+      "kind": "control",
+      "note": "Buktikan stage and availability description",
+      "grid": null,
+      "box": {
+        "x": 0.8126,
+        "y": 0.2708,
+        "w": 0.1375,
+        "h": 0.1301
+      },
+      "px": {
+        "x": 1223,
+        "y": 283,
+        "w": 207,
+        "h": 136
+      },
+      "aspect": 1.5221,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9449
+        },
+        {
+          "hex": "#717a8e",
+          "coverage": 0.0266
+        },
+        {
+          "hex": "#b0b4c1",
+          "coverage": 0.0152
+        },
+        {
+          "hex": "#08091a",
+          "coverage": 0.0082
+        },
+        {
+          "hex": "#4e5671",
+          "coverage": 0.0051
+        }
+      ],
+      "detail": {
+        "energy": 15.4089
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "summary",
+      "kind": "chrome",
+      "note": "Three-column bordered summary strip",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.4469,
+        "w": 0.9336,
+        "h": 0.0986
+      },
+      "px": {
+        "x": 50,
+        "y": 467,
+        "w": 1405,
+        "h": 103
+      },
+      "aspect": 13.6408,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9825
+        },
+        {
+          "hex": "#758092",
+          "coverage": 0.0072
+        },
+        {
+          "hex": "#adb1c0",
+          "coverage": 0.0064
+        },
+        {
+          "hex": "#0a0e21",
+          "coverage": 0.0039
+        }
+      ],
+      "detail": {
+        "energy": 10.3565
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "summary-total",
+      "kind": "text",
+      "note": "Total modul with number and context",
+      "grid": null,
+      "box": {
+        "x": 0.0492,
+        "y": 0.4632,
+        "w": 0.2525,
+        "h": 0.0593
+      },
+      "px": {
+        "x": 74,
+        "y": 484,
+        "w": 380,
+        "h": 62
+      },
+      "aspect": 6.129,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9517
+        },
+        {
+          "hex": "#9aa0b2",
+          "coverage": 0.0279
+        },
+        {
+          "hex": "#5b6a7d",
+          "coverage": 0.0079
+        },
+        {
+          "hex": "#c4cbd0",
+          "coverage": 0.0064
+        },
+        {
+          "hex": "#080d24",
+          "coverage": 0.006
+        }
+      ],
+      "detail": {
+        "energy": 12.7283
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 1,
+          "capHeightPx": 19.6,
+          "inkIsDark": true,
+          "allCaps": true,
+          "advance": null,
+          "advTall": null,
+          "advX": null,
+          "gap": 0,
+          "xRatio": null,
+          "stemW": 0.2878,
+          "contrast": 1.1262,
+          "serif": null,
+          "densTall": null,
+          "densX": null,
+          "weight": null
+        },
+        "widthClass": "normal",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "summary-completed",
+      "kind": "text",
+      "note": "Modul selesai with number and context",
+      "grid": null,
+      "box": {
+        "x": 0.3654,
+        "y": 0.4632,
+        "w": 0.2525,
+        "h": 0.0593
+      },
+      "px": {
+        "x": 550,
+        "y": 484,
+        "w": 380,
+        "h": 62
+      },
+      "aspect": 6.129,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9598
+        },
+        {
+          "hex": "#8c94a4",
+          "coverage": 0.0155
+        },
+        {
+          "hex": "#c9ccd5",
+          "coverage": 0.0129
+        },
+        {
+          "hex": "#0b0f1f",
+          "coverage": 0.0072
+        },
+        {
+          "hex": "#4d5774",
+          "coverage": 0.0045
+        }
+      ],
+      "detail": {
+        "energy": 13.6383
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 9,
+          "capHeightPx": 18.4,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.3526,
+          "advTall": null,
+          "advX": 0.3255,
+          "gap": 0.1085,
+          "xRatio": 0.3763,
+          "stemW": 0.0656,
+          "contrast": 0.8601,
+          "serif": 1.9882,
+          "densTall": null,
+          "densX": 0.4443,
+          "weight": 0.4443
+        },
+        "widthClass": "compressed",
+        "weightClass": "regular"
+      }
+    },
+    {
+      "id": "summary-progress",
+      "kind": "text",
+      "note": "Progres belajar with number and context",
+      "grid": null,
+      "box": {
+        "x": 0.6777,
+        "y": 0.4632,
+        "w": 0.2525,
+        "h": 0.0593
+      },
+      "px": {
+        "x": 1020,
+        "y": 484,
+        "w": 380,
+        "h": 62
+      },
+      "aspect": 6.129,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.9523
+        },
+        {
+          "hex": "#080c24",
+          "coverage": 0.0151
+        },
+        {
+          "hex": "#cacdd5",
+          "coverage": 0.0144
+        },
+        {
+          "hex": "#989dad",
+          "coverage": 0.0095
+        },
+        {
+          "hex": "#6a798d",
+          "coverage": 0.0087
+        }
+      ],
+      "detail": {
+        "energy": 19.6286
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": null,
+        "measuredAt": "2026-09-22T16:50:50.569Z",
+        "note": "no separable lettering in the crop; size by the region box"
+      }
+    },
+    {
+      "id": "list-title",
+      "kind": "text",
+      "note": "Daftar Modul",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.5761,
+        "w": 0.1528,
+        "h": 0.0268
+      },
+      "px": {
+        "x": 50,
+        "y": 602,
+        "w": 230,
+        "h": 28
+      },
+      "aspect": 8.2143,
+      "palette": [
+        {
+          "hex": "#f8f8f8",
+          "coverage": 0.8296
+        },
+        {
+          "hex": "#0b112a",
+          "coverage": 0.103
+        },
+        {
+          "hex": "#394359",
+          "coverage": 0.0291
+        },
+        {
+          "hex": "#d0d2da",
+          "coverage": 0.0264
+        },
+        {
+          "hex": "#9fa1b1",
+          "coverage": 0.0119
+        }
+      ],
+      "detail": {
+        "energy": 46.4934
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 10,
+          "capHeightPx": 16.7,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6593,
+          "advTall": 0.7792,
+          "advX": 0.5994,
+          "gap": 0.0899,
+          "xRatio": 0.7115,
+          "stemW": 0.2185,
+          "contrast": 1.2394,
+          "serif": 0.7848,
+          "densTall": 0.666,
+          "densX": 0.7182,
+          "weight": 0.666
+        },
+        "widthClass": "normal",
+        "weightClass": "black"
+      }
+    },
+    {
+      "id": "filters",
+      "kind": "control",
+      "note": "Semua Array Struct Pointer filters",
+      "grid": null,
+      "box": {
+        "x": 0.7462,
+        "y": 0.5703,
+        "w": 0.2206,
+        "h": 0.0335
+      },
+      "px": {
+        "x": 1123,
+        "y": 596,
+        "w": 332,
+        "h": 35
+      },
+      "aspect": 9.4857,
+      "palette": [
+        {
+          "hex": "#ecf4f6",
+          "coverage": 0.7494
+        },
+        {
+          "hex": "#2868ce",
+          "coverage": 0.1796
+        },
+        {
+          "hex": "#75a3e3",
+          "coverage": 0.0295
+        },
+        {
+          "hex": "#5c89d9",
+          "coverage": 0.0208
+        },
+        {
+          "hex": "#c5ccda",
+          "coverage": 0.0208
+        }
+      ],
+      "detail": {
+        "energy": 30.5856
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "module-1",
+      "kind": "control",
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.6201,
+        "w": 0.9336,
+        "h": 0.0794
+      },
+      "px": {
+        "x": 50,
+        "y": 648,
+        "w": 1405,
+        "h": 83
+      },
+      "aspect": 16.9277,
+      "palette": [
+        {
+          "hex": "#f7f7f7",
+          "coverage": 0.9698
+        },
+        {
+          "hex": "#8991a0",
+          "coverage": 0.0138
+        },
+        {
+          "hex": "#c6c9d2",
+          "coverage": 0.0093
+        },
+        {
+          "hex": "#2666ce",
+          "coverage": 0.005
+        },
+        {
+          "hex": "#5e687e",
+          "coverage": 0.0021
+        }
+      ],
+      "detail": {
+        "energy": 15.4099
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "module-2",
+      "kind": "control",
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.6995,
+        "w": 0.9336,
+        "h": 0.0794
+      },
+      "px": {
+        "x": 50,
+        "y": 731,
+        "w": 1405,
+        "h": 83
+      },
+      "aspect": 16.9277,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9636
+        },
+        {
+          "hex": "#788091",
+          "coverage": 0.0175
+        },
+        {
+          "hex": "#b9bec9",
+          "coverage": 0.0129
+        },
+        {
+          "hex": "#2868d2",
+          "coverage": 0.0045
+        },
+        {
+          "hex": "#080818",
+          "coverage": 0.0016
+        }
+      ],
+      "detail": {
+        "energy": 15.5093
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "module-3",
+      "kind": "control",
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.7809,
+        "w": 0.9336,
+        "h": 0.0794
+      },
+      "px": {
+        "x": 50,
+        "y": 816,
+        "w": 1405,
+        "h": 83
+      },
+      "aspect": 16.9277,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9725
+        },
+        {
+          "hex": "#bbbecb",
+          "coverage": 0.0111
+        },
+        {
+          "hex": "#7a8193",
+          "coverage": 0.0096
+        },
+        {
+          "hex": "#2868d1",
+          "coverage": 0.0042
+        },
+        {
+          "hex": "#080c1f",
+          "coverage": 0.0025
+        }
+      ],
+      "detail": {
+        "energy": 15.6274
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "module-4",
+      "kind": "control",
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.8612,
+        "w": 0.9336,
+        "h": 0.0794
+      },
+      "px": {
+        "x": 50,
+        "y": 900,
+        "w": 1405,
+        "h": 83
+      },
+      "aspect": 16.9277,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9687
+        },
+        {
+          "hex": "#c8ccd7",
+          "coverage": 0.0121
+        },
+        {
+          "hex": "#8992a0",
+          "coverage": 0.0099
+        },
+        {
+          "hex": "#2565cf",
+          "coverage": 0.0048
+        },
+        {
+          "hex": "#606676",
+          "coverage": 0.0045
+        }
+      ],
+      "detail": {
+        "energy": 16.8132
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null
+    },
+    {
+      "id": "footer",
+      "kind": "text",
+      "note": "Local progress notice and brand line",
+      "grid": null,
+      "box": {
+        "x": 0.0332,
+        "y": 0.9617,
+        "w": 0.9336,
+        "h": 0.0201
+      },
+      "px": {
+        "x": 50,
+        "y": 1005,
+        "w": 1405,
+        "h": 21
+      },
+      "aspect": 66.9048,
+      "palette": [
+        {
+          "hex": "#f7f7f8",
+          "coverage": 0.9512
+        },
+        {
+          "hex": "#949daf",
+          "coverage": 0.0363
+        },
+        {
+          "hex": "#bcc8ce",
+          "coverage": 0.0107
+        },
+        {
+          "hex": "#7880a0",
+          "coverage": 0.0018
+        }
+      ],
+      "detail": {
+        "energy": 8.4421
+      },
+      "medium": "semantic",
+      "plate": null,
+      "text": null,
+      "type": {
+        "comp": {
+          "lines": 1,
+          "glyphs": 53,
+          "capHeightPx": 10.4,
+          "inkIsDark": true,
+          "allCaps": false,
+          "advance": 0.6423,
+          "advTall": 0.6423,
+          "advX": 0.6423,
+          "gap": 0.0642,
+          "xRatio": 0.7252,
+          "stemW": 0.1923,
+          "contrast": 1.0999,
+          "serif": 0.3704,
+          "densTall": 0.5905,
+          "densX": 0.6461,
+          "weight": 0.5905
+        },
+        "widthClass": "normal",
+        "weightClass": "bold"
+      }
+    }
+  ]
+}

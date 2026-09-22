@@ -35,11 +35,11 @@ export function ThemeToggle() {
 
 export function Header() {
   return (
-    <header className="safe-top safe-x sticky top-0 z-40 border-b border-border bg-bg/95 backdrop-blur-sm">
-      <div className="container-wide flex h-14 items-center justify-between gap-4">
+    <header className="site-header safe-top safe-x sticky top-0 z-40 border-b border-border bg-bg">
+      <div className="site-header-inner container-wide flex items-center gap-10">
         <NavLink
           to="/"
-          className="inline-flex h-11 items-center font-heading text-lg font-bold text-fg no-underline md:h-10"
+          className="site-brand inline-flex items-center font-heading font-bold text-fg no-underline"
           aria-label="FlashStruct — ke beranda"
         >
           FlashStruct
@@ -81,7 +81,7 @@ export function Header() {
           </ul>
         </nav>
 
-        <ThemeToggle />
+        <div className="ml-auto"><ThemeToggle /></div>
       </div>
     </header>
   );

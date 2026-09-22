@@ -1,125 +1,92 @@
-/* =========================================================
-   FlashStruct — Design Token
-   Diturunkan dari palet:
-     cream  #FDF4D2  · biru   #B0CDE6
-     ungu   #A290B7  · coklat #946D6D
-
-   Semua kontras sudah diverifikasi WCAG 2.1.
-   Rincian perhitungan ada di docs/03-DESIGN-SYSTEM.md §2.10
-   ========================================================= */
-
+/* FlashStruct: shared semantic tokens for the learning interface. */
 :root {
-  /* === Palet sumber (dipakai langsung sebagai latar) === */
-  --palet-cream: #fdf4d2;
-  --palet-biru: #b0cde6;
-  --palet-ungu: #a290b7;
-  --palet-coklat: #946d6d;
-
-  /* === Warna topik (varian teks, lolos AA di latar cream) === */
-  --topik-array: #336ea1; /* dari biru   · 4.90 AA  */
-  --topik-struct: #6a5582; /* dari ungu   · 5.89 AA  */
-  --topik-pointer: #543d3d; /* dari coklat · 9.02 AAA */
-
-  /* === Semantik === */
-  --bg: #fdf4d2; /* cream */
+  color-scheme: light;
+  --palet-cream: #f6f8fc;
+  --palet-biru: #eaf1fc;
+  --palet-ungu: #edeefb;
+  --palet-coklat: #e7f2f0;
+  --topik-array: #245bb1;
+  --topik-struct: #62529c;
+  --topik-pointer: #236957;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface-raised: #fbf6e4;
-  --fg: #1a1111; /* 16.82 AAA */
-  --fg-muted: #493333; /* 10.55 AAA */
-  --primary: #6a5582; /*  5.89 AA  */
-  --on-primary: #ffffff; /*  6.49 AA  */
-  /* Link butuh kontras di SEMUA permukaan (bg, surface, surface-raised).
-     --primary gagal di surface-raised dark (3.48), jadi link punya token sendiri. */
-  --link: #6a5582; /* 6.00 di surface-raised terang */
-  --accent: #543d3d; /*  9.02 AAA */
-  --on-accent: #ffffff; /*  9.94 AAA */
-  --success: #305a4f; /*  7.05 AAA */
-  --danger: #822929; /*  8.29 AAA */
-  --on-danger: #ffffff; /*  9.94 AAA di atas --danger terang */
-  --border: #d9d5d5;
-  --border-strong: #836060; /*  5.00, lolos 3:1 */
-  --ring: #6a5582; /*  5.89, lolos 3:1 */
-
-  /* === Sintaks kode === */
-  --code-bg: #ffffff;
-  --code-fg: #493333;
-  --code-keyword: #6a5582;
-  --code-type: #336ea1;
-  --code-func: #543d3d;
-  --code-string: #305a4f;
-  --code-number: #822929;
-  --code-comment: #6e5c5c;
-
-  /* === Spacing (basis 4px) === */
-  --space-1: 0.25rem; /*  4px */
-  --space-2: 0.5rem; /*  8px */
-  --space-3: 0.75rem; /* 12px */
-  --space-4: 1rem; /* 16px */
-  --space-6: 1.5rem; /* 24px */
-  --space-8: 2rem; /* 32px */
-  --space-12: 3rem; /* 48px */
-  --space-16: 4rem; /* 64px */
-
-  /* === Radius === */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --surface-raised: #edf1f6;
+  --fg: #111c32;
+  --fg-muted: #52627b;
+  --primary: #2460cf;
+  --on-primary: #ffffff;
+  --link: #245ab8;
+  --accent: #2460cf;
+  --on-accent: #ffffff;
+  --success: #23664f;
+  --danger: #b12d3c;
+  --on-danger: #ffffff;
+  --border: #dde4ee;
+  --border-strong: #7d8ca3;
+  --ring: #2460cf;
+  --code-bg: #f5f7fb;
+  --code-fg: #22314b;
+  --code-keyword: #60509c;
+  --code-type: #245bb1;
+  --code-func: #236957;
+  --code-string: #23664f;
+  --code-number: #a33143;
+  --code-comment: #596b80;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --radius-sm: 5px;
+  --radius-md: 7px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
   --radius-full: 9999px;
-
-  /* === Bayangan (nuansa coklat, bukan biru-abu) === */
-  --shadow-sm: 0 1px 2px rgba(84, 61, 61, 0.06);
-  --shadow-md: 0 4px 12px rgba(84, 61, 61, 0.08);
-
-  /* === Transisi === */
+  --shadow-sm: 0 2px 5px rgb(17 28 50 / 4%);
+  --shadow-md: 0 12px 32px rgb(17 28 50 / 12%);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 120ms;
-  --dur-base: 200ms;
+  --dur-base: 180ms;
   --dur-slow: 320ms;
 }
 
-/* =========================================================
-   Mode Gelap
-   Di mode gelap, pastel palet justru berkilau —
-   warna asli dipakai langsung.
-
-   Catatan: selector memakai nilai bahasa Indonesia ('gelap'),
-   sama dengan yang ditulis TemaProvider ke <html data-theme>.
-   Jangan ganti ke 'dark' — nilainya harus cocok persis.
-   ========================================================= */
-
 [data-theme='gelap'] {
-  --topik-array: #b0cde6; /*  9.25 AAA */
-  --topik-struct: #c4b5d6; /*  6.56 di surface; --primary gelap gagal (4.33) */
-  --topik-pointer: #c9a9a9; /*  5.84 di surface; nilai lama gagal (4.56) */
-
-  --bg: #322121; /* coklat sangat gelap */
-  --surface: #452d2d;
-  --surface-raised: #573a3a;
-  --fg: #fdf4d2; /* cream · 13.85 AAA */
-  --fg-muted: #fde58b; /* 12.19 AAA */
-  --primary: #a290b7; /*  5.24 AA  */
-  --on-primary: #322121; /*  5.24 AA  */
-  --link: #c4b5d6; /*  7.95 bg · 6.56 surface · 5.28 raised */
-  --accent: #b0cde6; /*  9.25 AAA */
-  --on-accent: #322121; /*  9.25 AAA */
-  --success: #bcd7d0; /* 10.01 AAA */
-  --danger: #ebc9c9; /*  9.98 AAA */
-  --on-danger: #322121; /*  9.98 AAA di atas --danger gelap */
-  --border: #6a4646;
-  --border-strong: #987373; /*  3.66, lolos 3:1 */
-  --ring: #a290b7; /*  5.24, lolos 3:1 */
-
-  --code-bg: #322121;
-  --code-fg: #fdf4d2;
-  --code-keyword: #a290b7;
-  --code-type: #b0cde6;
-  --code-func: #b49494;
-  --code-string: #bcd7d0;
-  --code-number: #ebc9c9;
-  --code-comment: #b0a0a0;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+  --palet-cream: #151e2d;
+  --palet-biru: #1b2d48;
+  --palet-ungu: #2b2841;
+  --palet-coklat: #1d3534;
+  --bg: #111925;
+  --surface: #182333;
+  --surface-raised: #243247;
+  --fg: #edf2fa;
+  --fg-muted: #b6c3d7;
+  --primary: #a3c5ff;
+  --on-primary: #122039;
+  --link: #b0ceff;
+  --accent: #a3c5ff;
+  --on-accent: #122039;
+  --success: #a1d7bd;
+  --danger: #ffb3bd;
+  --on-danger: #401521;
+  --border: #344359;
+  --border-strong: #8191aa;
+  --ring: #a3c5ff;
+  --topik-array: #afceff;
+  --topik-struct: #cfc3f4;
+  --topik-pointer: #a9ddc6;
+  --code-bg: #121c2a;
+  --code-fg: #e0e9f6;
+  --code-keyword: #cfc3f4;
+  --code-type: #afceff;
+  --code-func: #a9ddc6;
+  --code-string: #a1d7bd;
+  --code-number: #ffb3bd;
+  --code-comment: #a5b6cf;
+  --shadow-sm: 0 2px 5px rgb(0 0 0 / 12%);
+  --shadow-md: 0 12px 32px rgb(0 0 0 / 28%);
 }

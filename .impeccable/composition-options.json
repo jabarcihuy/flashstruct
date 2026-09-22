@@ -1,0 +1,61 @@
+{
+  "title": "Komposisi Dashboard FlashStruct",
+  "question": "Identitas visual sudah dipilih. Pilih susunan halaman yang akan menjadi acuan implementasi. B direkomendasikan untuk menyeimbangkan fokus belajar dan progres. Angka dalam gambar adalah contoh; avatar dan fitur tambahan pada A tidak diterapkan.",
+  "options": [
+    {
+      "id": "a",
+      "label": "A · Rekomendasi luas",
+      "thesis": "Komposisi dari pilihan awal: rekomendasi besar di atas daftar modul.",
+      "palette": [
+        "#ffffff",
+        "#172131",
+        "#2862bd"
+      ],
+      "materials": [
+        "permukaan putih",
+        "garis tipis",
+        "tipografi sans yang mudah dibaca"
+      ],
+      "viewport": "Header horizontal, rekomendasi dan tiga tahap, ringkasan progres, lalu daftar modul.",
+      "risk": "Panel pembuka cukup tinggi; lebih sedikit modul terlihat sekaligus.",
+      "comp": ".impeccable/mocks/komposisi-a.png"
+    },
+    {
+      "id": "b",
+      "label": "B · Ruang belajar",
+      "thesis": "Langkah berikutnya dan daftar modul menjadi pusat; progres berada di samping.",
+      "palette": [
+        "#ffffff",
+        "#172131",
+        "#2862bd"
+      ],
+      "materials": [
+        "permukaan putih",
+        "garis tipis",
+        "tipografi sans yang mudah dibaca"
+      ],
+      "viewport": "Kolom belajar lebar dan kolom progres sempit, dengan urutan tahap langsung terlihat.",
+      "risk": "Kolom samping perlu dipindah dengan hati-hati pada layar kecil.",
+      "comp": ".impeccable/mocks/komposisi-b.png"
+    },
+    {
+      "id": "c",
+      "label": "C · Peta kurikulum",
+      "thesis": "Status tiga tahap setiap modul dapat dibandingkan dalam satu pandangan.",
+      "palette": [
+        "#ffffff",
+        "#172131",
+        "#2862bd"
+      ],
+      "materials": [
+        "permukaan putih",
+        "garis tipis",
+        "tipografi sans yang mudah dibaca"
+      ],
+      "viewport": "Rekomendasi ringkas di atas tabel modul dengan kolom Pahami, Hafalkan, Buktikan.",
+      "risk": "Lebih padat; perlu penyederhanaan baris pada ponsel.",
+      "comp": ".impeccable/mocks/komposisi-c.png"
+    }
+  ],
+  "steer": true
+}

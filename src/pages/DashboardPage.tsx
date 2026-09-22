@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
-import { LayoutDashboard } from 'lucide-react';
+import { ChevronRight, LayoutDashboard } from 'lucide-react';
 import { PageHeader, Card, Badge } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
-import { IndikatorTigaTahap } from '@/components/ui/Progress';
-import { Button } from '@/components/ui/Button';
+import { ProgressBar } from '@/components/ui/Progress';
+import { LearningStages } from '@/components/ui/LearningStages';
 import { useDaftarModul } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
 import { hitungStatistik } from '@/features/progres/util';
-import { statusSemuaTahap } from '@/features/progres/aturan';
+import { statusSemuaTahap, persenProgresModul } from '@/features/progres/aturan';
 import {
   hitungRekomendasi,
   hitungProgresPerTopik,
@@ -109,14 +109,15 @@ export default function DashboardPage() {
   }
 
   const jumlahModul = daftarModul.length;
+  const persenKeseluruhan = Math.round(daftarModul.reduce((n, m) => n + persenProgresModul(ambilModul(m.id)), 0) / jumlahModul);
 
   return (
-    <div className="container-wide space-y-8 py-8">
-      <PageHeader judul="Dashboard" deskripsi="Ringkasan progres belajarmu" />
+    <div className="dashboard-page container-wide">
+      <PageHeader judul="Lanjutkan belajarmu" deskripsi="Bangun pemahaman Struktur Data secara bertahap dan konsisten." />
 
       {/* Rekomendasi — paling atas, paling menonjol */}
       {rekomendasi ? (
-        <KartuRekomendasi rekomendasi={rekomendasi} />
+        <KartuRekomendasi rekomendasi={rekomendasi} progresModul={ambilModul(rekomendasi.modulId)} />
       ) : (
         <>
           <KartuSemuaSelesai modulTerlemah={modulTerlemah} />
@@ -124,6 +125,44 @@ export default function DashboardPage() {
         </>
       )}
 
+      <dl className="dashboard-summary">
+        <div><dt>Total modul</dt><dd>{jumlahModul}<span>modul tersedia</span></dd></div>
+        <div><dt>Modul selesai</dt><dd>{statistik.modulSelesai}<span>dari {jumlahModul} modul</span></dd></div>
+        <div><dt>Progres belajar</dt><dd>{persenKeseluruhan}%<span>keseluruhan</span></dd></div>
+      </dl>
+
+      {/* Daftar modul */}
+      <section className="dashboard-modules">
+        <div className="module-list-heading">
+          {/* Ukuran dari comp: cap height 16,7px -> font 23px (spec.json region list-title) */}
+          <h2 className="font-heading text-[23px] font-bold text-fg">Daftar Modul</h2>
+
+          {/* Filter topik — tombol, bukan dropdown, karena hanya 4 pilihan */}
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter topik">
+            <TombolFilter
+              aktif={filterTopik === 'semua'}
+              onClick={() => setFilterTopik('semua')}
+              label="Semua"
+            />
+            {(['array', 'struct', 'pointer'] as const).map((t) => (
+              <TombolFilter
+                key={t}
+                aktif={filterTopik === t}
+                onClick={() => setFilterTopik(t)}
+                label={LABEL_TOPIK[t]}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="module-rows">
+          {modulTampil.map((m) => (
+            <BarisModulDashboard key={m.id} modul={m} progresModul={ambilModul(m.id)} />
+          ))}
+        </div>
+      </section>
+
+      <div className="dashboard-details">
       {/* Statistik */}
       <section>
         <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Statistik</h2>
@@ -176,35 +215,7 @@ export default function DashboardPage() {
         </Card>
       </section>
 
-      {/* Daftar modul */}
-      <section>
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-heading text-lg font-semibold text-fg">Modul</h2>
-
-          {/* Filter topik — tombol, bukan dropdown, karena hanya 4 pilihan */}
-          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter topik">
-            <TombolFilter
-              aktif={filterTopik === 'semua'}
-              onClick={() => setFilterTopik('semua')}
-              label="Semua"
-            />
-            {(['array', 'struct', 'pointer'] as const).map((t) => (
-              <TombolFilter
-                key={t}
-                aktif={filterTopik === t}
-                onClick={() => setFilterTopik(t)}
-                label={LABEL_TOPIK[t]}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {modulTampil.map((m) => (
-            <BarisModulDashboard key={m.id} modul={m} progresModul={ambilModul(m.id)} />
-          ))}
-        </div>
-      </section>
+      </div>
 
       {/* Pengaturan */}
       <section>
@@ -233,11 +244,11 @@ function TombolFilter({
       onClick={onClick}
       aria-pressed={aktif}
       className={cn(
-        'inline-flex h-11 cursor-pointer items-center rounded-full border px-3.5 text-sm',
+        'topic-filter inline-flex h-11 cursor-pointer items-center rounded-md border px-3.5 text-sm',
         'transition-colors duration-150 md:h-9',
         aktif
-          ? 'border-primary bg-primary/10 font-medium text-fg'
-          : 'border-border-strong text-fg-muted hover:text-fg',
+          ? 'border-primary bg-primary font-semibold text-on-primary'
+          : 'border-border bg-surface-raised text-fg hover:border-border-strong',
       )}
     >
       {label}
@@ -256,10 +267,6 @@ function BarisModulDashboard({
   const status = statusSemuaTahap(progresModul);
   const warnaTopik = `var(--topik-${modul.topik})`;
 
-  const jumlahBagian = modul.bagian_modul?.length ?? 0;
-  const jumlahKartu = modul.flashcard?.length ?? 0;
-  const jumlahSoal = modul.soal?.length ?? 0;
-
   // CTA sesuai tahap berikutnya
   const cta =
     status[0] !== 'selesai'
@@ -270,32 +277,21 @@ function BarisModulDashboard({
           ? { label: 'Quiz', ke: `/soal/quiz/${modul.slug}` }
           : { label: 'Ulangi', ke: `/materi/${modul.slug}` };
 
+  const persen = persenProgresModul(progresModul);
   return (
-    <Card className="p-4">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-1 items-start gap-3">
-          <span
-            className="mt-1 h-9 w-1 shrink-0 rounded-full"
-            style={{ backgroundColor: warnaTopik }}
-            aria-hidden="true"
-          />
-          <div className="min-w-0">
-            <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
-            <h3 className="mt-1.5 font-medium text-fg">{modul.judul}</h3>
-            <p className="mt-0.5 text-xs text-fg-muted">
-              {jumlahBagian} bagian · {jumlahKartu} kartu · {jumlahSoal} soal
-            </p>
-            <div className="mt-2.5">
-              <IndikatorTigaTahap tahap={status} />
-            </div>
-          </div>
-        </div>
-
-        <Link to={cta.ke} className="inline-flex shrink-0 no-underline">
-          <Button varian={status[0] === 'selesai' ? 'secondary' : 'primary'}>{cta.label}</Button>
-        </Link>
+    <Link to={cta.ke} className="module-row" aria-label={`${modul.judul} — ${cta.label}`}>
+      <span className="module-index" aria-hidden="true">{modul.urutan}</span>
+      <div className="module-row-copy">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><h3>{modul.judul}</h3><Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge></div>
+        <p>{modul.deskripsi}</p>
       </div>
-    </Card>
+      <div className="module-row-progress">
+        <span>{persen === 0 ? 'Belum dimulai' : persen === 100 ? 'Selesai' : 'Sedang dipelajari'}</span>
+        <div className="flex items-center gap-3"><ProgressBar nilai={persen} label={`Progres ${modul.judul}`} tanpaLabelVisual /><span>{persen}%</span></div>
+      </div>
+      <LearningStages tahap={status} ringkas />
+      <ChevronRight size={19} aria-hidden="true" />
+    </Link>
   );
 }
 

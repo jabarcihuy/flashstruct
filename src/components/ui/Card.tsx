@@ -6,7 +6,7 @@ export function Card({ children, className }: { children: ReactNode; className?:
   return (
     <div
       className={cn(
-        'rounded-lg border border-border bg-surface shadow-[var(--shadow-sm)]',
+        'rounded-lg border border-border bg-surface',
         className,
       )}
     >
@@ -30,7 +30,7 @@ export function Badge({
     <span
       className={cn(
         'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
-        'uppercase tracking-wide',
+        'tracking-normal',
         className,
       )}
       /**

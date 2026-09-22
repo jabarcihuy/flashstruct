@@ -14,7 +14,7 @@ export function BottomNav() {
       aria-label="Navigasi utama"
       className={cn(
         'bottom-nav safe-x fixed inset-x-0 bottom-0 z-40 md:hidden',
-        'border-t border-border bg-surface/95 backdrop-blur-sm',
+        'border-t border-border bg-surface',
       )}
     >
       <ul className="flex items-stretch">

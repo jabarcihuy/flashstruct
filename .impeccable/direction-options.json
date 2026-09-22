@@ -1,0 +1,218 @@
+{
+  "title": "Arah baru FlashStruct",
+  "question": "Pilih sistem visual untuk seluruh UI. Contoh memakai Dashboard; konten belajar dan aturan progres tetap dipertahankan.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Meja trace",
+      "kicker": "ARAH UTAMA",
+      "lineage": "Tabel trace dan penanda baris aktif debugger",
+      "thesis": "Langkah belajar berikutnya menjadi baris aktif yang paling jelas.",
+      "palette": [
+        "#edf2f4",
+        "#132b35",
+        "#006b67",
+        "#c9e961"
+      ],
+      "materials": [
+        "bidang datar",
+        "garis kolom presisi"
+      ],
+      "viewport": "Navigasi ramping di kiri; panel langkah berikutnya di atas tabel modul dengan tiga kolom tahap.",
+      "risk": "Harus tetap ramah dibaca, bukan meniru terminal atau IDE secara literal.",
+      "comp": ".impeccable/mocks/decision/assigned.png",
+      "raised": [
+        {
+          "from": "Antrean cahaya",
+          "raise": "Hierarki perhatian yang tegas; area aktif tetap diam."
+        },
+        {
+          "from": "Panel penghitung",
+          "raise": "Angka stabil dengan perataan presisi."
+        },
+        {
+          "from": "Bidang poster",
+          "raise": "Warna topik digunakan sebagai bidang yang konsisten."
+        },
+        {
+          "from": "Profil kedalaman",
+          "raise": "Orientasi tetap jelas sepanjang materi panjang."
+        },
+        {
+          "from": "Lembar terbuka",
+          "raise": "Detail terbuka bertahap tanpa menghilangkan konteks."
+        }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Atlas praktikum",
+      "kicker": "PILIHAN IMPECCABLE",
+      "lineage": "Lembar praktikum dan indeks bab",
+      "thesis": "Ruang belajar seperti lembar kerja terstruktur dengan petunjuk yang selalu dekat.",
+      "palette": [
+        "#f4f5f0",
+        "#233c72",
+        "#cfdfec",
+        "#252a31"
+      ],
+      "materials": [
+        "bidang putih bersih",
+        "tab indeks"
+      ],
+      "viewport": "Indeks topik di kiri, rekomendasi sebagai lembar utama, ringkasan progres di margin kanan.",
+      "risk": "Lebih familier; perlu komposisi tegas agar tidak menjadi dashboard pendidikan biasa.",
+      "comp": ".impeccable/mocks/decision/model-pick.png"
+    },
+    {
+      "id": "operate-c-cracktro-scroller-queue",
+      "label": "Antrean cahaya",
+      "verdict": "declined",
+      "thesis": "Baris belajar muncul menurut prioritas, tanpa kotak.",
+      "palette": [
+        "#080a0b",
+        "#eeeeea",
+        "#d6a04e"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Baris belajar muncul menurut prioritas, tanpa kotak.",
+      "risk": "Teks bitmap dan kedalaman bergerak tidak cocok untuk materi panjang.",
+      "case": "Lebih lemah pada kedekatan pengguna dan kejelasan tugas.",
+      "kept": "Hierarki perhatian yang tegas; area aktif tetap diam.",
+      "hero": "https://impeccable.style/worlds/cards/operate-c-cracktro-scroller-queue-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/operate-c-cracktro-scroller-queue.webp"
+    },
+    {
+      "id": "signals-instruments-nixie-laboratory-counter",
+      "label": "Panel penghitung",
+      "verdict": "declined",
+      "thesis": "Progres tampil sebagai deret penghitung di panel laboratorium.",
+      "palette": [
+        "#16191c",
+        "#ef842c",
+        "#c6c9cb"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Progres tampil sebagai deret penghitung di panel laboratorium.",
+      "risk": "Statistik berisiko mengalahkan tugas belajar berikutnya.",
+      "case": "Lebih lemah pada kedekatan pengguna dan kejelasan tugas.",
+      "kept": "Angka stabil dengan perataan presisi.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-nixie-laboratory-counter-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-nixie-laboratory-counter.webp"
+    },
+    {
+      "id": "digital-design-canon-monochrome-product-marketing",
+      "label": "Bukti di samping konsep",
+      "verdict": "competitive",
+      "thesis": "Setiap rekomendasi belajar dipasangkan dengan contoh konsepnya.",
+      "palette": [
+        "#f7f8fa",
+        "#1d2329",
+        "#215db2"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Setiap rekomendasi belajar dipasangkan dengan contoh konsepnya.",
+      "risk": "Lebih jelas dan familier, tetapi identitasnya kurang khas dunia praktikum.",
+      "case": "Setara pada kejelasan tugas; lebih lemah pada kedekatan dengan dunia mahasiswa.",
+      "kept": "",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing.webp",
+      "comp": ".impeccable/mocks/decision/challenger.png"
+    },
+    {
+      "id": "posters-covers-sleeves-wpa-park-poster",
+      "label": "Bidang poster",
+      "verdict": "declined",
+      "thesis": "Topik menjadi bidang warna dengan satu instruksi utama.",
+      "palette": [
+        "#146c70",
+        "#254f42",
+        "#ba8334",
+        "#faf3dc"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Topik menjadi bidang warna dengan satu instruksi utama.",
+      "risk": "Bahasa poster lanskap kurang membantu pembacaan kode.",
+      "case": "Lebih lemah pada kedekatan pengguna dan kejelasan tugas.",
+      "kept": "Warna topik digunakan sebagai bidang yang konsisten.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-wpa-park-poster-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/posters-covers-sleeves-wpa-park-poster.webp"
+    },
+    {
+      "id": "rivers-tides-ocean-depths-mesophotic-deep-dive",
+      "label": "Profil kedalaman",
+      "verdict": "declined",
+      "thesis": "Tahap belajar mengikuti sumbu vertikal yang selalu terlihat.",
+      "palette": [
+        "#092c46",
+        "#146789",
+        "#e6f3f8"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Tahap belajar mengikuti sumbu vertikal yang selalu terlihat.",
+      "risk": "Metafora kedalaman menambah arti yang tidak ada di kurikulum.",
+      "case": "Lebih lemah pada kedekatan pengguna dan kejelasan tugas.",
+      "kept": "Orientasi tetap jelas sepanjang materi panjang.",
+      "hero": "https://impeccable.style/worlds/cards/rivers-tides-ocean-depths-mesophotic-deep-dive-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/rivers-tides-ocean-depths-mesophotic-deep-dive.webp"
+    },
+    {
+      "id": "paper-folds-pleats-deployable-miura-orbit-sheet",
+      "label": "Lembar terbuka",
+      "verdict": "declined",
+      "thesis": "Modul dibuka bertahap dari ringkasan menuju pekerjaan rinci.",
+      "palette": [
+        "#fafafa",
+        "#b09337",
+        "#c9dce8"
+      ],
+      "materials": [
+        "struktur sesuai referensi"
+      ],
+      "viewport": "Modul dibuka bertahap dari ringkasan menuju pekerjaan rinci.",
+      "risk": "Lipatan diagonal mengganggu keterbacaan dan urutan fokus.",
+      "case": "Lebih lemah pada kedekatan pengguna dan kejelasan tugas.",
+      "kept": "Detail terbuka bertahap tanpa menghilangkan konteks.",
+      "hero": "https://impeccable.style/worlds/cards/paper-folds-pleats-deployable-miura-orbit-sheet-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/paper-folds-pleats-deployable-miura-orbit-sheet.webp"
+    }
+  ],
+  "reroll": {
+    "registers": [
+      "safer",
+      "bolder"
+    ]
+  },
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "label": "Pola aplikasi belajar familiar",
+    "thesis": "Navigasi, rekomendasi, dan daftar modul dalam pola aplikasi belajar konvensional.",
+    "palette": [
+      "#ffffff",
+      "#172131",
+      "#2862bd"
+    ],
+    "materials": [
+      "permukaan datar",
+      "grid konvensional"
+    ],
+    "viewport": "Header horizontal, rekomendasi utama, ringkasan progres, lalu daftar modul.",
+    "risk": "Mudah dipahami, tetapi kurang khas FlashStruct.",
+    "comp": ".impeccable/mocks/decision/canon.png"
+  },
+  "steer": true
+}

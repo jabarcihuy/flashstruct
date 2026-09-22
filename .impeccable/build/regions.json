@@ -1,0 +1,290 @@
+{
+  "regions": [
+    {
+      "id": "header",
+      "kind": "chrome",
+      "box": {
+        "x": 0.0,
+        "y": 0.0,
+        "w": 1.0,
+        "h": 0.06028708133971292
+      },
+      "note": "Horizontal white header with thin bottom border"
+    },
+    {
+      "id": "brand",
+      "kind": "text",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.016267942583732056,
+        "w": 0.09634551495016612,
+        "h": 0.027751196172248804
+      },
+      "note": "FlashStruct brand wordmark"
+    },
+    {
+      "id": "navigation",
+      "kind": "control",
+      "box": {
+        "x": 0.15813953488372093,
+        "y": 0.016267942583732056,
+        "w": 0.30564784053156147,
+        "h": 0.04114832535885168
+      },
+      "note": "Five navigation text links"
+    },
+    {
+      "id": "theme",
+      "kind": "control",
+      "box": {
+        "x": 0.9222591362126246,
+        "y": 0.012440191387559809,
+        "w": 0.04186046511627907,
+        "h": 0.03827751196172249
+      },
+      "note": "Theme control replaces unsupported avatar from generated comp"
+    },
+    {
+      "id": "heading",
+      "kind": "text",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.08803827751196172,
+        "w": 0.34551495016611294,
+        "h": 0.03923444976076555
+      },
+      "note": "Lanjutkan belajarmu"
+    },
+    {
+      "id": "intro",
+      "kind": "text",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.13492822966507176,
+        "w": 0.4053156146179402,
+        "h": 0.023923444976076555
+      },
+      "note": "Short supporting sentence"
+    },
+    {
+      "id": "recommendation-frame",
+      "kind": "chrome",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.18373205741626794,
+        "w": 0.9335548172757475,
+        "h": 0.24401913875598086
+      },
+      "note": "Single thin bordered recommendation container"
+    },
+    {
+      "id": "recommendation-label",
+      "kind": "text",
+      "box": {
+        "x": 0.04850498338870432,
+        "y": 0.20669856459330144,
+        "w": 0.12624584717607973,
+        "h": 0.01722488038277512
+      },
+      "note": "Modul yang disarankan"
+    },
+    {
+      "id": "lesson-title",
+      "kind": "text",
+      "box": {
+        "x": 0.04850498338870432,
+        "y": 0.23157894736842105,
+        "w": 0.3787375415282392,
+        "h": 0.03253588516746411
+      },
+      "note": "Dasar Array & Indeks"
+    },
+    {
+      "id": "lesson-description",
+      "kind": "text",
+      "box": {
+        "x": 0.04850498338870432,
+        "y": 0.276555023923445,
+        "w": 0.4219269102990033,
+        "h": 0.04114832535885168
+      },
+      "note": "Lesson description over two lines"
+    },
+    {
+      "id": "lesson-action",
+      "kind": "control",
+      "box": {
+        "x": 0.04850498338870432,
+        "y": 0.3444976076555024,
+        "w": 0.14219269102990034,
+        "h": 0.05263157894736842
+      },
+      "note": "Baca Modul blue button"
+    },
+    {
+      "id": "lesson-progress",
+      "kind": "control",
+      "box": {
+        "x": 0.5196013289036545,
+        "y": 0.20669856459330144,
+        "w": 0.4318936877076412,
+        "h": 0.0430622009569378
+      },
+      "note": "Progres modul, Belum dimulai and horizontal progress bar"
+    },
+    {
+      "id": "stage-1",
+      "kind": "control",
+      "box": {
+        "x": 0.5196013289036545,
+        "y": 0.2708133971291866,
+        "w": 0.13754152823920265,
+        "h": 0.13014354066985645
+      },
+      "note": "Pahami stage and availability description"
+    },
+    {
+      "id": "stage-2",
+      "kind": "control",
+      "box": {
+        "x": 0.6664451827242525,
+        "y": 0.2708133971291866,
+        "w": 0.13754152823920265,
+        "h": 0.13014354066985645
+      },
+      "note": "Hafalkan stage and availability description"
+    },
+    {
+      "id": "stage-3",
+      "kind": "control",
+      "box": {
+        "x": 0.812624584717608,
+        "y": 0.2708133971291866,
+        "w": 0.13754152823920265,
+        "h": 0.13014354066985645
+      },
+      "note": "Buktikan stage and availability description"
+    },
+    {
+      "id": "summary",
+      "kind": "chrome",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.44688995215311006,
+        "w": 0.9335548172757475,
+        "h": 0.09856459330143541
+      },
+      "note": "Three-column bordered summary strip"
+    },
+    {
+      "id": "summary-total",
+      "kind": "text",
+      "box": {
+        "x": 0.04916943521594684,
+        "y": 0.4631578947368421,
+        "w": 0.25249169435215946,
+        "h": 0.05933014354066986
+      },
+      "note": "Total modul with number and context"
+    },
+    {
+      "id": "summary-completed",
+      "kind": "text",
+      "box": {
+        "x": 0.3654485049833887,
+        "y": 0.4631578947368421,
+        "w": 0.25249169435215946,
+        "h": 0.05933014354066986
+      },
+      "note": "Modul selesai with number and context"
+    },
+    {
+      "id": "summary-progress",
+      "kind": "text",
+      "box": {
+        "x": 0.6777408637873754,
+        "y": 0.4631578947368421,
+        "w": 0.25249169435215946,
+        "h": 0.05933014354066986
+      },
+      "note": "Progres belajar with number and context"
+    },
+    {
+      "id": "list-title",
+      "kind": "text",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.5760765550239234,
+        "w": 0.15282392026578073,
+        "h": 0.026794258373205742
+      },
+      "note": "Daftar Modul"
+    },
+    {
+      "id": "filters",
+      "kind": "control",
+      "box": {
+        "x": 0.7461794019933555,
+        "y": 0.570334928229665,
+        "w": 0.22059800664451829,
+        "h": 0.03349282296650718
+      },
+      "note": "Semua Array Struct Pointer filters"
+    },
+    {
+      "id": "module-1",
+      "kind": "control",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.6200956937799043,
+        "w": 0.9335548172757475,
+        "h": 0.07942583732057416
+      },
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow"
+    },
+    {
+      "id": "module-2",
+      "kind": "control",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.6995215311004784,
+        "w": 0.9335548172757475,
+        "h": 0.07942583732057416
+      },
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow"
+    },
+    {
+      "id": "module-3",
+      "kind": "control",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.7808612440191387,
+        "w": 0.9335548172757475,
+        "h": 0.07942583732057416
+      },
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow"
+    },
+    {
+      "id": "module-4",
+      "kind": "control",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.861244019138756,
+        "w": 0.9335548172757475,
+        "h": 0.07942583732057416
+      },
+      "note": "Module row with title, topic, description, progress, three stage icons and arrow"
+    },
+    {
+      "id": "footer",
+      "kind": "text",
+      "box": {
+        "x": 0.03322259136212625,
+        "y": 0.9617224880382775,
+        "w": 0.9335548172757475,
+        "h": 0.020095693779904306
+      },
+      "note": "Local progress notice and brand line"
+    }
+  ]
+}

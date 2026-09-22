@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, Check, Layers, Lightbulb, Play } from 'lucide-react';
+import { Check, Lightbulb } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
+import { LearningStages } from '@/components/ui/LearningStages';
+import { ProgressBar } from '@/components/ui/Progress';
+import { statusSemuaTahap, persenProgresModul } from '@/features/progres/aturan';
+import type { ProgresModul } from '@/features/progres/schema';
 import type { Rekomendasi } from './rekomendasi';
 
 /**
@@ -14,55 +18,31 @@ import type { Rekomendasi } from './rekomendasi';
  * Rincian: docs/06-SPESIFIKASI-HALAMAN.md §3.3
  */
 
-const IKON_TAHAP = {
-  1: BookOpen,
-  2: Layers,
-  3: Play,
-} as const;
-
-const LABEL_TAHAP = {
-  1: 'Tahap 1 dari 3 — Pahami',
-  2: 'Tahap 2 dari 3 — Hafalkan',
-  3: 'Tahap 3 dari 3 — Buktikan',
-} as const;
-
-export function KartuRekomendasi({ rekomendasi }: { rekomendasi: Rekomendasi }) {
-  const Ikon = IKON_TAHAP[rekomendasi.tahap];
-
+export function KartuRekomendasi({ rekomendasi, progresModul }: { rekomendasi: Rekomendasi; progresModul?: ProgresModul }) {
+  const persen = persenProgresModul(progresModul);
   return (
-    <Card className="border-primary/30 bg-primary/5 p-5 sm:p-6">
-      <div className="flex items-start gap-4">
-        <div
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary/15"
-          aria-hidden="true"
-        >
-          <Ikon className="size-5 text-primary" />
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-link">
-            {rekomendasi.jenis === 'mulai' ? 'Mulai dari sini' : 'Lanjutkan'}
-          </p>
-
-          <h2 className="mt-1.5 font-heading text-lg font-semibold text-fg">
-            {rekomendasi.modulJudul}
-          </h2>
-
-          <p className="mt-1 text-sm text-fg-muted">{LABEL_TAHAP[rekomendasi.tahap]}</p>
-
-          {/* Alasan — ini yang membuat rekomendasi berguna */}
-          <p className="mt-3 text-sm leading-relaxed text-fg">{rekomendasi.alasan}</p>
-
-          <div className="mt-4">
-            <Link to={rekomendasi.ctaRute} className="inline-flex no-underline">
-              <Button ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}>
-                {rekomendasi.ctaLabel}
-              </Button>
-            </Link>
-          </div>
-        </div>
+    <section className="recommendation" aria-label="Modul yang disarankan">
+      <div className="recommendation-copy">
+        <p className="recommendation-label">Modul yang disarankan</p>
+        <h2>{rekomendasi.modulJudul}</h2>
+        <p className="recommendation-reason">{rekomendasi.alasan}</p>
+        <Link to={rekomendasi.ctaRute} className="action-link">{rekomendasi.ctaLabel}</Link>
       </div>
-    </Card>
+      <div className="recommendation-stages">
+        {/* Comp: blok progress setinggi 45px (label + bar + persen), lalu
+            jarak 22px ke kartu tahap. Nilai ini diukur dari spec.json
+            region lesson-progress (y=216 h=45) dan stage-1 (y=283). */}
+        <div className="progress-head">
+          <span>Progres modul</span>
+          <span>{persen === 0 ? 'Belum dimulai' : `${persen}% selesai`}</span>
+        </div>
+        <div className="progress-bar">
+          <ProgressBar nilai={persen} label="Progres modul yang disarankan" tanpaLabelVisual />
+          <span className="tabular-nums">{persen}%</span>
+        </div>
+        <LearningStages tahap={statusSemuaTahap(progresModul)} />
+      </div>
+    </section>
   );
 }
 
