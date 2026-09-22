@@ -230,7 +230,7 @@ function PanelTahap({
             Terkunci
           </span>
         ) : (
-          <Link to={ke} className="inline-flex no-underline">
+          <Link to={ke} className="inline-flex w-full no-underline">
             <span
               className={cn(
                 'inline-flex h-11 w-full items-center justify-center rounded-md',
