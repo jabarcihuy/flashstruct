@@ -18,7 +18,13 @@ import type { Rekomendasi } from './rekomendasi';
  * Rincian: docs/06-SPESIFIKASI-HALAMAN.md §3.3
  */
 
-export function KartuRekomendasi({ rekomendasi, progresModul }: { rekomendasi: Rekomendasi; progresModul?: ProgresModul }) {
+export function KartuRekomendasi({
+  rekomendasi,
+  progresModul,
+}: {
+  rekomendasi: Rekomendasi;
+  progresModul?: ProgresModul;
+}) {
   const persen = persenProgresModul(progresModul);
   return (
     <section className="recommendation" aria-label="Modul yang disarankan">
@@ -26,7 +32,9 @@ export function KartuRekomendasi({ rekomendasi, progresModul }: { rekomendasi: R
         <p className="recommendation-label">Modul yang disarankan</p>
         <h2>{rekomendasi.modulJudul}</h2>
         <p className="recommendation-reason">{rekomendasi.alasan}</p>
-        <Link to={rekomendasi.ctaRute} className="action-link">{rekomendasi.ctaLabel}</Link>
+        <Link to={rekomendasi.ctaRute} className="action-link">
+          {rekomendasi.ctaLabel}
+        </Link>
       </div>
       <div className="recommendation-stages">
         {/* Comp: blok progress setinggi 45px (label + bar + persen), lalu

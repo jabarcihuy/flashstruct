@@ -4,14 +4,7 @@ import { cn } from '@/lib/cn';
 /** Kartu dasar — dipakai di seluruh aplikasi */
 export function Card({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={cn(
-        'rounded-lg border border-border bg-surface',
-        className,
-      )}
-    >
-      {children}
-    </div>
+    <div className={cn('rounded-lg border border-border bg-surface', className)}>{children}</div>
   );
 }
 

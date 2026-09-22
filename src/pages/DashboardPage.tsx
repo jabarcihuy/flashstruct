@@ -109,15 +109,23 @@ export default function DashboardPage() {
   }
 
   const jumlahModul = daftarModul.length;
-  const persenKeseluruhan = Math.round(daftarModul.reduce((n, m) => n + persenProgresModul(ambilModul(m.id)), 0) / jumlahModul);
+  const persenKeseluruhan = Math.round(
+    daftarModul.reduce((n, m) => n + persenProgresModul(ambilModul(m.id)), 0) / jumlahModul,
+  );
 
   return (
     <div className="dashboard-page container-wide">
-      <PageHeader judul="Lanjutkan belajarmu" deskripsi="Bangun pemahaman Struktur Data secara bertahap dan konsisten." />
+      <PageHeader
+        judul="Lanjutkan belajarmu"
+        deskripsi="Bangun pemahaman Struktur Data secara bertahap dan konsisten."
+      />
 
       {/* Rekomendasi — paling atas, paling menonjol */}
       {rekomendasi ? (
-        <KartuRekomendasi rekomendasi={rekomendasi} progresModul={ambilModul(rekomendasi.modulId)} />
+        <KartuRekomendasi
+          rekomendasi={rekomendasi}
+          progresModul={ambilModul(rekomendasi.modulId)}
+        />
       ) : (
         <>
           <KartuSemuaSelesai modulTerlemah={modulTerlemah} />
@@ -126,9 +134,26 @@ export default function DashboardPage() {
       )}
 
       <dl className="dashboard-summary">
-        <div><dt>Total modul</dt><dd>{jumlahModul}<span>modul tersedia</span></dd></div>
-        <div><dt>Modul selesai</dt><dd>{statistik.modulSelesai}<span>dari {jumlahModul} modul</span></dd></div>
-        <div><dt>Progres belajar</dt><dd>{persenKeseluruhan}%<span>keseluruhan</span></dd></div>
+        <div>
+          <dt>Total modul</dt>
+          <dd>
+            {jumlahModul}
+            <span>modul tersedia</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Modul selesai</dt>
+          <dd>
+            {statistik.modulSelesai}
+            <span>dari {jumlahModul} modul</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Progres belajar</dt>
+          <dd>
+            {persenKeseluruhan}%<span>keseluruhan</span>
+          </dd>
+        </div>
       </dl>
 
       {/* Daftar modul */}
@@ -163,58 +188,57 @@ export default function DashboardPage() {
       </section>
 
       <div className="dashboard-details">
-      {/* Statistik */}
-      <section>
-        <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Statistik</h2>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          <StatCard
-            nilai={statistik.modulSelesai}
-            label="modul selesai"
-            keterangan={`dari ${jumlahModul}`}
-            ajakan={statistik.modulSelesai === 0 ? 'Mulai modul pertama' : ''}
-            warna="var(--primary)"
-          />
-          <StatCard
-            nilai={statistik.kartuDikuasai}
-            label="kartu dikuasai"
-            keterangan={`dari ${totalKartu}`}
-            ajakan={statistik.kartuDikuasai === 0 ? 'Hafalkan kartu' : ''}
-            warna="var(--success)"
-          />
-          <StatCard
-            nilai={`${statistik.akurasiQuiz}%`}
-            label="akurasi quiz"
-            keterangan={statistik.akurasiQuiz === 0 ? 'belum ada quiz' : 'rata-rata'}
-            ajakan={statistik.akurasiQuiz === 0 ? 'Kerjakan quiz' : ''}
-            warna="var(--topik-pointer)"
-          />
-          <StatCard
-            nilai={statistik.streak}
-            label="hari beruntun"
-            keterangan={statistik.streak === 0 ? 'mulai hari ini' : 'terus jaga'}
-            ajakan={statistik.streak === 0 ? 'Belajar hari ini' : ''}
-            warna="var(--topik-struct)"
-          />
-        </div>
-      </section>
-
-      {/* Progres per topik */}
-      <section>
-        <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Progres per Topik</h2>
-        <Card className="space-y-5 p-5">
-          {progresTopik.map((t) => (
-            <BarisTopik
-              key={t.topik}
-              label={LABEL_TOPIK[t.topik]}
-              selesai={t.selesai}
-              total={t.total}
-              persen={t.persen}
-              warna={`var(--topik-${t.topik})`}
+        {/* Statistik */}
+        <section>
+          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Statistik</h2>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <StatCard
+              nilai={statistik.modulSelesai}
+              label="modul selesai"
+              keterangan={`dari ${jumlahModul}`}
+              ajakan={statistik.modulSelesai === 0 ? 'Mulai modul pertama' : ''}
+              warna="var(--primary)"
             />
-          ))}
-        </Card>
-      </section>
+            <StatCard
+              nilai={statistik.kartuDikuasai}
+              label="kartu dikuasai"
+              keterangan={`dari ${totalKartu}`}
+              ajakan={statistik.kartuDikuasai === 0 ? 'Hafalkan kartu' : ''}
+              warna="var(--success)"
+            />
+            <StatCard
+              nilai={`${statistik.akurasiQuiz}%`}
+              label="akurasi quiz"
+              keterangan={statistik.akurasiQuiz === 0 ? 'belum ada quiz' : 'rata-rata'}
+              ajakan={statistik.akurasiQuiz === 0 ? 'Kerjakan quiz' : ''}
+              warna="var(--topik-pointer)"
+            />
+            <StatCard
+              nilai={statistik.streak}
+              label="hari beruntun"
+              keterangan={statistik.streak === 0 ? 'mulai hari ini' : 'terus jaga'}
+              ajakan={statistik.streak === 0 ? 'Belajar hari ini' : ''}
+              warna="var(--topik-struct)"
+            />
+          </div>
+        </section>
 
+        {/* Progres per topik */}
+        <section>
+          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Progres per Topik</h2>
+          <Card className="space-y-5 p-5">
+            {progresTopik.map((t) => (
+              <BarisTopik
+                key={t.topik}
+                label={LABEL_TOPIK[t.topik]}
+                selesai={t.selesai}
+                total={t.total}
+                persen={t.persen}
+                warna={`var(--topik-${t.topik})`}
+              />
+            ))}
+          </Card>
+        </section>
       </div>
 
       {/* Pengaturan */}
@@ -280,14 +304,24 @@ function BarisModulDashboard({
   const persen = persenProgresModul(progresModul);
   return (
     <Link to={cta.ke} className="module-row" aria-label={`${modul.judul} — ${cta.label}`}>
-      <span className="module-index" aria-hidden="true">{modul.urutan}</span>
+      <span className="module-index" aria-hidden="true">
+        {modul.urutan}
+      </span>
       <div className="module-row-copy">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1"><h3>{modul.judul}</h3><Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge></div>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h3>{modul.judul}</h3>
+          <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
+        </div>
         <p>{modul.deskripsi}</p>
       </div>
       <div className="module-row-progress">
-        <span>{persen === 0 ? 'Belum dimulai' : persen === 100 ? 'Selesai' : 'Sedang dipelajari'}</span>
-        <div className="flex items-center gap-3"><ProgressBar nilai={persen} label={`Progres ${modul.judul}`} tanpaLabelVisual /><span>{persen}%</span></div>
+        <span>
+          {persen === 0 ? 'Belum dimulai' : persen === 100 ? 'Selesai' : 'Sedang dipelajari'}
+        </span>
+        <div className="flex items-center gap-3">
+          <ProgressBar nilai={persen} label={`Progres ${modul.judul}`} tanpaLabelVisual />
+          <span>{persen}%</span>
+        </div>
       </div>
       <LearningStages tahap={status} ringkas />
       <ChevronRight size={19} aria-hidden="true" />

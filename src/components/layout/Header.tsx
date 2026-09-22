@@ -81,7 +81,9 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="ml-auto"><ThemeToggle /></div>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
