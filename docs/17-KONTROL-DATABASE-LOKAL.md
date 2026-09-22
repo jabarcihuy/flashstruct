@@ -80,9 +80,12 @@ Ini yang sudah dipakai untuk verifikasi keamanan.
 ### Contoh perintah
 
 ```bash
-# Simpan ke variabel agar tidak menulis ulang
-export SB_URL="https://lxvoedfjecmmwfrfhbah.supabase.co"
-export SB_KEY="sb_publishable_2AhzgjfPLsquiUHNw-yr2Q_1XjHn6nd"
+# Ambil kredensial dari .env.local — JANGAN tulis nilainya di sini.
+# Dokumen ini masuk ke repo, dan repo ini publik.
+set -a; source .env.local; set +a
+
+export SB_URL="$VITE_SUPABASE_URL"
+export SB_KEY="$VITE_SUPABASE_PUBLISHABLE_KEY"
 
 # Baca semua modul
 curl "$SB_URL/rest/v1/modul?select=*" \
@@ -94,6 +97,12 @@ curl "$SB_URL/rest/v1/modul?select=id,judul,bagian_modul(judul)&slug=eq.array-da
   -H "apikey: $SB_KEY" \
   -H "Authorization: Bearer $SB_KEY"
 ```
+
+> [!PERHATIAN]
+> Jangan menulis nilai kredensial langsung di dokumen ini. Publishable key
+> memang dirancang untuk browser dan dilindungi RLS, tetapi menulisnya di
+> repo publik membuatnya tersebar ke mesin pencari dan arsip pihak ketiga.
+> Selalu ambil dari `.env.local` seperti contoh di atas.
 
 ### Kapan dipakai
 

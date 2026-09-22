@@ -71,8 +71,10 @@ export function useSesiFlashcard(slugModul: string) {
     sudahDisusun.current = true;
     const deck = susunDeck(semuaKartu, statusKartu);
     dispatch({ tipe: 'INIT', kartu: deck });
-    // statusKartu sengaja tidak jadi dependency: deck hanya disusun sekali
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // statusKartu sengaja TIDAK jadi dependency: deck hanya boleh disusun
+    // sekali per sesi. Kalau dimasukkan, penilaian kartu akan menyusun
+    // ulang deck di tengah sesi dan urutan kartu berubah.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- deck hanya disusun sekali per sesi
   }, [semuaKartu]);
 
   // Simpan hasil saat sesi selesai

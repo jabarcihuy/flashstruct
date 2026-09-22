@@ -15,6 +15,20 @@
 | `neon-postgres` | Praktik Neon | — | `neondatabase/agent-skills` |
 | `impeccable` | Pemeriksa kualitas UI/UX | 2,2 MB (tanpa binary) | Dipasang manual |
 
+### Skill yang Pernah Dicoba, Lalu Dilepas
+
+| Skill | Fungsi | Alasan dilepas |
+|-------|--------|----------------|
+| `petrkindlmann/qa-skills` (50 skill) | Perangkat QA generik | Proyek sudah punya standar QA sendiri di `08-CHECKLIST-QA.md`. Skill ini membawa asumsi generik (matriks risiko, piramida test, KPI) yang tidak cocok untuk proyek solo, dan menambah 2 MB + 50 berkas yang tidak dibaca. |
+
+**Pelajaran:** standar QA proyek ini sudah tertulis dan spesifik —
+`08-CHECKLIST-QA.md` berisi 762 baris item yang bisa dibuktikan, dari
+build sampai deploy. Menambahkan kerangka QA generik di atasnya hanya
+menggandakan kerja tanpa menambah cakupan.
+
+Yang tetap dipakai dari percobaan itu: **test E2E-nya**, karena itu kode
+test nyata (bukan dokumen). Lihat `08-CHECKLIST-QA.md` §3a.
+
 ---
 
 ## 2. Cara Memasang Ulang

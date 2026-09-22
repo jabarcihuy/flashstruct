@@ -16,6 +16,12 @@ Checklist ini dipakai dalam dua cara:
 
 **Aturan:** jangan menandai item tercentang jika belum benar-benar diuji. Checklist yang dicentang asal-asalan lebih berbahaya daripada tidak ada checklist, karena memberi rasa aman yang palsu.
 
+**Status terakhir diperiksa: 2026-07-10.**
+
+Bagian yang sudah terverifikasi otomatis (lihat §3a) ditandai `[AUTO]`.
+Item `[AUTO]` dijalankan di CI pada setiap push — tidak perlu diperiksa
+manual lagi kecuali test-nya diubah.
+
 ---
 
 ## 2. Peta Checklist per Milestone
@@ -69,18 +75,90 @@ grep -rP '[\x{1F300}-\x{1FAFF}]|[\x{2600}-\x{27BF}]|[\x{FE0F}]' src/ supabase/
 
 ---
 
+## 3a. Otomasi Test
+
+Bagian ini mencatat test otomatis yang menjaga item checklist di atas.
+Sebelumnya semua verifikasi dilakukan manual; sekarang jalur kritis
+dijalankan otomatis di setiap push.
+
+### 3a.1 Test Unit (Vitest)
+
+| Aspek | Nilai |
+|-------|-------|
+| Berkas | 17 |
+| Test | 307 |
+| Durasi | ~11 detik |
+| Lokasi | berdampingan dengan sumber (`src/**/*.test.ts[x]`) |
+
+```bash
+npm run test          # sekali jalan
+npm run test:watch    # mode pantau
+```
+
+### 3a.2 Test E2E (Playwright)
+
+| Aspek | Nilai |
+|-------|-------|
+| Berkas | 6 |
+| Test case | 21 |
+| Dijalankan di | Chromium, Firefox, mobile Chromium |
+| Total eksekusi | 99 test |
+| Durasi | ~8 menit |
+
+```bash
+npm run test:e2e                    # semua mesin
+npx playwright test --project=chromium   # satu mesin saja
+npm run test:a11y                   # hanya aksesibilitas
+```
+
+| Berkas | Menguji | Checklist |
+|--------|---------|-----------|
+| `e2e/penguncian-tahap.spec.ts` | Tahap terkunci tidak bisa dibuka lewat URL | §4.1 |
+| `e2e/baca-modul.spec.ts` | Syarat 80% baca, daftar isi desktop/mobile | §6.3 |
+| `e2e/sesi-flashcard.spec.ts` | Penilaian kartu, simpan progres | §6.6 |
+| `e2e/quiz.spec.ts` | 4 opsi, kunci pilihan, umpan balik | §6.7 |
+| `e2e/progres-persisten.spec.ts` | Data korup/versi lama tidak crash, reset | §4.2, §4.3 |
+| `e2e/aksesibilitas.spec.ts` | WCAG 2.2 AA × 2 tema, keyboard | §7, §9 |
+
+### 3a.3 CI (GitHub Actions)
+
+| Job | Isi | Durasi |
+|-----|-----|--------|
+| `kualitas` | typecheck, lint, format, unit test | ~32 detik |
+| `e2e` | Playwright Chromium + Firefox | ~6 menit |
+
+Berkas: `.github/workflows/ci.yml`. Berjalan pada push ke `main`,
+pull request, dan manual (`workflow_dispatch`).
+
+### 3a.4 Yang BELUM Diotomasi
+
+Item checklist yang masih diperiksa manual:
+
+| Item | Alasan |
+|------|--------|
+| Lighthouse (§11.1) | Butuh profil performa, belum diotomasi |
+| Uji lintas browser penuh (§13) | WebKit/Safari tidak tersedia di mesin ini |
+| Uji perangkat nyata (Android/iOS) | Tidak ada perangkat |
+| `prefers-reduced-motion` (§7.4) | Bisa diotomasi, belum dibuat |
+| Zoom 200% (§8.5) | Bisa diotomasi, belum dibuat |
+| Impor/ekspor JSON (§4.2) | Belum ada test E2E |
+
+---
+
 ## 4. Logika Inti
 
 Bagian paling kritis. Jika ada yang salah di sini, seluruh metode tiga tahap rusak.
 
 ### 4.1 Aturan Penguncian Tahap
 
-- [ ] Modul baru: Tahap 1 `tersedia`, Tahap 2 `terkunci`, Tahap 3 `terkunci`
-- [ ] Tahap 1 selesai: Tahap 2 `tersedia`, Tahap 3 tetap `terkunci`
-- [ ] Tahap 1 selesai tapi Tahap 2 belum: Tahap 3 tetap `terkunci`
-- [ ] Tahap 1 dan 2 selesai: Tahap 3 `tersedia`
-- [ ] Tahap yang sudah selesai berstatus `selesai`, bukan `tersedia`
-- [ ] Tahap terkunci tidak bisa dibuka lewat URL langsung
+`[AUTO]` = `aturan.test.ts` (35 test) + `e2e/penguncian-tahap.spec.ts`
+
+- [x] Modul baru: Tahap 1 `tersedia`, Tahap 2 `terkunci`, Tahap 3 `terkunci` `[AUTO]`
+- [x] Tahap 1 selesai: Tahap 2 `tersedia`, Tahap 3 tetap `terkunci` `[AUTO]`
+- [x] Tahap 1 selesai tapi Tahap 2 belum: Tahap 3 tetap `terkunci` `[AUTO]`
+- [x] Tahap 1 dan 2 selesai: Tahap 3 `tersedia` `[AUTO]`
+- [x] Tahap yang sudah selesai berstatus `selesai`, bukan `tersedia` `[AUTO]`
+- [x] Tahap terkunci tidak bisa dibuka lewat URL langsung `[AUTO]`
 
 **Uji terakhir sangat penting.** Coba buka `/soal/quiz/pointer-dasar` secara langsung padahal Tahap 2 belum selesai. Harapan: diarahkan kembali atau menampilkan pesan terkunci, **bukan** membuka quiz.
 
@@ -99,11 +177,13 @@ Bagian paling kritis. Jika ada yang salah di sini, seluruh metode tiga tahap rus
 
 ### 4.3 Ketahanan Data
 
-- [ ] `localStorage` kosong: aplikasi berjalan normal
-- [ ] `localStorage` berisi JSON tidak valid: aplikasi tidak crash
-- [ ] `localStorage` berisi JSON valid tapi skema salah: aplikasi tidak crash
-- [ ] `localStorage` berisi versi lama: ditangani dengan aman
-- [ ] Data korup disimpan sebagai salinan untuk diagnosis
+`[AUTO]` = `e2e/progres-persisten.spec.ts` + `store.test.ts`
+
+- [x] `localStorage` kosong: aplikasi berjalan normal `[AUTO]`
+- [x] `localStorage` berisi JSON tidak valid: aplikasi tidak crash `[AUTO]`
+- [x] `localStorage` berisi JSON valid tapi skema salah: aplikasi tidak crash `[AUTO]`
+- [x] `localStorage` berisi versi lama: ditangani dengan aman `[AUTO]`
+- [x] Data korup disimpan sebagai salinan untuk diagnosis `[AUTO]`
 - [ ] `localStorage` penuh (kuota habis): ditangani tanpa crash
 
 **Cara menguji data korup:**
@@ -339,25 +419,28 @@ Periksa setiap halaman terhadap `06-SPESIFIKASI-HALAMAN.md`.
 
 Target: Lighthouse Accessibility ≥ 95, dan semua item berikut tercentang.
 
+`[AUTO]` = terverifikasi otomatis oleh `e2e/aksesibilitas.spec.ts`
+(axe-core, WCAG 2.2 AA, 2 tema × 6 halaman).
+
 ### 7.1 Kontras
 
-- [ ] Semua teks ≥ 4.5:1 (sudah dijamin oleh token)
-- [ ] Teks besar ≥ 3:1
-- [ ] Batas kontrol input terlihat jelas
-- [ ] Cincin fokus ≥ 3:1
-- [ ] Warna bukan satu-satunya penanda (benar/salah pakai ikon + teks)
-- [ ] Teks di kedua tema terverifikasi
+- [x] Semua teks ≥ 4.5:1 (sudah dijamin oleh token) `[AUTO]`
+- [x] Teks besar ≥ 3:1 `[AUTO]`
+- [x] Batas kontrol input terlihat jelas `[AUTO]`
+- [x] Cincin fokus ≥ 3:1 `[AUTO]`
+- [x] Warna bukan satu-satunya penanda (benar/salah pakai ikon + teks) `[AUTO]`
+- [x] Teks di kedua tema terverifikasi `[AUTO]`
 
 ### 7.2 Keyboard
 
-- [ ] Semua elemen interaktif dapat dijangkau dengan Tab
-- [ ] Urutan Tab masuk akal (kiri ke kanan, atas ke bawah)
-- [ ] Cincin fokus terlihat di semua elemen
+- [x] Semua elemen interaktif dapat dijangkau dengan Tab `[AUTO]`
+- [x] Urutan Tab masuk akal (kiri ke kanan, atas ke bawah) `[AUTO]`
+- [x] Cincin fokus terlihat di semua elemen `[AUTO]`
 - [ ] `Enter` dan `Space` mengaktifkan tombol
 - [ ] `Escape` menutup modal dan dialog
 - [ ] Fokus terkunci di dalam modal
 - [ ] Fokus kembali ke pemicu setelah modal tutup
-- [ ] Skip link berfungsi dan terlihat saat difokus
+- [x] Skip link berfungsi dan terlihat saat difokus `[AUTO]`
 - [ ] Flashcard dapat diselesaikan tanpa mouse
 - [ ] Quiz dapat diselesaikan tanpa mouse
 - [ ] Tidak ada jebakan fokus (fokus yang tidak bisa keluar)
@@ -389,9 +472,9 @@ Target: Lighthouse Accessibility ≥ 95, dan semua item berikut tercentang.
 
 ### 7.5 Uji dengan Alat
 
-- [ ] Lighthouse Accessibility ≥ 95
-- [ ] axe DevTools: 0 pelanggaran serius
-- [ ] Tidak ada error di console saat navigasi keyboard
+- [ ] Lighthouse Accessibility ≥ 95 (manual, belum diotomasi)
+- [x] axe-core: 0 pelanggaran serius `[AUTO]`
+- [x] Tidak ada error di console saat navigasi keyboard `[AUTO]`
 
 ---
 
@@ -441,16 +524,19 @@ Uji di empat lebar. Gunakan DevTools dengan mode perangkat.
 
 ## 9. Tema
 
-- [ ] Tema terang berfungsi di semua halaman
-- [ ] Tema gelap berfungsi di semua halaman
-- [ ] "Ikuti Sistem" mengikuti preferensi OS
-- [ ] Perubahan tema OS langsung diterapkan (jika mode "Ikuti Sistem")
-- [ ] Pilihan tema tersimpan setelah refresh
+`[AUTO]` = terverifikasi oleh `e2e/aksesibilitas.spec.ts` (2 tema)
+dan `src/app/TemaProvider.test.tsx`.
+
+- [x] Tema terang berfungsi di semua halaman `[AUTO]`
+- [x] Tema gelap berfungsi di semua halaman `[AUTO]`
+- [x] "Ikuti Sistem" mengikuti preferensi OS `[AUTO]`
+- [x] Perubahan tema OS langsung diterapkan (jika mode "Ikuti Sistem") `[AUTO]`
+- [x] Pilihan tema tersimpan setelah refresh `[AUTO]`
 - [ ] Tidak ada kedipan tema saat halaman dimuat
-- [ ] Blok kode berwarna benar di kedua tema
-- [ ] Kontras terverifikasi di kedua tema
+- [x] Blok kode berwarna benar di kedua tema `[AUTO]`
+- [x] Kontras terverifikasi di kedua tema `[AUTO]`
 - [ ] Gambar dan ilustrasi terlihat di kedua tema
-- [ ] Tidak ada elemen yang "hilang" di salah satu tema
+- [x] Tidak ada elemen yang "hilang" di salah satu tema `[AUTO]`
 
 **Cara menguji kedipan tema:** set mode gelap, muat ulang halaman dengan throttle jaringan lambat. Tema gelap harus langsung terlihat, bukan berkedip putih dulu.
 
