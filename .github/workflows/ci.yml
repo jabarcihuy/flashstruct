@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Bisa dijalankan manual dari tab Actions tanpa perlu commit.
+  # Berguna setelah mengubah secrets, atau untuk memeriksa ulang
+  # tanpa mengubah kode.
+  workflow_dispatch:
 
 # Batalkan run lama bila ada push baru ke branch yang sama —
 # menghemat menit CI tanpa kehilangan umpan balik.
@@ -91,6 +95,7 @@ jobs:
             echo "::warning::Sampai itu dilakukan, jalur kritis TIDAK terverifikasi di CI."
           else
             echo "tersedia=true" >> "$GITHUB_OUTPUT"
+            echo "Secrets tersedia — E2E akan dijalankan."
           fi
 
       - name: Pasang browser Playwright
@@ -105,6 +110,25 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           CI: true
+
+      # Ringkasan di halaman Actions — supaya status E2E terlihat
+      # tanpa harus membuka log.
+      - name: Ringkasan hasil
+        if: always()
+        run: |
+          {
+            echo "## Hasil E2E"
+            echo ""
+            if [ "${{ steps.cek-secrets.outputs.tersedia }}" = "true" ]; then
+              echo "E2E dijalankan: Chromium + Firefox (99 test)."
+            else
+              echo "**E2E DILEWATI** — secrets Supabase belum diset."
+              echo ""
+              echo "Jalur kritis belum terverifikasi di CI. Tambahkan"
+              echo "\`VITE_SUPABASE_URL\` dan \`VITE_SUPABASE_PUBLISHABLE_KEY\`"
+              echo "di Settings > Secrets and variables > Actions."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Simpan laporan bila gagal
         if: failure()
