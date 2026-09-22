@@ -25,21 +25,39 @@ import { ProgresProvider } from '@/features/progres/ProgresProvider';
 /**
  * Mock Supabase client.
  *
- * Halaman Materi butuh kredensial dan koneksi database. Untuk uji
- * routing, yang diuji hanya "apakah rute merender halaman yang benar",
- * bukan apakah database mengembalikan data. Jadi Supabase di-mock agar
- * uji tidak bergantung pada jaringan atau kredensial.
+ * Halaman Materi dan Flashcard butuh kredensial dan koneksi database.
+ * Untuk uji routing, yang diuji hanya "apakah rute merender halaman yang
+ * benar", bukan apakah database mengembalikan data. Jadi Supabase
+ * di-mock agar uji tidak bergantung pada jaringan atau kredensial.
+ *
+ * Mock ini meniru rantai builder PostgREST: from().select().eq().order()
+ * dan variasinya, semuanya mengembalikan data kosong.
  */
-vi.mock('@/lib/supabase', () => ({
-  supabase: {
-    from: () => ({
-      select: () => ({
-        order: () => Promise.resolve({ data: [], error: null }),
-        eq: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }),
-      }),
-    }),
-  },
-}));
+vi.mock('@/lib/supabase', () => {
+  /** Builder yang bisa dirantai, selalu mengembalikan data kosong */
+  function buatBuilder() {
+    const hasil = { data: [], error: null };
+
+    const builder: Record<string, unknown> = {
+      select: () => builder,
+      eq: () => builder,
+      order: () => builder,
+      limit: () => builder,
+      single: () => Promise.resolve({ data: null, error: null }),
+      maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      // Agar `await builder` menghasilkan data kosong
+      then: (resolve: (v: unknown) => unknown) => Promise.resolve(hasil).then(resolve),
+    };
+
+    return builder;
+  }
+
+  return {
+    supabase: {
+      from: () => buatBuilder(),
+    },
+  };
+});
 
 function renderRute(initialPath: string) {
   const router = createMemoryRouter(
@@ -119,12 +137,18 @@ describe('routing', () => {
 
   it('merender Flashcard di rute /soal/flashcard/:slug', async () => {
     renderRute('/soal/flashcard/array-dasar');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Flashcard' })).toBeInTheDocument();
+    // Mock Supabase mengembalikan data kosong, jadi halaman menampilkan
+    // empty state "belum punya kartu" — yang penting rutenya merender
+    // halaman flashcard, bukan 404.
+    expect(await screen.findByText(/belum punya kartu/i)).toBeInTheDocument();
   });
 
   it('merender Quiz di rute /soal/quiz/:slug', async () => {
     renderRute('/soal/quiz/array-dasar');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Quiz' })).toBeInTheDocument();
+    // Mock Supabase mengembalikan data kosong, jadi modul tidak ditemukan
+    // dan halaman menampilkan penguncian. Yang penting rutenya merender
+    // halaman quiz, bukan 404.
+    expect(await screen.findByText(/quiz masih terkunci/i)).toBeInTheDocument();
   });
 
   it('merender halaman 404 untuk rute yang tidak dikenal', async () => {

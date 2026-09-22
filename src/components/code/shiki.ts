@@ -1,5 +1,3 @@
-import type { Highlighter } from 'shiki';
-
 /**
  * Inisialisasi Shiki (highlighter kode).
  *
@@ -7,24 +5,30 @@ import type { Highlighter } from 'shiki';
  * sehingga pewarnaan kode PERSIS seperti editor. Untuk aplikasi yang
  * mengajarkan kode, akurasi bukan kemewahan — ini bagian dari materi.
  *
- * Ukurannya besar (± 300 KB), jadi:
- *   1. Dimuat dinamis (impor dinamis) — tidak masuk bundle awal
- *   2. Singleton — dibuat sekali, bukan per komponen
- *   3. Hanya 2 bahasa dan 2 tema — bukan semua
+ * PERFORMA — INI PENTING:
+ *
+ * Impor `'shiki'` biasa memuat SEMUA bahasa (± 100 bahasa termasuk
+ * emacs-lisp dan wolfram), menambah ratusan KB yang tidak terpakai.
+ * Terukur: satu chunk bahasa saja 768 KB mentah.
+ *
+ * Yang dipakai di sini:
+ *   - Impor dinamis dari `shiki/core` (bukan bundle penuh)
+ *   - Hanya engine JavaScript, bukan WASM (WASM 608 KB)
+ *   - Hanya 2 bahasa: cpp dan python
+ *   - Hanya 2 tema: github-light dan github-dark
  *
  * Rincian: docs/04-ARSITEKTUR-TEKNIS.md §1.2
  */
 
-let janjiHighlighter: Promise<Highlighter> | null = null;
+import type { HighlighterCore } from 'shiki/core';
 
 /** Tema Shiki yang dipakai */
 const TEMA_TERANG = 'github-light';
 const TEMA_GELAP = 'github-dark';
 
 /** Bahasa yang didukung — hanya yang dipakai proyek ini */
-const BAHASA = ['cpp', 'python'] as const;
-
-export type BahasaDidukung = (typeof BAHASA)[number];
+export const BAHASA_DIDUKUNG = ['cpp', 'python'] as const;
+export type BahasaDidukung = (typeof BAHASA_DIDUKUNG)[number];
 
 /** Nama bahasa untuk ditampilkan */
 export const LABEL_BAHASA: Record<BahasaDidukung, string> = {
@@ -32,27 +36,43 @@ export const LABEL_BAHASA: Record<BahasaDidukung, string> = {
   python: 'Python',
 };
 
+let janjiHighlighter: Promise<HighlighterCore> | null = null;
+
 /**
  * Ambil highlighter, buat jika belum ada.
  *
  * Mengembalikan Promise yang sama untuk semua pemanggil, sehingga
  * Shiki hanya dimuat dan diinisialisasi sekali.
  */
-export function ambilHighlighter(): Promise<Highlighter> {
+export function ambilHighlighter(): Promise<HighlighterCore> {
   if (!janjiHighlighter) {
-    janjiHighlighter = import('shiki').then(({ createHighlighter }) =>
-      createHighlighter({
-        themes: [TEMA_TERANG, TEMA_GELAP],
-        langs: [...BAHASA],
-      }),
-    );
+    janjiHighlighter = buatHighlighter();
   }
   return janjiHighlighter;
 }
 
+async function buatHighlighter(): Promise<HighlighterCore> {
+  // Impor terpisah agar bundler hanya menyertakan yang dipakai
+  const [{ createHighlighterCore }, engineJs, temaTerang, temaGelap, cpp, python] =
+    await Promise.all([
+      import('shiki/core'),
+      import('shiki/engine/javascript'),
+      import('@shikijs/themes/github-light'),
+      import('@shikijs/themes/github-dark'),
+      import('@shikijs/langs/cpp'),
+      import('@shikijs/langs/python'),
+    ]);
+
+  return createHighlighterCore({
+    themes: [temaTerang.default, temaGelap.default],
+    langs: [cpp.default, python.default],
+    engine: engineJs.createJavaScriptRegexEngine(),
+  });
+}
+
 /** Cek apakah sebuah string adalah bahasa yang didukung */
 export function bahasaDidukung(nama: string | undefined): nama is BahasaDidukung {
-  return BAHASA.includes(nama as BahasaDidukung);
+  return BAHASA_DIDUKUNG.includes(nama as BahasaDidukung);
 }
 
 /** Nama tema Shiki sesuai tema aplikasi */
@@ -76,10 +96,10 @@ export async function warnaiKode(
     const highlighter = await ambilHighlighter();
 
     // Bahasa yang tidak didukung: tampilkan sebagai teks biasa
-    const lang = bahasaDidukung(bahasa) ? bahasa : 'text';
+    if (!bahasaDidukung(bahasa)) return null;
 
     return highlighter.codeToHtml(kode, {
-      lang,
+      lang: bahasa,
       theme: temaShiki(tema),
     });
   } catch {

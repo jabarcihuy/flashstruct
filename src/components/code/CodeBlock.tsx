@@ -112,8 +112,10 @@ export function CodeBlock({
             onClick={() => void salin()}
             aria-label={tersalin ? 'Kode tersalin' : 'Salin kode'}
             className={cn(
-              'inline-flex cursor-pointer items-center gap-1.5 rounded px-2 py-1',
-              'text-xs text-fg-muted transition-colors duration-150',
+              'inline-flex cursor-pointer items-center gap-1.5 rounded px-2.5',
+              // Target sentuh 44px di mobile, lebih rapat di desktop
+              'h-11 text-xs md:h-8',
+              'text-fg-muted transition-colors duration-150',
               'hover:bg-surface hover:text-fg',
             )}
           >

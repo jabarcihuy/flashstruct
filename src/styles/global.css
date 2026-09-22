@@ -245,3 +245,65 @@ select {
   }
 }
 
+/* =========================================================
+   Animasi Flip Kartu Flashcard
+   Lihat docs/03-DESIGN-SYSTEM.md §7.5
+   ========================================================= */
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--dur-slow) var(--ease-in-out);
+}
+
+/* Dibalik saat ada class .terbuka pada induknya */
+.flashcard.terbuka .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
+/* Ketika kartu sedang terbuka, sisi depan tidak boleh menerima klik */
+.flashcard.terbuka .flashcard-front {
+  pointer-events: none;
+}
+
+.flashcard:not(.terbuka) .flashcard-back {
+  pointer-events: none;
+}
+
+/*
+ * prefers-reduced-motion: ganti flip dengan pergantian langsung.
+ *
+ * JANGAN hanya mematikan animasi — harus ada alternatif yang tetap
+ * memberi informasi. Di sini: kartu langsung berganti sisi.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .flashcard-inner {
+    transition: none;
+    transform: none !important;
+  }
+
+  /* Sembunyikan sisi yang tidak aktif */
+  .flashcard.terbuka .flashcard-front {
+    display: none;
+  }
+
+  .flashcard:not(.terbuka) .flashcard-back {
+    display: none;
+  }
+
+  /* Kedua sisi tetap di posisi yang sama tanpa rotasi */
+  .flashcard-back {
+    transform: none;
+  }
+}
+
