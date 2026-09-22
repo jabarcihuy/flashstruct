@@ -86,12 +86,17 @@
 
 ## CI/CD
 
-- **Platform:** GitHub Actions (BELUM ADA — akan dibuat pada QA ini)
-- **Config Location:** `.github/workflows/` (belum ada)
-- **Test Pipeline:** belum ada
+- **Platform:** GitHub Actions
+- **Config Location:** `.github/workflows/ci.yml`
+- **Test Pipeline:** dua job berurutan
+  - `kualitas` (<1 menit): typecheck, lint, format:check, unit test — **memblokir**
+  - `e2e` (<10 menit): Playwright di Chromium + Firefox — **memblokir**, tetapi DILEWATI bila secrets Supabase belum diset
+- **Artifacts:** `playwright-report/` + `test-results/` disimpan 7 hari saat gagal
 - **Deployment:** manual (Vercel, belum dikonfigurasi)
 
-**Rencana CI:** typecheck + lint + unit test pada setiap push/PR. E2E dijalankan terpisah (butuh dev server).
+**Status:** CI hijau. Job E2E saat ini **dilewati** karena repository
+secret belum diset — lihat `docs/qa/rencana-test.md` §8 untuk langkah
+mengaktifkannya.
 
 ---
 
@@ -187,6 +192,12 @@
 - **WCAG 2.2 AA** — diverifikasi dengan axe-core, 0 pelanggaran
 - **Tanpa emoji** di UI/konten/dokumen — pakai ikon Lucide SVG
 - **Mobile dan desktop sama-sama prioritas penuh** — bukan mobile-first, keduanya setara
+
+### Status QA (2026-07-10)
+- **Unit test:** 17 berkas, 307 test, semua lulus
+- **E2E:** 6 spec, 21 test case, 99 test di 3 mesin, semua lulus (lokal)
+- **Aksesibilitas:** 0 pelanggaran WCAG 2.2 AA di 2 tema
+- **CI:** hijau (job E2E dilewati sampai secrets diset)
 
 ### Temuan Audit Terakhir (2026-07-10)
 Audit QA menemukan dan memperbaiki:

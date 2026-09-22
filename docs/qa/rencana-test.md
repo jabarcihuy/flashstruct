@@ -100,8 +100,9 @@ sekadar mencegah regresi.
 | 7 | Lint memeriksa skill pihak ketiga | CI gagal | `ignorePatterns` di `.oxlintrc.json` |
 | 8 | Vitest memungut spec Playwright | CI gagal | `include`/`exclude` di `vite.config.ts` |
 | 9 | 39 file belum diformat | CI gagal | Jalankan Prettier + `.prettierignore` |
+| 10 | CI menyetel `VITE_SUPABASE_ANON_KEY`, aplikasi membaca `VITE_SUPABASE_PUBLISHABLE_KEY` | CI run pertama | Nama dikoreksi + job E2E lewati bila secrets kosong |
 
-**9 bug ditemukan, semuanya diperbaiki.** Tujuh di antaranya (1-6) adalah
+**10 bug ditemukan, semuanya diperbaiki.** Enam di antaranya (1-6) adalah
 bug UI nyata yang tidak terdeteksi 307 unit test.
 
 ---
@@ -116,7 +117,8 @@ bug UI nyata yang tidak terdeteksi 307 unit test.
 | Error konsol | 0 | **0** |
 | Flaky dalam 20 jalan | 0 | 1 kali (rate limit Supabase, sudah diperbaiki) |
 | Durasi E2E | < 5 menit | **8 menit** (melebihi target, lihat catatan) |
-| Gerbang CI | 2 job | Dibuat |
+| Gerbang CI | 2 job | Dibuat, **hijau di GitHub** |
+| Secrets Supabase | Diset | **BELUM** — lihat §8 |
 
 **Catatan durasi:** 8 menit melebihi target 5 menit karena 99 test
 dijalankan serial (untuk menghindari rate limit Supabase). Di CI,
@@ -133,10 +135,36 @@ dijalankan serial (untuk menghindari rate limit Supabase). Di CI,
 | WebKit/Safari | Library sistem tidak tersedia di mesin ini | Medium |
 | Uji beban | Tidak ada backend sendiri | Rendah |
 | Environment staging | Aplikasi dev pakai Supabase produksi | Medium |
+| Set secrets Supabase | Perlu aksi manual pemilik repo | **Tinggi** |
 
 ---
 
-## 8. Definisi Selesai
+## 8. Aksi Manual yang Diperlukan
+
+**Set secrets Supabase agar E2E berjalan di CI.**
+
+Saat ini job E2E **dilewati** (bukan gagal) karena secrets belum ada.
+CI tetap hijau, tetapi ada peringatan bahwa jalur kritis belum
+terverifikasi di CI.
+
+Langkah (sekali saja, di GitHub):
+1. Buka repo > **Settings** > **Secrets and variables** > **Actions**
+2. Klik **New repository secret**, tambahkan dua:
+
+| Nama | Nilai |
+|------|-------|
+| `VITE_SUPABASE_URL` | `https://lxvoedfjecmmwfrfhbah.supabase.co` |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | nilai `sb_publishable_...` dari `.env.local` |
+
+3. Push apa pun (atau klik "Re-run jobs") — E2E akan otomatis berjalan.
+
+Nama variabel harus **persis** seperti di atas. Aplikasi membaca keduanya
+di `src/lib/supabase.ts`; nama yang salah membuat aplikasi gagal start
+dan semua test E2E gagal sekaligus.
+
+---
+
+## 9. Definisi Selesai
 
 Sprint ini selesai bila:
 - [x] 5 spec jalur kritis ditulis dan lulus di 3 mesin
