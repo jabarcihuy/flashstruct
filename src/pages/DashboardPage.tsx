@@ -39,7 +39,7 @@ import type { ModulRingkas, TopikModul } from '@/types/database';
  * Rincian: docs/06-SPESIFIKASI-HALAMAN.md §3
  */
 export default function DashboardPage() {
-  useJudulHalaman("Dashboard");
+  useJudulHalaman('Dashboard');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { progres, sedangMemuat: progresMemuat, ambilModul } = useProgres();
   const [filterTopik, setFilterTopik] = useState<TopikModul | 'semua'>('semua');
@@ -68,9 +68,7 @@ export default function DashboardPage() {
 
   const modulTampil = useMemo(
     () =>
-      filterTopik === 'semua'
-        ? modulTerurut
-        : modulTerurut.filter((m) => m.topik === filterTopik),
+      filterTopik === 'semua' ? modulTerurut : modulTerurut.filter((m) => m.topik === filterTopik),
     [modulTerurut, filterTopik],
   );
 
@@ -294,9 +292,7 @@ function BarisModulDashboard({
         </div>
 
         <Link to={cta.ke} className="inline-flex shrink-0 no-underline">
-          <Button varian={status[0] === 'selesai' ? 'secondary' : 'primary'}>
-            {cta.label}
-          </Button>
+          <Button varian={status[0] === 'selesai' ? 'secondary' : 'primary'}>{cta.label}</Button>
         </Link>
       </div>
     </Card>

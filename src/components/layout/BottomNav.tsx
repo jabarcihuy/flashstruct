@@ -27,17 +27,13 @@ export function BottomNav() {
                 cn(
                   'relative flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2',
                   'text-[11px] no-underline transition-colors duration-150',
-                  isActive ? 'font-semibold text-primary' : 'text-fg-muted',
+                  isActive ? 'font-semibold text-link' : 'text-fg-muted',
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <Ikon
-                    className="size-5"
-                    strokeWidth={isActive ? 2.2 : 1.5}
-                    aria-hidden="true"
-                  />
+                  <Ikon className="size-5" strokeWidth={isActive ? 2.2 : 1.5} aria-hidden="true" />
                   <span>{label}</span>
                   {/* Penanda aktif: garis atas, bukan warna saja */}
                   {isActive && (

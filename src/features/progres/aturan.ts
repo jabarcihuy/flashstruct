@@ -31,20 +31,13 @@ export const LABEL_TAHAP: Record<NomorTahap, string> = {
  * @param progres Progres modul, atau undefined jika belum dimulai
  * @param tahap   Nomor tahap (1, 2, atau 3)
  */
-export function statusTahap(
-  progres: ProgresModul | undefined,
-  tahap: NomorTahap,
-): StatusTahap {
+export function statusTahap(progres: ProgresModul | undefined, tahap: NomorTahap): StatusTahap {
   // Modul yang belum dimulai: hanya tahap 1 yang tersedia
   if (!progres) {
     return tahap === 1 ? 'tersedia' : 'terkunci';
   }
 
-  const sudahSelesai = [
-    progres.tahap1Selesai,
-    progres.tahap2Selesai,
-    progres.tahap3Selesai,
-  ];
+  const sudahSelesai = [progres.tahap1Selesai, progres.tahap2Selesai, progres.tahap3Selesai];
 
   // Tahap yang sudah selesai berstatus 'selesai', bukan 'tersedia'
   if (sudahSelesai[tahap - 1]) return 'selesai';
@@ -111,11 +104,9 @@ export function modulTuntas(progres: ProgresModul | undefined): boolean {
 export function persenProgresModul(progres: ProgresModul | undefined): number {
   if (!progres) return 0;
 
-  const selesai = [
-    progres.tahap1Selesai,
-    progres.tahap2Selesai,
-    progres.tahap3Selesai,
-  ].filter(Boolean).length;
+  const selesai = [progres.tahap1Selesai, progres.tahap2Selesai, progres.tahap3Selesai].filter(
+    Boolean,
+  ).length;
 
   return Math.round((selesai / 3) * 100);
 }

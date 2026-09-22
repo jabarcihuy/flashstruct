@@ -90,14 +90,18 @@ export function PanelLanjut({
     <Card className="p-5">
       <p className="font-semibold text-fg">Sudah selesai membaca?</p>
       <p className="mt-1 text-sm text-fg-muted">
-        Kamu sudah membuka {persen}% bagian modul. Tandai selesai untuk membuka tahap
-        berikutnya.
+        Kamu sudah membuka {persen}% bagian modul. Tandai selesai untuk membuka tahap berikutnya.
       </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
         <Button onClick={onTandaiSelesai}>Tandai Selesai</Button>
         <Link to={`/soal/flashcard/${modulSlug}`} className="inline-flex no-underline">
-          <Button varian="ghost" disabled aria-disabled="true" ikonKiri={<Lock className="size-4" aria-hidden="true" />}>
+          <Button
+            varian="ghost"
+            disabled
+            aria-disabled="true"
+            ikonKiri={<Lock className="size-4" aria-hidden="true" />}
+          >
             Flashcard
           </Button>
         </Link>

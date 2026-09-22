@@ -78,9 +78,7 @@ export function SidebarDaftarIsi({ bagian, bagianDibaca, bagianAktif, persen }: 
       aria-label="Daftar isi modul"
       className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto"
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-fg-muted">
-        Daftar Isi
-      </p>
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-fg-muted">Daftar Isi</p>
       <ol className="space-y-1">
         {bagian.map((b, i) => (
           <ItemDaftarIsi

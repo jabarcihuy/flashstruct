@@ -33,7 +33,24 @@ export function Badge({
         'uppercase tracking-wide',
         className,
       )}
-      style={warna ? { color: warna, backgroundColor: `color-mix(in srgb, ${warna} 14%, transparent)` } : undefined}
+      /**
+       * Tint 6% — BUKAN 14% seperti sebelumnya.
+       *
+       * Latar yang di-tint dengan warna teksnya sendiri akan MENURUNKAN
+       * kontras. Terukur: pada tint 14%, kombinasi terburuk hanya 4.07:1
+       * (gagal WCAG AA). Tint 6% adalah nilai tertinggi yang tetap lolos
+       * di SEMUA kombinasi warna topik x permukaan x tema (terendah 4.54:1).
+       */
+      style={
+        warna
+          ? {
+              color: warna,
+              backgroundColor: `color-mix(in srgb, ${warna} 6%, transparent)`,
+              // Border memberi definisi bentuk tanpa menurunkan kontras teks
+              border: `1px solid color-mix(in srgb, ${warna} 28%, transparent)`,
+            }
+          : undefined
+      }
     >
       {children}
     </span>

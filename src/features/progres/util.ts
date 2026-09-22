@@ -117,10 +117,7 @@ export function hitungModulSelesai(progres: ProgresGlobal): number {
 }
 
 /** Hitung semua statistik sekaligus untuk Dashboard */
-export function hitungStatistik(
-  progres: ProgresGlobal,
-  sekarang = Date.now(),
-): StatistikProgres {
+export function hitungStatistik(progres: ProgresGlobal, sekarang = Date.now()): StatistikProgres {
   return {
     modulSelesai: hitungModulSelesai(progres),
     kartuDikuasai: hitungKartuDikuasai(progres),
@@ -150,8 +147,7 @@ export function hitungStatistikModul(modul: ProgresModul | undefined): Statistik
   const dikuasai = semuaKartu.filter((k) => k.jumlahIngat > 0 && k.jumlahLupa === 0).length;
 
   const skor = modul.riwayatQuiz.map((q) => q.skor);
-  const akurasi =
-    skor.length > 0 ? Math.round(skor.reduce((a, b) => a + b, 0) / skor.length) : 0;
+  const akurasi = skor.length > 0 ? Math.round(skor.reduce((a, b) => a + b, 0) / skor.length) : 0;
 
   return {
     kartuDikuasai: dikuasai,

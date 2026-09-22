@@ -15,13 +15,7 @@
 export type TopikModul = 'array' | 'struct' | 'pointer';
 
 export type TipeKartu =
-  | 'ISTILAH'
-  | 'SINTAKS'
-  | 'TRACING'
-  | 'BANDING'
-  | 'JEBAKAN'
-  | 'MEMORI'
-  | 'KAPAN';
+  'ISTILAH' | 'SINTAKS' | 'TRACING' | 'BANDING' | 'JEBAKAN' | 'MEMORI' | 'KAPAN';
 
 export type TipeSoal = 'PG' | 'TRACE' | 'ANALISIS';
 

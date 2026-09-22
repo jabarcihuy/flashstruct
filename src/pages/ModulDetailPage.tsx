@@ -177,7 +177,7 @@ export default function ModulDetailPage() {
                       href={`https://www.youtube.com/watch?v=${v.youtube_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-2 inline-block font-mono text-xs text-primary underline"
+                      className="mt-2 inline-block font-mono text-xs text-link underline"
                     >
                       youtube.com/watch?v={v.youtube_id}
                     </a>

@@ -89,7 +89,7 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
               href={href}
               target={href?.startsWith('http') ? '_blank' : undefined}
               rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className="text-primary underline underline-offset-2"
+              className="text-link underline underline-offset-2"
             >
               {children}
             </a>
@@ -151,11 +151,7 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
               if (tipe) {
                 // Buang penanda dari teks, lalu render sisanya
                 const sisaTeks = teksLengkap.replace(cocok[0], '').trim();
-                return (
-                  <Callout tipe={tipe}>
-                    {sisaTeks ? <p>{sisaTeks}</p> : null}
-                  </Callout>
-                );
+                return <Callout tipe={tipe}>{sisaTeks ? <p>{sisaTeks}</p> : null}</Callout>;
               }
             }
 
@@ -169,7 +165,9 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
 
           /* ---------- Tabel (bisa di-scroll di mobile) ---------- */
           table: ({ children }) => (
-            <div className="my-5 overflow-x-auto">
+            // tabIndex + role: tabel bisa di-scroll horizontal di mobile,
+            // jadi pengguna keyboard harus bisa memfokusnya (WCAG 2.1.1)
+            <div className="my-5 overflow-x-auto" tabIndex={0} role="region" aria-label="Tabel">
               <table className="w-full border-collapse text-sm">{children}</table>
             </div>
           ),

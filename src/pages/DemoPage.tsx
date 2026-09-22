@@ -250,7 +250,10 @@ print(t.x)  # 3`}</code>
           <Button varian="secondary" onClick={() => tampilkan('Progres tersimpan', 'sukses')}>
             Sukses
           </Button>
-          <Button varian="secondary" onClick={() => tampilkan('Kamu menandai 5 kartu perlu diulang', 'info')}>
+          <Button
+            varian="secondary"
+            onClick={() => tampilkan('Kamu menandai 5 kartu perlu diulang', 'info')}
+          >
             Info
           </Button>
           <Button
@@ -259,14 +262,20 @@ print(t.x)  # 3`}</code>
           >
             Peringatan
           </Button>
-          <Button varian="secondary" onClick={() => tampilkan('Gagal memuat materi. Coba lagi.', 'error')}>
+          <Button
+            varian="secondary"
+            onClick={() => tampilkan('Gagal memuat materi. Coba lagi.', 'error')}
+          >
             Error
           </Button>
         </div>
       </Seksi>
 
       {/* ============ State Kosong & Error ============ */}
-      <Seksi judul="State Kosong & Error" catatan="Setiap daftar kosong harus punya arah, bukan sekadar 'Belum ada data'">
+      <Seksi
+        judul="State Kosong & Error"
+        catatan="Setiap daftar kosong harus punya arah, bukan sekadar 'Belum ada data'"
+      >
         <div className="grid gap-4 lg:grid-cols-2">
           <Card className="p-2">
             <EmptyState
@@ -286,7 +295,10 @@ print(t.x)  # 3`}</code>
       </Seksi>
 
       {/* ============ Skeleton ============ */}
-      <Seksi judul="Skeleton" catatan="Tinggi harus sama dengan konten akhir agar tidak ada layout shift">
+      <Seksi
+        judul="Skeleton"
+        catatan="Tinggi harus sama dengan konten akhir agar tidak ada layout shift"
+      >
         <Card className="p-6">
           <Skeleton className="h-6 w-3/4" />
           <Skeleton className="mt-3 h-4 w-full" />
@@ -343,7 +355,7 @@ function KartuModulContoh({
   const semuaSelesai = status.every((s) => s === 'selesai');
 
   return (
-    <Card className="flex flex-col p-5" >
+    <Card className="flex flex-col p-5">
       <div className="flex items-start gap-3">
         {/* Garis topik di kiri */}
         <span
@@ -365,11 +377,7 @@ function KartuModulContoh({
       </div>
 
       <div className="mt-4">
-        {semuaSelesai ? (
-          <Badge warna="var(--success)">Tuntas</Badge>
-        ) : (
-          aksi
-        )}
+        {semuaSelesai ? <Badge warna="var(--success)">Tuntas</Badge> : aksi}
       </div>
     </Card>
   );

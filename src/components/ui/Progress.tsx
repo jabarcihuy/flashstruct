@@ -173,7 +173,11 @@ export function IndikatorTigaTahap({
             {denganLabel ? LABEL_TAHAP[i] : <span className="sr-only">{LABEL_TAHAP[i]}</span>}
           </span>
           <span className="sr-only">
-            {status === 'selesai' ? 'selesai' : status === 'tersedia' ? 'belum selesai' : 'terkunci'}
+            {status === 'selesai'
+              ? 'selesai'
+              : status === 'tersedia'
+                ? 'belum selesai'
+                : 'terkunci'}
           </span>
         </li>
       ))}
@@ -227,7 +231,12 @@ function IkonTahap({ status }: { status: StatusTahap }) {
 
   // tersedia
   return (
-    <svg viewBox="0 0 16 16" className="size-4 shrink-0 text-fg-muted" aria-hidden="true" fill="none">
+    <svg
+      viewBox="0 0 16 16"
+      className="size-4 shrink-0 text-fg-muted"
+      aria-hidden="true"
+      fill="none"
+    >
       <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 2.5" />
     </svg>
   );
@@ -249,7 +258,7 @@ export function StatAngka({ nilai, label, ajakan, className }: StatAngkaProps) {
     <div className={cn('text-center', className)}>
       <div className="font-heading text-4xl font-bold tabular-nums text-fg">{nilai}</div>
       <div className="mt-1 text-sm text-fg-muted">{label}</div>
-      {kosong && ajakan && <div className="mt-2 text-xs text-primary">{ajakan}</div>}
+      {kosong && ajakan && <div className="mt-2 text-xs text-link">{ajakan}</div>}
     </div>
   );
 }

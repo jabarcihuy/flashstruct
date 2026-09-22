@@ -32,12 +32,7 @@ interface SoalPilihanGandaProps {
   onPilih: (label: string) => void;
 }
 
-export function SoalPilihanGanda({
-  soal,
-  dipilih,
-  sudahDijawab,
-  onPilih,
-}: SoalPilihanGandaProps) {
+export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalPilihanGandaProps) {
   const benar = opsiBenar(soal);
   const opsi = soal.opsi_soal ?? [];
 

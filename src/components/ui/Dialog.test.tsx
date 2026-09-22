@@ -77,9 +77,7 @@ describe('Dialog', () => {
 
   it('menyembunyikan tombol tutup bila diminta', async () => {
     const user = userEvent.setup();
-    render(
-      <DialogUjiKhusus tanpaTombolTutup />,
-    );
+    render(<DialogUjiKhusus tanpaTombolTutup />);
     await user.click(screen.getByRole('button', { name: 'Buka' }));
 
     expect(screen.queryByRole('button', { name: 'Tutup dialog' })).not.toBeInTheDocument();

@@ -16,6 +16,8 @@
   --color-on-primary: var(--on-primary);
   --color-accent: var(--accent);
   --color-on-accent: var(--on-accent);
+  --color-on-danger: var(--on-danger);
+  --color-link: var(--link);
   --color-success: var(--success);
   --color-danger: var(--danger);
   --color-border: var(--border);
@@ -107,9 +109,12 @@ samp {
   border-radius: var(--radius-sm);
 }
 
-/* Tautan */
+/* Tautan
+   Memakai --link, BUKAN --primary: --primary gagal kontras 4.5:1 di
+   permukaan gelap (terukur 3.48–4.33:1). --link dipilih agar lolos di
+   SEMUA permukaan di kedua tema. Lihat src/styles/tokens.css. */
 a {
-  color: var(--primary);
+  color: var(--link);
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
@@ -306,4 +311,3 @@ select {
     transform: none;
   }
 }
-

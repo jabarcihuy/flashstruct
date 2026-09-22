@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Batalkan run lama bila ada push baru ke branch yang sama —
+# menghemat menit CI tanpa kehilangan umpan balik.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # =========================================================
+  # Gerbang 1: cepat (< 1 menit). Ini yang memblokir.
+  # Typecheck, lint, dan unit test — semua yang tidak butuh browser.
+  # =========================================================
+  kualitas:
+    name: Typecheck, Lint, Unit Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pasang dependensi
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Cek format
+        run: npm run format:check
+
+      - name: Unit test
+        run: npm run test
+
+  # =========================================================
+  # Gerbang 2: E2E + aksesibilitas. Lebih lambat (~5 menit).
+  # Dijalankan setelah gerbang 1 lulus — tidak ada gunanya menguji
+  # browser bila kode saja tidak lolos typecheck.
+  # =========================================================
+  e2e:
+    name: E2E & Aksesibilitas
+    runs-on: ubuntu-latest
+    needs: kualitas
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Pasang dependensi
+        run: npm ci
+
+      - name: Pasang browser Playwright
+        run: npx playwright install --with-deps chromium firefox
+
+      - name: Jalankan E2E
+        run: npx playwright test --project=chromium --project=firefox
+        env:
+          # Kredensial Supabase diperlukan karena aplikasi memuat
+          # konten dari sana. Disimpan sebagai repository secret.
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          CI: true
+
+      - name: Simpan laporan bila gagal
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laporan-playwright
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

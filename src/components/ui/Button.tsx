@@ -18,7 +18,7 @@ const VARIAN: Record<VarianTombol, string> = {
   secondary: 'bg-transparent text-fg border border-border-strong hover:bg-surface',
   ghost: 'bg-transparent text-fg-muted hover:bg-surface hover:text-fg',
   accent: 'bg-accent text-on-accent hover:brightness-110 active:brightness-95',
-  danger: 'bg-danger text-white hover:brightness-110 active:brightness-95',
+  danger: 'bg-danger text-on-danger hover:brightness-110 active:brightness-95',
 };
 
 const UKURAN: Record<UkuranTombol, string> = {
@@ -59,11 +59,7 @@ export function Button({
       )}
       {...props}
     >
-      {memuat ? (
-        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-      ) : (
-        ikonKiri
-      )}
+      {memuat ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : ikonKiri}
       {children}
       {!memuat && ikonKanan}
     </button>

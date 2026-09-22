@@ -1,0 +1,18 @@
+# Abaikan berkas yang BUKAN kode aplikasi.
+#
+# `.agents/skills/` berisi skill pihak ketiga (impeccable, qa-skills)
+# yang tidak kita tulis dan tidak kita ubah. Memformatnya akan
+# menimbulkan diff besar yang menutupi perubahan sebenarnya.
+
+.agents/
+.claude/
+.codex/
+
+# Hasil build dan laporan test
+dist/
+coverage/
+playwright-report/
+test-results/
+
+# Berkas kunci
+package-lock.json

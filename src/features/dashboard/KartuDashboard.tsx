@@ -40,7 +40,7 @@ export function KartuRekomendasi({ rekomendasi }: { rekomendasi: Rekomendasi }) 
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+          <p className="text-xs font-semibold uppercase tracking-wide text-link">
             {rekomendasi.jenis === 'mulai' ? 'Mulai dari sini' : 'Lanjutkan'}
           </p>
 
@@ -104,7 +104,10 @@ export function KartuSemuaSelesai({
                 <span className="font-medium">Akurasi terendah: </span>
                 {modulTerlemah.judul} ({modulTerlemah.akurasi}%)
               </p>
-              <Link to={`/soal/quiz/${modulTerlemah.slug}`} className="mt-3 inline-block no-underline">
+              <Link
+                to={`/soal/quiz/${modulTerlemah.slug}`}
+                className="mt-3 inline-block no-underline"
+              >
                 <Button ukuran="sm" varian="secondary">
                   Ulangi Quiz Terlemah
                 </Button>
@@ -218,9 +221,7 @@ export function StatCard({
       {keterangan && <div className="mt-0.5 text-xs text-fg-muted">{keterangan}</div>}
 
       {/* Ajakan bertindak saat kosong — kartu nol tanpa arah membingungkan */}
-      {kosong && ajakan && (
-        <div className="mt-2 text-xs font-medium text-primary">{ajakan}</div>
-      )}
+      {kosong && ajakan && <div className="mt-2 text-xs font-medium text-link">{ajakan}</div>}
     </Card>
   );
 }

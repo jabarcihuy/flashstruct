@@ -11,7 +11,9 @@ import {
 import { progresModulKosong, type ProgresModul } from './schema';
 
 /** Buat progres modul dengan tahap tertentu selesai */
-function buat(tahap: Partial<Pick<ProgresModul, 'tahap1Selesai' | 'tahap2Selesai' | 'tahap3Selesai'>>): ProgresModul {
+function buat(
+  tahap: Partial<Pick<ProgresModul, 'tahap1Selesai' | 'tahap2Selesai' | 'tahap3Selesai'>>,
+): ProgresModul {
   return { ...progresModulKosong('m1'), ...tahap };
 }
 

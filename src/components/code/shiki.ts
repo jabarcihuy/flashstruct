@@ -15,7 +15,17 @@
  *   - Impor dinamis dari `shiki/core` (bukan bundle penuh)
  *   - Hanya engine JavaScript, bukan WASM (WASM 608 KB)
  *   - Hanya 2 bahasa: cpp dan python
- *   - Hanya 2 tema: github-light dan github-dark
+ *   - Hanya 2 tema: github-light dan github-dark-high-contrast
+ *
+ * MENGAPA HIGH-CONTRAST, BUKAN github-dark BIASA:
+ *
+ * Tema `github-dark` memakai warna komentar #6a737d di atas latar
+ * #24292e — terukur hanya 3.05:1, GAGAL WCAG AA (butuh 4.5:1).
+ * Komentar adalah bagian penting materi (menjelaskan baris kode),
+ * jadi tidak boleh diredupkan.
+ *
+ * `github-dark-high-contrast` memakai #bdc4cc di atas #0a0c10 —
+ * terukur 11.12:1, lolos AAA. Seluruh token lain juga di atas 9:1.
  *
  * Rincian: docs/04-ARSITEKTUR-TEKNIS.md §1.2
  */
@@ -24,7 +34,7 @@ import type { HighlighterCore } from 'shiki/core';
 
 /** Tema Shiki yang dipakai */
 const TEMA_TERANG = 'github-light';
-const TEMA_GELAP = 'github-dark';
+const TEMA_GELAP = 'github-dark-high-contrast';
 
 /** Bahasa yang didukung — hanya yang dipakai proyek ini */
 export const BAHASA_DIDUKUNG = ['cpp', 'python'] as const;
@@ -58,7 +68,7 @@ async function buatHighlighter(): Promise<HighlighterCore> {
       import('shiki/core'),
       import('shiki/engine/javascript'),
       import('@shikijs/themes/github-light'),
-      import('@shikijs/themes/github-dark'),
+      import('@shikijs/themes/github-dark-high-contrast'),
       import('@shikijs/langs/cpp'),
       import('@shikijs/langs/python'),
     ]);

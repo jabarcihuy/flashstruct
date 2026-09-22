@@ -104,7 +104,9 @@ beforeEach(() => {
 describe('routing', () => {
   it('merender Home di rute /', async () => {
     renderRute('/');
-    expect(await screen.findByRole('heading', { level: 1, name: /hafal dulu/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: /hafal dulu/i }),
+    ).toBeInTheDocument();
   });
 
   it('merender Dashboard di rute /dashboard', async () => {
@@ -153,7 +155,9 @@ describe('routing', () => {
 
   it('merender halaman 404 untuk rute yang tidak dikenal', async () => {
     renderRute('/rute-yang-tidak-ada');
-    expect(await screen.findByRole('heading', { name: /halaman tidak ditemukan/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: /halaman tidak ditemukan/i }),
+    ).toBeInTheDocument();
   });
 });
 

@@ -207,7 +207,9 @@ function DialogResetProgres({
   ).length;
 
   const jumlahKartu = Object.values(progres.modul).reduce((total, m) => {
-    return total + Object.values(m.kartu).filter((k) => k.jumlahIngat > 0 && k.jumlahLupa === 0).length;
+    return (
+      total + Object.values(m.kartu).filter((k) => k.jumlahIngat > 0 && k.jumlahLupa === 0).length
+    );
   }, 0);
 
   const jumlahQuiz = Object.values(progres.modul).reduce(

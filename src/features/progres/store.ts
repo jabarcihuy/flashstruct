@@ -180,9 +180,7 @@ export function catatHariAktif(progres: ProgresGlobal): ProgresGlobal {
 
   if (progres.hariAktif.includes(hariIni)) return progres;
 
-  const diperbarui = [...progres.hariAktif, hariIni]
-    .sort()
-    .slice(-MAKS_HARI_AKTIF);
+  const diperbarui = [...progres.hariAktif, hariIni].sort().slice(-MAKS_HARI_AKTIF);
 
   return { ...progres, hariAktif: diperbarui };
 }

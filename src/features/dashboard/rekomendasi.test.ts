@@ -41,7 +41,9 @@ const MODUL = [
   modul('m4', 'pointer-dasar', 'pointer', 4),
 ];
 
-function denganProgres(progres: Record<string, Partial<ReturnType<typeof progresModulKosong>>>): ProgresGlobal {
+function denganProgres(
+  progres: Record<string, Partial<ReturnType<typeof progresModulKosong>>>,
+): ProgresGlobal {
   const p = progresKosong();
   for (const [id, partial] of Object.entries(progres)) {
     p.modul[id] = { ...progresModulKosong(id), ...partial };

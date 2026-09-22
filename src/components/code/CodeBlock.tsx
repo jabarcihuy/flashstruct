@@ -41,13 +41,7 @@ interface CodeBlockProps {
   className?: string;
 }
 
-export function CodeBlock({
-  kode,
-  bahasa,
-  namaBerkas,
-  nomorBaris,
-  className,
-}: CodeBlockProps) {
+export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: CodeBlockProps) {
   const { temaAktif } = useTema();
   const [html, setHtml] = useState<string | null>(null);
   const [tersalin, setTersalin] = useState(false);
@@ -143,12 +137,26 @@ export function CodeBlock({
               '[&>pre]:m-0 [&>pre]:bg-transparent [&>pre]:p-4',
               tampilkanNomor && '[&>pre]:pl-0',
             )}
+            /**
+             * tabIndex + role: blok kode bisa di-scroll horizontal, jadi
+             * pengguna keyboard harus bisa memfokusnya untuk menggulir
+             * (WCAG 2.1.1). Tanpa ini, kode panjang hanya bisa dibaca
+             * dengan mouse — axe melaporkan `scrollable-region-focusable`.
+             */
+            tabIndex={0}
+            role="region"
+            aria-label={label ? `Kode ${label}` : 'Blok kode'}
             // Aman: HTML dihasilkan Shiki dari konten yang kita kontrol
             dangerouslySetInnerHTML={{ __html: html }}
           />
         ) : (
           // Fallback: kode tanpa warna, tetap terbaca
-          <pre className="overflow-x-auto p-4 font-mono text-sm text-code-fg">
+          <pre
+            tabIndex={0}
+            role="region"
+            aria-label={label ? `Kode ${label}` : 'Kode'}
+            className="overflow-x-auto p-4 font-mono text-sm text-code-fg"
+          >
             <code>{kode}</code>
           </pre>
         )}

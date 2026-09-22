@@ -2,12 +2,7 @@ import { useCallback, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { AlertTriangle, CheckCircle2, Info, X, XCircle } from 'lucide-react';
 import { cn } from '@/lib/cn';
-import {
-  DURASI_TOAST_MS,
-  MAKS_TOAST,
-  ToastContext,
-  type TipeToast,
-} from './toast-context';
+import { DURASI_TOAST_MS, MAKS_TOAST, ToastContext, type TipeToast } from './toast-context';
 
 /* =========================================================
    Notifikasi (Toast)
@@ -87,7 +82,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 )}
                 style={{ borderColor: warna }}
               >
-                <Ikon className="mt-0.5 size-5 shrink-0" style={{ color: warna }} aria-hidden="true" />
+                <Ikon
+                  className="mt-0.5 size-5 shrink-0"
+                  style={{ color: warna }}
+                  aria-hidden="true"
+                />
                 <p className="flex-1 text-sm text-fg">{t.pesan}</p>
                 <button
                   type="button"

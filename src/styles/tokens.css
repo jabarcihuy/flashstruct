@@ -28,10 +28,14 @@
   --fg-muted: #493333; /* 10.55 AAA */
   --primary: #6a5582; /*  5.89 AA  */
   --on-primary: #ffffff; /*  6.49 AA  */
+  /* Link butuh kontras di SEMUA permukaan (bg, surface, surface-raised).
+     --primary gagal di surface-raised dark (3.48), jadi link punya token sendiri. */
+  --link: #6a5582; /* 6.00 di surface-raised terang */
   --accent: #543d3d; /*  9.02 AAA */
   --on-accent: #ffffff; /*  9.94 AAA */
   --success: #305a4f; /*  7.05 AAA */
   --danger: #822929; /*  8.29 AAA */
+  --on-danger: #ffffff; /*  9.94 AAA di atas --danger terang */
   --border: #d9d5d5;
   --border-strong: #836060; /*  5.00, lolos 3:1 */
   --ring: #6a5582; /*  5.89, lolos 3:1 */
@@ -87,8 +91,8 @@
 
 [data-theme='gelap'] {
   --topik-array: #b0cde6; /*  9.25 AAA */
-  --topik-struct: #a290b7; /*  5.24 AA  */
-  --topik-pointer: #b49494; /*  5.53 AA  */
+  --topik-struct: #c4b5d6; /*  6.56 di surface; --primary gelap gagal (4.33) */
+  --topik-pointer: #c9a9a9; /*  5.84 di surface; nilai lama gagal (4.56) */
 
   --bg: #322121; /* coklat sangat gelap */
   --surface: #452d2d;
@@ -97,10 +101,12 @@
   --fg-muted: #fde58b; /* 12.19 AAA */
   --primary: #a290b7; /*  5.24 AA  */
   --on-primary: #322121; /*  5.24 AA  */
+  --link: #c4b5d6; /*  7.95 bg · 6.56 surface · 5.28 raised */
   --accent: #b0cde6; /*  9.25 AAA */
   --on-accent: #322121; /*  9.25 AAA */
   --success: #bcd7d0; /* 10.01 AAA */
   --danger: #ebc9c9; /*  9.98 AAA */
+  --on-danger: #322121; /*  9.98 AAA di atas --danger gelap */
   --border: #6a4646;
   --border-strong: #987373; /*  3.66, lolos 3:1 */
   --ring: #a290b7; /*  5.24, lolos 3:1 */

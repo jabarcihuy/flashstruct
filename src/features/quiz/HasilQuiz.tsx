@@ -163,7 +163,11 @@ function BarTopik({ akurasi }: { akurasi: AkurasiTopik }) {
         : 'var(--success)';
 
   const labelKategori =
-    akurasi.kategori === 'lemah' ? 'perlu diulang' : akurasi.kategori === 'cukup' ? 'hampir' : 'kuat';
+    akurasi.kategori === 'lemah'
+      ? 'perlu diulang'
+      : akurasi.kategori === 'cukup'
+        ? 'hampir'
+        : 'kuat';
 
   return (
     <div>

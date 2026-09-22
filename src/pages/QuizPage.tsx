@@ -27,7 +27,7 @@ import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
  * hanya pembukaan tahap ini, bukan kelulusannya.
  */
 export default function QuizPage() {
-  useJudulHalaman("Quiz");
+  useJudulHalaman('Quiz');
   const { slug = '' } = useParams();
   const {
     state,
@@ -251,10 +251,15 @@ export default function QuizPage() {
       {/* Petunjuk keyboard — desktop saja */}
       {!state.sudahDijawab && (
         <p className="mt-5 hidden text-center text-xs text-fg-muted md:block">
-          Tekan <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">1</kbd>
+          Tekan{' '}
+          <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">
+            1
+          </kbd>
           {' – '}
-          <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">4</kbd>
-          {' '}untuk memilih jawaban
+          <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">
+            4
+          </kbd>{' '}
+          untuk memilih jawaban
         </p>
       )}
 

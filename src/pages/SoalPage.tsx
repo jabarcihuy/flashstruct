@@ -21,7 +21,7 @@ import type { ModulRingkas } from '@/types/database';
  * bukan sekadar "terkunci".
  */
 export default function SoalPage() {
-  useJudulHalaman("Soal");
+  useJudulHalaman('Soal');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { ambilModul, sedangMemuat: progresMemuat } = useProgres();
 
@@ -189,9 +189,7 @@ function PanelTahap({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className={cn('font-semibold', terkunci ? 'text-fg-muted' : 'text-fg')}>{judul}</p>
-            {status === 'selesai' && (
-              <Badge warna="var(--success)">Selesai</Badge>
-            )}
+            {status === 'selesai' && <Badge warna="var(--success)">Selesai</Badge>}
           </div>
           <p className="mt-0.5 text-sm text-fg-muted">{keterangan}</p>
           <p className="mt-1 text-xs text-fg-muted">{statistik}</p>

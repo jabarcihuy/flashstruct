@@ -63,7 +63,11 @@ export default function HomePage() {
 
           <div className="mt-7 flex flex-wrap gap-3">
             <Link to={tujuanMulai} className="inline-flex no-underline">
-              <Button ukuran="lg" varian="accent" ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}>
+              <Button
+                ukuran="lg"
+                varian="accent"
+                ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}
+              >
                 {adaProgres ? 'Lanjutkan Belajar' : 'Mulai Belajar'}
               </Button>
             </Link>
@@ -90,7 +94,11 @@ export default function HomePage() {
 
             <Card className="border-primary/30 bg-primary/5 p-5">
               <p className="text-lg font-medium leading-relaxed text-fg">
-                &ldquo;Apa yang terjadi pada memori saat <code className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-base">delete current</code> dipanggil?&rdquo;
+                &ldquo;Apa yang terjadi pada memori saat{' '}
+                <code className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-base">
+                  delete current
+                </code>{' '}
+                dipanggil?&rdquo;
               </p>
               <p className="mt-3 text-sm text-fg-muted">— tidak ada jawaban.</p>
             </Card>
@@ -195,9 +203,7 @@ export default function HomePage() {
       {/* ============ CTA AKHIR ============ */}
       <section className="border-t border-border bg-surface py-12 md:py-16">
         <div className="container-base text-center">
-          <h2 className="font-heading text-2xl font-semibold text-fg md:text-3xl">
-            Siap mulai?
-          </h2>
+          <h2 className="font-heading text-2xl font-semibold text-fg md:text-3xl">Siap mulai?</h2>
 
           {!isPending && daftarModul && (
             <p className="mx-auto mt-3 max-w-md text-fg-muted">
@@ -236,22 +242,34 @@ export default function HomePage() {
             <nav aria-label="Navigasi footer">
               <ul className="flex flex-wrap gap-4 text-sm">
                 <li>
-                  <Link to="/materi" className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg">
+                  <Link
+                    to="/materi"
+                    className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg"
+                  >
                     Materi
                   </Link>
                 </li>
                 <li>
-                  <Link to="/video" className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg">
+                  <Link
+                    to="/video"
+                    className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg"
+                  >
                     Video
                   </Link>
                 </li>
                 <li>
-                  <Link to="/soal" className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg">
+                  <Link
+                    to="/soal"
+                    className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg"
+                  >
                     Soal
                   </Link>
                 </li>
                 <li>
-                  <Link to="/dashboard" className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg">
+                  <Link
+                    to="/dashboard"
+                    className="inline-flex h-11 items-center text-fg-muted no-underline hover:text-fg"
+                  >
                     Dashboard
                   </Link>
                 </li>
@@ -304,7 +322,7 @@ function KartuTahap({
       <p className="mt-2 flex-1 text-sm leading-relaxed text-fg-muted">{deskripsi}</p>
 
       <Link to={ke} className="mt-4 inline-flex no-underline">
-        <span className="inline-flex h-11 items-center text-sm font-medium text-primary hover:underline md:h-9">
+        <span className="inline-flex h-11 items-center text-sm font-medium text-link hover:underline md:h-9">
           {labelTombol}
           <ArrowRight className="ml-1.5 size-3.5" aria-hidden="true" />
         </span>
@@ -321,7 +339,7 @@ function KartuTopik({ topik, modul }: { topik: TopikModul; modul: ModulRingkas[]
   const warna = `var(--topik-${topik})`;
 
   return (
-    <Card className="p-5" >
+    <Card className="p-5">
       <div className="flex items-center gap-3">
         <span
           className="h-8 w-1 rounded-full"

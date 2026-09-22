@@ -34,12 +34,7 @@ function soal(id: string, cardType: TipeKartu = 'ISTILAH', benar = 'C'): SoalDen
     penjelasan: `Penjelasan ${id}`,
     urutan: 1,
     modul: { slug: 'array-dasar' },
-    opsi_soal: [
-      opsi('A'),
-      opsi('B'),
-      opsi(benar, true),
-      opsi('D'),
-    ],
+    opsi_soal: [opsi('A'), opsi('B'), opsi(benar, true), opsi('D')],
   };
 }
 
@@ -268,11 +263,7 @@ describe('hitungHasil', () => {
 
 describe('hitungAkurasiTopik', () => {
   it('menghitung akurasi per tipe kartu', () => {
-    const bank = [
-      soal('s1', 'MEMORI'),
-      soal('s2', 'MEMORI'),
-      soal('s3', 'TRACING'),
-    ];
+    const bank = [soal('s1', 'MEMORI'), soal('s2', 'MEMORI'), soal('s3', 'TRACING')];
     const s: StateQuiz = {
       ...stateAwal(bank),
       jawaban: { s1: 'C', s2: 'A', s3: 'C' }, // MEMORI 1/2, TRACING 1/1
@@ -337,8 +328,20 @@ describe('hitungAkurasiTopik', () => {
 describe('topikTerlemah', () => {
   it('mengembalikan topik dengan kategori lemah', () => {
     const akurasi = [
-      { cardType: 'MEMORI' as TipeKartu, benar: 0, total: 2, persen: 0, kategori: 'lemah' as const },
-      { cardType: 'TRACING' as TipeKartu, benar: 2, total: 2, persen: 100, kategori: 'kuat' as const },
+      {
+        cardType: 'MEMORI' as TipeKartu,
+        benar: 0,
+        total: 2,
+        persen: 0,
+        kategori: 'lemah' as const,
+      },
+      {
+        cardType: 'TRACING' as TipeKartu,
+        benar: 2,
+        total: 2,
+        persen: 100,
+        kategori: 'kuat' as const,
+      },
     ];
 
     expect(topikTerlemah(akurasi)?.cardType).toBe('MEMORI');
@@ -346,7 +349,13 @@ describe('topikTerlemah', () => {
 
   it('null jika tidak ada yang lemah', () => {
     const akurasi = [
-      { cardType: 'MEMORI' as TipeKartu, benar: 2, total: 2, persen: 100, kategori: 'kuat' as const },
+      {
+        cardType: 'MEMORI' as TipeKartu,
+        benar: 2,
+        total: 2,
+        persen: 100,
+        kategori: 'kuat' as const,
+      },
     ];
 
     expect(topikTerlemah(akurasi)).toBeNull();

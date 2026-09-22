@@ -34,10 +34,7 @@ const PRIORITAS = {
  *
  * Skor lebih tinggi = muncul lebih awal.
  */
-export function hitungPrioritas(
-  status: StatusKartu | undefined,
-  sekarang = Date.now(),
-): number {
+export function hitungPrioritas(status: StatusKartu | undefined, sekarang = Date.now()): number {
   // Belum pernah dilihat — prioritas tinggi
   if (!status || status.terakhirDilihat === 0) {
     return PRIORITAS.BELUM_PERNAH;
@@ -97,10 +94,7 @@ export function susunDeck(
  * Ringkas alasan sebuah kartu muncul di sesi — untuk ditampilkan ke
  * pengguna agar algoritmanya tidak terasa seperti keacakan.
  */
-export function alasanPrioritas(
-  status: StatusKartu | undefined,
-  sekarang = Date.now(),
-): string {
+export function alasanPrioritas(status: StatusKartu | undefined, sekarang = Date.now()): string {
   if (!status || status.terakhirDilihat === 0) {
     return 'Belum pernah kamu lihat';
   }

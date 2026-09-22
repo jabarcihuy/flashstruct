@@ -27,7 +27,7 @@ import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
  * dilewati — dan itu merusak inti produk.
  */
 export default function FlashcardPage() {
-  useJudulHalaman("Flashcard");
+  useJudulHalaman('Flashcard');
   const { slug = '' } = useParams();
   const {
     state,
@@ -205,12 +205,7 @@ export default function FlashcardPage() {
 
   return (
     <div className="container-base flex min-h-[calc(100dvh-3.5rem)] flex-col py-6">
-      <HeaderSesi
-        judul={judulModul}
-        slug={slug}
-        onKeluar={cobaKeluar}
-        putaran={state.putaran}
-      />
+      <HeaderSesi judul={judulModul} slug={slug} onKeluar={cobaKeluar} putaran={state.putaran} />
 
       <div className="mt-4">
         <ProgressBar

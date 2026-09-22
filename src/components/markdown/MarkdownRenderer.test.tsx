@@ -122,7 +122,9 @@ describe('MarkdownRenderer — elemen dasar', () => {
   });
 
   it('merender kode inline', () => {
-    const { container } = render(<MarkdownRenderer konten="Pakai `arr[0]` untuk elemen pertama." />);
+    const { container } = render(
+      <MarkdownRenderer konten="Pakai `arr[0]` untuk elemen pertama." />,
+    );
     const kode = container.querySelector('code');
     expect(kode).toBeInTheDocument();
     expect(kode?.textContent).toBe('arr[0]');

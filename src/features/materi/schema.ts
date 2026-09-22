@@ -158,10 +158,6 @@ export function validasi<T>(schema: z.ZodType<T>, data: unknown, konteks: string
 }
 
 /** Validasi array dengan pesan error yang berguna */
-export function validasiArray<T>(
-  schema: z.ZodType<T>,
-  data: unknown,
-  konteks: string,
-): T[] {
+export function validasiArray<T>(schema: z.ZodType<T>, data: unknown, konteks: string): T[] {
   return validasi(z.array(schema), data, konteks);
 }

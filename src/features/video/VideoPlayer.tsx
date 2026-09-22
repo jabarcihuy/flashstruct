@@ -116,7 +116,7 @@ export function VideoPlayer({ video, onTutup }: VideoPlayerProps) {
             href={`https://www.youtube.com/watch?v=${video.youtube_id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex h-11 items-center gap-2 text-sm text-primary underline underline-offset-2 md:h-9"
+            className="mt-4 inline-flex h-11 items-center gap-2 text-sm text-link underline underline-offset-2 md:h-9"
           >
             Buka di YouTube
             <ExternalLink className="size-4" aria-hidden="true" />

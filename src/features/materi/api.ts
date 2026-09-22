@@ -1,11 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import type { ModulLengkap, ModulRingkas } from '@/types/database';
-import {
-  ModulLengkapSchema,
-  ModulRingkasSchema,
-  validasi,
-  validasiArray,
-} from './schema';
+import { ModulLengkapSchema, ModulRingkasSchema, validasi, validasiArray } from './schema';
 
 /**
  * Query ke Supabase untuk fitur materi.

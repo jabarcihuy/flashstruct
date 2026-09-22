@@ -18,7 +18,7 @@ import type { ModulRingkas, TopikModul } from '@/types/database';
  * beserta indikator tiga tahap dari progres pengguna.
  */
 export default function MateriPage() {
-  useJudulHalaman("Materi");
+  useJudulHalaman('Materi');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { sedangMemuat: progresMemuat, ambilModul } = useProgres();
 
@@ -139,8 +139,7 @@ function KartuModul({
       </div>
 
       <p className="mt-4 text-xs text-fg-muted">
-        {jumlahBagian} bagian · {jumlahKartu} kartu · {jumlahSoal} soal ·{' '}
-        {modul.estimasi_menit} mnt
+        {jumlahBagian} bagian · {jumlahKartu} kartu · {jumlahSoal} soal · {modul.estimasi_menit} mnt
       </p>
 
       {/* Indikator tiga tahap — inti metode belajar */}
@@ -159,7 +158,7 @@ function KartuModul({
       <div className="mt-auto pt-4">
         <Link
           to={cta.ke}
-          className="inline-flex h-11 items-center text-sm font-medium text-primary no-underline hover:underline md:h-9"
+          className="inline-flex h-11 items-center text-sm font-medium text-link no-underline hover:underline md:h-9"
         >
           {cta.label}
         </Link>
@@ -182,7 +181,11 @@ function MateriSkeleton() {
           <Skeleton className="mb-4 h-6 w-28" />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2].map((j) => (
-              <div key={j} className="rounded-lg border border-border p-5" style={{ minHeight: 260 }}>
+              <div
+                key={j}
+                className="rounded-lg border border-border p-5"
+                style={{ minHeight: 260 }}
+              >
                 <Skeleton className="h-5 w-16" />
                 <Skeleton className="mt-3 h-5 w-3/4" />
                 <Skeleton className="mt-2 h-4 w-full" />

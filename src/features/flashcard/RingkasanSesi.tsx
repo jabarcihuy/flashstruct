@@ -78,8 +78,7 @@ export function RingkasanSesi({
             <div className="min-w-0 flex-1">
               <p className="font-semibold text-fg">Tahap 2 dari 3 selesai</p>
               <p className="mt-1 text-sm text-fg-muted">
-                Semua kartu sudah kamu tandai ingat. Tahap berikutnya terbuka: buktikan dengan
-                quiz.
+                Semua kartu sudah kamu tandai ingat. Tahap berikutnya terbuka: buktikan dengan quiz.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link to={`/soal/quiz/${modulSlug}`} className="inline-flex no-underline">

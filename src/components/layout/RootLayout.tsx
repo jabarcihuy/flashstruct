@@ -34,7 +34,13 @@ export function RootLayout() {
 
       <Header />
 
-      <main id="konten-utama" className="konten-utama">
+      {/*
+        tabIndex={-1}: wajib agar skip link benar-benar memindahkan fokus.
+        Tanpa ini, href="#konten-utama" hanya menggulir halaman — fokus tetap
+        di <body>, sehingga pengguna keyboard harus menekan Tab puluhan kali
+        untuk melewati navigasi. Terverifikasi lewat audit keyboard.
+      */}
+      <main id="konten-utama" tabIndex={-1} className="konten-utama outline-none">
         <Suspense fallback={<PageSkeleton />}>
           <Outlet />
         </Suspense>

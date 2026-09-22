@@ -64,7 +64,11 @@ export function ErrorState({
         <p className="mx-auto mt-2 max-w-md text-fg-muted">{pesan}</p>
       </div>
       {onCobaLagi && (
-        <Button varian="secondary" onClick={onCobaLagi} ikonKiri={<RefreshCw className="size-4" aria-hidden="true" />}>
+        <Button
+          varian="secondary"
+          onClick={onCobaLagi}
+          ikonKiri={<RefreshCw className="size-4" aria-hidden="true" />}
+        >
           Coba lagi
         </Button>
       )}

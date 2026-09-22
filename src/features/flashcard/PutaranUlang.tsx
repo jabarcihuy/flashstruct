@@ -21,12 +21,7 @@ interface PutaranUlangProps {
   onLewati: () => void;
 }
 
-export function PutaranUlang({
-  jumlahLupa,
-  jumlahTotal,
-  onMulai,
-  onLewati,
-}: PutaranUlangProps) {
+export function PutaranUlang({ jumlahLupa, jumlahTotal, onMulai, onLewati }: PutaranUlangProps) {
   return (
     <div className="mx-auto w-full max-w-md">
       <Card className="p-6 text-center sm:p-8">

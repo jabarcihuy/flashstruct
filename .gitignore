@@ -62,3 +62,9 @@ node_modules/.tmp/
 # Tool pemasang skill membuat salinan ini untuk kompatibilitas.
 # Isinya identik, jadi cukup simpan satu agar repo tidak membengkak.
 /.claude/skills/
+
+# Hasil test Playwright — artefak, bukan sumber
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

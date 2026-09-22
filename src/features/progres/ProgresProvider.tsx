@@ -76,10 +76,7 @@ export function ProgresProvider({ children }: { children: ReactNode }) {
      Operasi
      ========================================================= */
 
-  const ambilModul = useCallback(
-    (modulId: string) => progres.modul[modulId],
-    [progres.modul],
-  );
+  const ambilModul = useCallback((modulId: string) => progres.modul[modulId], [progres.modul]);
 
   const tandaiBagianDibaca = useCallback(
     (modulId: string, bagianSlug: string) => {

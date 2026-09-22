@@ -18,7 +18,7 @@ import type { TopikModul, VideoDenganModul } from '@/types/database';
  * sedikit video, dengan pesan yang jujur dan mengarahkan.
  */
 export default function VideoPage() {
-  useJudulHalaman("Video");
+  useJudulHalaman('Video');
   const { data: daftarVideo, isPending, isError, error, refetch } = useSemuaVideo();
   const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
 
@@ -78,10 +78,7 @@ export default function VideoPage() {
 
   return (
     <div className="container-base py-8">
-      <PageHeader
-        judul="Video"
-        deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan"
-      />
+      <PageHeader judul="Video" deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan" />
 
       <div className="space-y-10">
         {[...perTopik.entries()].map(([topik, daftarTopik]) => (
@@ -100,9 +97,7 @@ export default function VideoPage() {
         ))}
       </div>
 
-      {videoDiputar && (
-        <VideoPlayer video={videoDiputar} onTutup={() => setVideoDiputar(null)} />
-      )}
+      {videoDiputar && <VideoPlayer video={videoDiputar} onTutup={() => setVideoDiputar(null)} />}
     </div>
   );
 }

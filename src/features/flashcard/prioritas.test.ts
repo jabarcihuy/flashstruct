@@ -168,10 +168,7 @@ describe('alasanPrioritas', () => {
   });
 
   it('menandai kartu yang sudah dikuasai', () => {
-    const alasan = alasanPrioritas(
-      status({ jumlahIngat: 5, terakhirDilihat: SEKARANG }),
-      SEKARANG,
-    );
+    const alasan = alasanPrioritas(status({ jumlahIngat: 5, terakhirDilihat: SEKARANG }), SEKARANG);
     expect(alasan).toMatch(/kuasai/i);
   });
 });
