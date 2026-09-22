@@ -161,7 +161,7 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
 
             // Kutipan biasa
             return (
-              <blockquote className="my-5 border-l-4 border-border pl-4 italic text-fg-muted">
+              <blockquote className="my-5 border-l-2 border-border-strong/50 pl-4 italic text-fg-muted">
                 {children}
               </blockquote>
             );

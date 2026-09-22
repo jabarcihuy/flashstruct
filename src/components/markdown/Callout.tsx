@@ -59,8 +59,11 @@ export function Callout({ tipe, children, judul }: CalloutProps) {
     <aside
       role="note"
       aria-label={judul ?? label}
-      className={cn('my-5 rounded-lg border-l-4 p-4')}
-      style={{ borderColor: warna, backgroundColor: latar }}
+      className={cn('my-5 rounded-lg border p-4')}
+      style={{
+        borderColor: `color-mix(in srgb, ${warna} 32%, transparent)`,
+        backgroundColor: latar,
+      }}
     >
       <div className="flex items-start gap-3">
         <Ikon className="mt-0.5 size-5 shrink-0" style={{ color: warna }} aria-hidden="true" />

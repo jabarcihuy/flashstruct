@@ -88,7 +88,7 @@ export default function HomePage() {
               Mahasiswa bisa menyalin kode linked list dari internet. Tapi saat ditanya:
             </p>
 
-            <Card className="border-l-4 border-l-primary p-5">
+            <Card className="border-primary/30 bg-primary/5 p-5">
               <p className="text-lg font-medium leading-relaxed text-fg">
                 &ldquo;Apa yang terjadi pada memori saat <code className="rounded bg-surface-raised px-1.5 py-0.5 font-mono text-base">delete current</code> dipanggil?&rdquo;
               </p>

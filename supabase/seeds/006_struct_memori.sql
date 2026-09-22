@@ -113,7 +113,7 @@ Alignment biasanya sama dengan ukuran tipe, dengan pengecualian:
 
 **Langkah 2:** Total ukuran struct dibulatkan ke kelipatan alignment **terbesar** di antara anggotanya.
 
-## Contoh 1: char, int
+### Contoh 1: char, int
 
 ```cpp
 struct A { char a; int b; };
@@ -126,7 +126,7 @@ struct A { char a; int b; };
 
 Padding: offset 1-3 (3 byte). Total: 4 + 4 = **8 byte**.
 
-## Contoh 2: char, long, char
+### Contoh 2: char, long, char
 
 ```cpp
 struct B { char a; long b; char c; };
@@ -142,7 +142,7 @@ Setelah `c` di offset 16, totalnya 17. Alignment terbesar = 8, jadi dibulatkan k
 
 **Hasil terukur: 24 byte.** (1 + 7 padding + 8 + 1 + 7 padding akhir)
 
-## Contoh 3: long, char, char
+### Contoh 3: long, char, char
 
 ```cpp
 struct C { long b; char a; char c; };
@@ -163,7 +163,7 @@ Total 10, dibulatkan ke kelipatan 8 menjadi **16**.
 
 ('mengurangi-padding', 'Mengurangi Padding', $md$Karena padding membuang memori, muncul pertanyaan: bisakah dikurangi?
 
-## Cara 1: Mengurutkan Anggota
+### Cara 1: Mengurutkan Anggota
 
 Ini saran yang sering diberikan: **urutkan anggota dari besar ke kecil**.
 
@@ -194,7 +194,7 @@ Pada struct dengan **dua anggota**, tidak ada anggota kecil yang bisa dikemas be
 
 > Padding berkurang ketika anggota-anggota kecil dikelompokkan berdampingan sehingga mereka muat dalam satu blok alignment. Ini **biasanya** tercapai dengan mengurutkan dari besar ke kecil, tetapi **bukan jaminan**.
 
-## Cara 2: #pragma pack
+### Cara 2: #pragma pack
 
 `#pragma pack` memaksa compiler mengurangi atau menghilangkan padding:
 
@@ -218,7 +218,7 @@ Dengan `pack(1)`, `sizeof(Padat)` menjadi **5 byte**.
 >
 > Gunakan hanya kalau benar-benar perlu (mis. protokol jaringan atau format berkas biner yang sudah ditentukan).
 
-## Cara 3: Verifikasi Sendiri
+### Cara 3: Verifikasi Sendiri
 
 Cara terbaik bukan menghafal aturan, tapi **mengukur**:
 
