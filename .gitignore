@@ -53,7 +53,12 @@ node_modules/.tmp/
 /agent/
 /.claude/skills/
 
-# Skill tambahan yang dipasang otomatis (bukan bagian proyek)
-/.claude/
-/.codex/
-/.agents/skills/impeccable/
+# Binary skill impeccable (platform-specific, 16 MB)
+# Skill-nya sendiri di-commit, tapi binary-nya tidak.
+# Cara memasang ulang: lihat docs/19-CATATAN-SKILL.md
+.agents/skills/impeccable/scripts/bin/
+
+# Duplikat skill untuk agen lain (sumber asli di .agents/skills/)
+# Tool pemasang skill membuat salinan ini untuk kompatibilitas.
+# Isinya identik, jadi cukup simpan satu agar repo tidak membengkak.
+/.claude/skills/
