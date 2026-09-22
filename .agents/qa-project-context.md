@@ -90,13 +90,19 @@
 - **Config Location:** `.github/workflows/ci.yml`
 - **Test Pipeline:** dua job berurutan
   - `kualitas` (<1 menit): typecheck, lint, format:check, unit test — **memblokir**
-  - `e2e` (<10 menit): Playwright di Chromium + Firefox — **memblokir**, tetapi DILEWATI bila secrets Supabase belum diset
+  - `e2e` (~6 menit): Playwright di Chromium + Firefox, 99 test — **memblokir**
+- **Trigger:** push ke `main`, pull request, dan `workflow_dispatch` (manual)
 - **Artifacts:** `playwright-report/` + `test-results/` disimpan 7 hari saat gagal
 - **Deployment:** manual (Vercel, belum dikonfigurasi)
 
-**Status:** CI hijau. Job E2E saat ini **dilewati** karena repository
-secret belum diset — lihat `docs/qa/rencana-test.md` §8 untuk langkah
-mengaktifkannya.
+**Status:** CI hijau dengan E2E **berjalan penuh**. Secrets Supabase
+(`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`) sudah diset di
+repository. Bila secrets dihapus, job E2E otomatis DILEWATI dengan
+peringatan — bukan gagal — dan menampilkan cara mengaktifkannya lagi.
+
+**Durasi terukur (run 35751095163):**
+- Job `kualitas`: 32 detik
+- Job `e2e`: 5 menit 57 detik
 
 ---
 
@@ -197,7 +203,7 @@ mengaktifkannya.
 - **Unit test:** 17 berkas, 307 test, semua lulus
 - **E2E:** 6 spec, 21 test case, 99 test di 3 mesin, semua lulus (lokal)
 - **Aksesibilitas:** 0 pelanggaran WCAG 2.2 AA di 2 tema
-- **CI:** hijau (job E2E dilewati sampai secrets diset)
+- **CI:** hijau, E2E berjalan penuh (99 test, ~6 menit)
 
 ### Temuan Audit Terakhir (2026-07-10)
 Audit QA menemukan dan memperbaiki:

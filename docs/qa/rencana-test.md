@@ -118,7 +118,8 @@ bug UI nyata yang tidak terdeteksi 307 unit test.
 | Flaky dalam 20 jalan | 0 | 1 kali (rate limit Supabase, sudah diperbaiki) |
 | Durasi E2E | < 5 menit | **8 menit** (melebihi target, lihat catatan) |
 | Gerbang CI | 2 job | Dibuat, **hijau di GitHub** |
-| Secrets Supabase | Diset | **BELUM** — lihat §8 |
+| Secrets Supabase | Diset | **SUDAH** — E2E berjalan di CI |
+| E2E di CI | Berjalan | **99 test lulus, ~6 menit** |
 
 **Catatan durasi:** 8 menit melebihi target 5 menit karena 99 test
 dijalankan serial (untuk menghindari rate limit Supabase). Di CI,
@@ -139,28 +140,26 @@ dijalankan serial (untuk menghindari rate limit Supabase). Di CI,
 
 ---
 
-## 8. Aksi Manual yang Diperlukan
+## 8. Secrets Supabase — SELESAI
 
-**Set secrets Supabase agar E2E berjalan di CI.**
+Secrets sudah ditambahkan pemilik repo. E2E kini berjalan penuh di CI.
 
-Saat ini job E2E **dilewati** (bukan gagal) karena secrets belum ada.
-CI tetap hijau, tetapi ada peringatan bahwa jalur kritis belum
-terverifikasi di CI.
+| Nama secret | Status |
+|-------------|--------|
+| `VITE_SUPABASE_URL` | Terpasang |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Terpasang |
 
-Langkah (sekali saja, di GitHub):
-1. Buka repo > **Settings** > **Secrets and variables** > **Actions**
-2. Klik **New repository secret**, tambahkan dua:
+**Verifikasi:** run `35751095163` — job `e2e` selesai dalam 5 menit 57 detik,
+99 test lulus, 0 artifact (tidak ada kegagalan).
 
-| Nama | Nilai |
-|------|-------|
-| `VITE_SUPABASE_URL` | `https://lxvoedfjecmmwfrfhbah.supabase.co` |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | nilai `sb_publishable_...` dari `.env.local` |
+**Bila secrets perlu diganti:** buka repo > Settings > Secrets and
+variables > Actions. Nama variabel harus **persis** seperti tabel di atas —
+aplikasi membacanya di `src/lib/supabase.ts`. Nama yang salah membuat
+aplikasi gagal start dan semua test E2E gagal sekaligus.
 
-3. Push apa pun (atau klik "Re-run jobs") — E2E akan otomatis berjalan.
-
-Nama variabel harus **persis** seperti di atas. Aplikasi membaca keduanya
-di `src/lib/supabase.ts`; nama yang salah membuat aplikasi gagal start
-dan semua test E2E gagal sekaligus.
+**Bila secrets hilang:** job E2E otomatis DILEWATI dengan peringatan yang
+menjelaskan cara mengaktifkannya. CI tetap hijau, tetapi jalur kritis
+tidak terverifikasi — ini terlihat jelas di ringkasan halaman Actions.
 
 ---
 
