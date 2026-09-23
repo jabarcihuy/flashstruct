@@ -3,32 +3,45 @@ node_modules/
 .pnp
 .pnp.js
 
-# Build
+# Build & Distribusi
 dist/
 dist-ssr/
 *.local
 
-# Environment — JANGAN pernah commit kredensial
+# Environment & Kredensial — JANGAN pernah commit kredensial
 .env
 .env.local
 .env.*.local
+*.pem
+*.key
+*.cert
 
 # Vercel
 .vercel
 
-# Editor
+# Editor & IDE
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+.fleet/
+.zed/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.sublime-project
+*.sublime-workspace
 
-# OS
+# OS & File Sementara
 .DS_Store
+._*
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+*~
+*.tmp
+*.temp
 
 # Log
 logs
@@ -38,51 +51,37 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Test
+# Test & Coverage
 coverage/
 .nyc_output/
-
-# Cache
-.vite/
-*.tsbuildinfo
-node_modules/.tmp/
-
-# Salinan skills untuk berbagai agen — sumber aslinya di .agents/skills/
-# Tool `npx skills add` membuat salinan ini untuk kompatibilitas,
-# tapi isinya identik. Cukup simpan satu agar repo bersih.
-/agent/
-/.claude/skills/
-
-# Binary skill impeccable (platform-specific, 16 MB)
-# Skill-nya sendiri di-commit, tapi binary-nya tidak.
-# Cara memasang ulang: lihat docs/19-CATATAN-SKILL.md
-.agents/skills/impeccable/scripts/bin/
-
-# Duplikat skill untuk agen lain (sumber asli di .agents/skills/)
-# Tool pemasang skill membuat salinan ini untuk kompatibilitas.
-# Isinya identik, jadi cukup simpan satu agar repo tidak membengkak.
-/.claude/skills/
-
-# Hasil test Playwright — artefak, bukan sumber
 test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
 
+# Cache
+.vite/
+*.tsbuildinfo
+node_modules/.tmp/
+.eslintcache
+
+# Supabase Local CLI
+.supabase/
+supabase/.temp/
+supabase/.branches/
+
+# Salinan skills untuk berbagai agen — sumber aslinya di .agents/skills/
+/agent/
+/.claude/skills/
+
+# Binary skill impeccable (platform-specific, 16 MB)
+.agents/skills/impeccable/scripts/bin/
+
+# Skill lokal temporer / opsional
+.agents/skills/9router-image/
+
 # =========================================================
-# Artefak kerja redesign (skill impeccable)
-#
-# Yang DI-COMMIT (kecil, jadi rujukan):
-#   .impeccable/HANDOFF.md        — catatan sesi redesign
-#   .impeccable/direction-choice.json — keputusan arah yang disetujui
-#   .impeccable/surfaces/         — kontrak per halaman
-#   .impeccable/build/spec.json   — hasil ukur comp
-#   .impeccable/mocks/komposisi-a.png — comp YANG DISETUJUI (otoritas desain)
-#
-# Yang TIDAK di-commit (besar, bisa dibuat ulang):
-#   comp B/C yang tidak disetujui, mock keputusan, screenshot review,
-#   grid comp, crop font-match. Total ~12 MB dan semuanya regenerable
-#   dengan menjalankan ulang tool impeccable.
+# Artefak kerja redesign & internal tool (.impeccable)
 # =========================================================
 .impeccable/mocks/komposisi-b.png
 .impeccable/mocks/komposisi-c.png
@@ -92,3 +91,10 @@ playwright/.cache/
 .impeccable/build/font-match/
 .impeccable/questions/
 .impeccable/live/
+.impeccable/hook.cache.json
+.impeccable/hook.pending.json
+.impeccable/config.local.json
+.impeccable/**/*-backup.json
+.impeccable/**/*.backup.json
+*-backup.json
+*.backup.json

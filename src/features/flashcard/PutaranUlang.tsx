@@ -25,7 +25,7 @@ export function PutaranUlang({ jumlahLupa, jumlahTotal, onMulai, onLewati }: Put
   return (
     <div className="mx-auto w-full max-w-md">
       <Card className="p-6 text-center sm:p-8">
-        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10">
+        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-md bg-primary/10">
           <RotateCcw className="size-6 text-primary" aria-hidden="true" />
         </div>
 

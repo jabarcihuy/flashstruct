@@ -1,0 +1,40 @@
+{
+  "title": "Susunan halaman landing FlashStruct",
+  "question": "Identitas visual sudah tetap (putih, navy, biru aksi). Pilih susunan halaman landing yang akan dibangun — tiga struktur berbeda, semuanya memakai materi kurikulum nyata.",
+  "options": [
+    {
+      "id": "uji-diri",
+      "label": "Uji Diri",
+      "kicker": "THE ROLL",
+      "thesis": "Dibuka dengan pertanyaan wawancara nyata: pengunjung menguji dirinya sebelum mengenal produknya.",
+      "palette": ["#ffffff", "#111c32", "#2460cf"],
+      "materials": ["permukaan putih", "garis tipis 1px", "tipografi sans humanis"],
+      "viewport": "Pertanyaan besar dengan tiga pilihan jawaban; setelah dijawab, penjelasan singkat dan ajakan mulai modul pertama.",
+      "risk": "Terasa seperti quiz jika jawabannya tidak langsung menyambung ke metode tiga tahap.",
+      "comp": ".impeccable/mocks/decision/uji-diri.png"
+    },
+    {
+      "id": "peta-memori",
+      "label": "Peta Memori",
+      "thesis": "Materi pelajaran sendiri — sel memori, alamat, pointer — menjadi alur halaman.",
+      "palette": ["#ffffff", "#111c32", "#2460cf"],
+      "materials": ["permukaan putih", "garis tipis 1px", "diagram bersel mono"],
+      "viewport": "Judul dan ajakan di kiri; diagram memori dengan alamat di kanan, terisi bertahap saat digulir.",
+      "risk": "Diagram bisa mendominasi halaman dan menggeser pesan tiga tahap.",
+      "comp": ".impeccable/mocks/decision/peta-memori.png"
+    },
+    {
+      "id": "silabus",
+      "label": "Silabus",
+      "thesis": "Kurikulum 10 modul nyata tampil sebagai daftar isi yang bisa dinilai sebelum mulai.",
+      "palette": ["#ffffff", "#111c32", "#2460cf"],
+      "materials": ["permukaan putih", "garis tipis 1px", "baris data tabular"],
+      "viewport": "Hero ringkas, ringkasan tiga tahap, lalu 10 baris modul dengan topik, durasi, dan jumlah kartu.",
+      "risk": "Daftar panjang bisa mengubur penjelasan metode tiga tahap.",
+      "comp": ".impeccable/mocks/decision/silabus.png"
+    }
+  ],
+  "reroll": true,
+  "buildPath": { "value": "comp", "toggle": true },
+  "steer": true
+}

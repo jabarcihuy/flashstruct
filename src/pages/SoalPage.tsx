@@ -11,7 +11,7 @@ import { hitungStatistikModul } from '@/features/progres/util';
 import { LABEL_TOPIK } from '@/lib/constants';
 import { urutkan } from '@/lib/format';
 import { cn } from '@/lib/cn';
-import type { ModulRingkas } from '@/types/database';
+import type { ModulRingkas, TopikModul } from '@/types/database';
 
 /**
  * Halaman pemilih mode: Flashcard atau Quiz.
@@ -55,16 +55,33 @@ export default function SoalPage() {
     );
   }
 
+  const perTopik = new Map<TopikModul, ModulRingkas[]>();
+  for (const modul of urutkan(daftarModul)) {
+    const daftar = perTopik.get(modul.topik) ?? [];
+    daftar.push(modul);
+    perTopik.set(modul.topik, daftar);
+  }
+
   return (
-    <div className="container-base py-8">
+    <div className="container-base practice-index-page py-8 pb-16 sm:pb-10">
       <PageHeader
         judul="Soal"
         deskripsi="Pilih modul, lalu pilih tahapnya. Hafalkan dulu, baru buktikan."
       />
 
-      <div className="space-y-5">
-        {urutkan(daftarModul).map((m) => (
-          <KartuPilihanModul key={m.id} modul={m} progresModul={ambilModul(m.id)} />
+      <div className="space-y-10">
+        {[...perTopik.entries()].map(([topik, modulTopik]) => (
+          <section key={topik}>
+            <div className="mb-4 flex items-baseline gap-3">
+              <h2 className="font-heading text-xl font-semibold text-fg">{LABEL_TOPIK[topik]}</h2>
+              <span className="text-sm text-fg-muted">{modulTopik.length} modul</span>
+            </div>
+            <div className="practice-index-list">
+              {modulTopik.map((m) => (
+                <KartuPilihanModul key={m.id} modul={m} progresModul={ambilModul(m.id)} />
+              ))}
+            </div>
+          </section>
         ))}
       </div>
     </div>
@@ -88,22 +105,26 @@ function KartuPilihanModul({
   const statistik = hitungStatistikModul(progresModul);
 
   return (
-    <Card className="p-5 sm:p-6">
+    <Card className="rounded-none border-b-0 p-5 first:rounded-t-md last:rounded-b-md last:border-b sm:p-6">
       {/* Kepala: topik + judul */}
       <div className="flex items-start gap-3">
-        <span
-          className="mt-1 h-10 w-1 shrink-0 rounded-full"
-          style={{ backgroundColor: warnaTopik }}
-          aria-hidden="true"
-        />
+        <span className="module-index shrink-0" aria-hidden="true">
+          {modul.urutan}
+        </span>
         <div className="min-w-0 flex-1">
           <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
           <h2 className="mt-2 font-heading text-lg font-semibold text-fg">{modul.judul}</h2>
+          <Link
+            to={`/materi/${modul.slug}`}
+            className="mt-1 inline-flex min-h-11 items-center text-sm font-medium text-link no-underline hover:underline md:min-h-9"
+          >
+            Baca modul
+          </Link>
         </div>
       </div>
 
       {/* Dua pilihan tahap */}
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid border-t border-border sm:grid-cols-2 sm:gap-5 sm:pt-4 sm:[&>*+*]:border-l sm:[&>*+*]:pl-5 [&>*+*]:border-t sm:[&>*+*]:border-t-0">
         <PanelTahap
           ikon={<Layers className="size-5" aria-hidden="true" />}
           judul="Hafalkan"
@@ -174,8 +195,8 @@ function PanelTahap({
   return (
     <div
       className={cn(
-        'flex flex-col rounded-lg border p-4',
-        terkunci ? 'border-border bg-surface-raised/50' : 'border-border-strong bg-surface-raised',
+        'flex flex-col py-4 sm:py-0',
+        terkunci ? 'border-border' : 'border-border-strong',
       )}
     >
       <div className="flex items-start gap-3">
@@ -189,6 +210,7 @@ function PanelTahap({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className={cn('font-semibold', terkunci ? 'text-fg-muted' : 'text-fg')}>{judul}</p>
+            {terkunci && <Lock className="size-3.5 text-fg-muted" aria-label="Terkunci" />}
             {status === 'selesai' && <Badge warna="var(--success)">Selesai</Badge>}
           </div>
           <p className="mt-0.5 text-sm text-fg-muted">{keterangan}</p>
@@ -216,20 +238,24 @@ function PanelTahap({
         </p>
       )}
 
-      {/* Tombol — tetap TERLIHAT saat terkunci, tapi tidak aktif */}
-      <div className="mt-4">
-        {terkunci ? (
-          <span
-            className={cn(
-              'inline-flex h-11 w-full items-center justify-center gap-2 rounded-md',
-              'cursor-not-allowed border border-border bg-surface text-sm text-fg-muted opacity-60 md:h-10',
-            )}
+      {terkunci ? (
+        <div className="mt-auto pt-4">
+          <button
+            type="button"
+            disabled
             aria-disabled="true"
+            title={alasan}
+            className={cn(
+              'inline-flex h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-md',
+              'border border-border bg-surface-raised text-sm font-medium text-fg-muted transition-colors md:h-10',
+            )}
           >
-            <Lock className="size-4" aria-hidden="true" />
-            Terkunci
-          </span>
-        ) : (
+            <Lock className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />
+            <span>Terkunci</span>
+          </button>
+        </div>
+      ) : (
+        <div className="mt-auto pt-4">
           <Link to={ke} className="inline-flex w-full no-underline">
             <span
               className={cn(
@@ -241,8 +267,8 @@ function PanelTahap({
               {labelTombol}
             </span>
           </Link>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -253,14 +279,18 @@ function SoalSkeleton() {
       <span className="sr-only">Memuat daftar soal…</span>
       <Skeleton className="h-9 w-24" />
       <Skeleton className="mt-3 h-4 w-80" />
-      <div className="mt-6 space-y-5">
+      <div className="mt-6">
         {[0, 1].map((i) => (
-          <div key={i} className="rounded-lg border border-border p-6" style={{ minHeight: 200 }}>
+          <div
+            key={i}
+            className="border border-b-0 border-border p-6 last:border-b"
+            style={{ minHeight: 200 }}
+          >
             <Skeleton className="h-5 w-16" />
             <Skeleton className="mt-3 h-6 w-2/3" />
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <Skeleton className="h-32 rounded-lg" />
-              <Skeleton className="h-32 rounded-lg" />
+              <Skeleton className="h-20 rounded-md" />
+              <Skeleton className="h-20 rounded-md" />
             </div>
           </div>
         ))}

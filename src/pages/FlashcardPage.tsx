@@ -1,9 +1,9 @@
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Layers, Lock } from 'lucide-react';
+import { ArrowLeft, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import { StageGate } from '@/components/ui/StageGate';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
 import { Dialog } from '@/components/ui/Dialog';
 import { ProgressBar } from '@/components/ui/Progress';
@@ -15,7 +15,7 @@ import { PutaranUlang } from '@/features/flashcard/PutaranUlang';
 import { useProgres } from '@/features/progres/context';
 import { hitungStatistikModul } from '@/features/progres/util';
 import { kartuLupa } from '@/features/flashcard/sesi';
-import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
+import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progres/aturan';
 
 /**
  * Halaman sesi flashcard — Tahap 2 (Hafalkan).
@@ -126,33 +126,15 @@ export default function FlashcardPage() {
 
   if (statusTahap2 === 'terkunci') {
     return (
-      <div className="container-narrow py-12">
-        <Card className="border-dashed p-6 text-center sm:p-8">
-          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-surface-raised">
-            <Lock className="size-6 text-fg-muted" aria-hidden="true" />
-          </div>
-
-          <h1 className="font-heading text-xl font-semibold text-fg">Flashcard masih terkunci</h1>
-
-          <p className="mx-auto mt-3 max-w-md text-sm text-fg-muted">
-            <strong className="text-fg">{judulModul}</strong> — {alasanTerkunci(2)}
-          </p>
-
-          <p className="mx-auto mt-2 max-w-md text-xs text-fg-muted">
-            Kamu membuka halaman ini lewat tautan langsung. Untuk membukanya, selesaikan dulu
-            membaca modulnya minimal 80%.
-          </p>
-
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Link to={`/materi/${slug}`} className="inline-flex no-underline">
-              <Button>Baca Modul</Button>
-            </Link>
-            <Link to="/soal" className="inline-flex no-underline">
-              <Button varian="secondary">Kembali ke Soal</Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
+      <StageGate
+        judul="Flashcard masih terkunci"
+        modulJudul={judulModul}
+        alasan={alasanTerkunci(2)}
+        penjelasan="Selesaikan dulu membaca minimal 80% bagian modul, lalu tandai selesai untuk membuka kartu hafalan."
+        aksiLabel="Baca Modul"
+        aksiKe={`/materi/${slug}`}
+        tahap={statusSemuaTahap(progresModul)}
+      />
     );
   }
 
@@ -204,7 +186,7 @@ export default function FlashcardPage() {
      ========================================================= */
 
   return (
-    <div className="container-base flex min-h-[calc(100dvh-3.5rem)] flex-col py-6">
+    <div className="container-base practice-session flex min-h-[calc(100dvh-3.5rem)] flex-col py-6">
       <HeaderSesi judul={judulModul} slug={slug} onKeluar={cobaKeluar} putaran={state.putaran} />
 
       <div className="mt-4">
@@ -316,7 +298,7 @@ function FlashcardSkeleton() {
       </div>
       <Skeleton className="mt-4 h-2 w-full" />
       <div className="mt-8 flex justify-center">
-        <Skeleton className="h-[min(420px,65dvh)] min-h-[320px] w-full max-w-[560px] rounded-xl" />
+        <Skeleton className="h-[min(420px,65dvh)] min-h-[320px] w-full max-w-[560px] rounded-md" />
       </div>
     </div>
   );

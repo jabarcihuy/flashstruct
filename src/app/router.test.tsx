@@ -3,7 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RootLayout } from '@/components/layout/RootLayout';
-import HomePage from '@/pages/HomePage';
+import { LandingLayout } from '@/components/layout/LandingLayout';
+import LandingPage from '@/pages/LandingPage';
 import DashboardPage from '@/pages/DashboardPage';
 import MateriPage from '@/pages/MateriPage';
 import ModulDetailPage from '@/pages/ModulDetailPage';
@@ -64,9 +65,12 @@ function renderRute(initialPath: string) {
     [
       {
         path: '/',
+        element: <LandingLayout />,
+        children: [{ index: true, element: <LandingPage /> }],
+      },
+      {
         element: <RootLayout />,
         children: [
-          { index: true, element: <HomePage /> },
           { path: 'dashboard', element: <DashboardPage /> },
           { path: 'materi', element: <MateriPage /> },
           { path: 'materi/:slug', element: <ModulDetailPage /> },
@@ -105,8 +109,18 @@ describe('routing', () => {
   it('merender Home di rute /', async () => {
     renderRute('/');
     expect(
-      await screen.findByRole('heading', { level: 1, name: /hafal dulu/i }),
+      await screen.findByRole('heading', { level: 1, name: /bisa menulis kodenya/i }),
     ).toBeInTheDocument();
+  });
+
+  it('memisahkan navigasi landing dari navigasi aplikasi', async () => {
+    renderRute('/');
+    expect(await screen.findByRole('navigation', { name: 'Navigasi landing' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Navigasi utama' })).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /buka aplikasi/i })).toHaveAttribute(
+      'href',
+      '/dashboard',
+    );
   });
 
   it('merender Dashboard di rute /dashboard', async () => {
@@ -175,7 +189,7 @@ describe('kerangka halaman', () => {
   });
 
   it('menyediakan navigasi utama', async () => {
-    renderRute('/');
+    renderRute('/dashboard');
     await screen.findByRole('heading', { level: 1 });
     const navs = screen.getAllByRole('navigation', { name: /navigasi utama/i });
     expect(navs.length).toBeGreaterThan(0);

@@ -26,7 +26,7 @@ export function PenilaianDiri({ onNilai, nonaktif = false }: PenilaianDiriProps)
         onClick={() => onNilai(false)}
         disabled={nonaktif}
         className={cn(
-          'flex h-14 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg',
+          'flex h-14 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md',
           'border-2 border-danger/40 bg-danger/10 font-semibold text-danger',
           'transition-colors duration-150 hover:bg-danger/20',
           'disabled:cursor-not-allowed disabled:opacity-50',
@@ -42,7 +42,7 @@ export function PenilaianDiri({ onNilai, nonaktif = false }: PenilaianDiriProps)
         onClick={() => onNilai(true)}
         disabled={nonaktif}
         className={cn(
-          'flex h-14 flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg',
+          'flex h-14 flex-1 cursor-pointer items-center justify-center gap-2 rounded-md',
           'border-2 border-success/40 bg-success/10 font-semibold text-success',
           'transition-colors duration-150 hover:bg-success/20',
           'disabled:cursor-not-allowed disabled:opacity-50',

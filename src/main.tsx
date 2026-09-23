@@ -13,6 +13,8 @@ import './styles/global.css';
  * yang menanganinya, dan itu bekerja.
  */
 import './styles/redesign.css';
+import './styles/pages.css';
+import './styles/landing.css';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) throw new Error('Elemen #root tidak ditemukan di index.html');

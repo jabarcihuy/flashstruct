@@ -140,11 +140,13 @@ samp {
   border-radius: var(--radius-sm);
 }
 
-/* Link memiliki token sendiri agar tetap terbaca pada semua permukaan. */
-a {
-  color: var(--link);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+@layer base {
+  /* Link memiliki token sendiri agar tetap terbaca pada semua permukaan. */
+  a {
+    color: var(--link);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
 }
 
 /* =========================================================

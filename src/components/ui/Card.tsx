@@ -4,7 +4,7 @@ import { cn } from '@/lib/cn';
 /** Kartu dasar — dipakai di seluruh aplikasi */
 export function Card({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn('rounded-lg border border-border bg-surface', className)}>{children}</div>
+    <div className={cn('rounded-md border border-border bg-surface', className)}>{children}</div>
   );
 }
 
@@ -22,7 +22,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
+        'inline-flex w-fit items-center rounded-sm px-2.5 py-0.5 text-xs font-semibold',
         'tracking-normal',
         className,
       )}

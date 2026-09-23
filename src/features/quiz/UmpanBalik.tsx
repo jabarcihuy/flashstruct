@@ -2,6 +2,7 @@ import { Check, Info, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { SoalDenganOpsi } from '@/types/database';
 import { opsiBenar } from './sesi';
+import { barisKonten } from '@/lib/format';
 
 /**
  * Umpan balik setelah menjawab soal.
@@ -34,7 +35,7 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
       role="status"
       aria-live="polite"
       className={cn(
-        'rounded-lg border-2 p-4 sm:p-5',
+        'rounded-md border-2 p-4 sm:p-5',
         betul ? 'border-success bg-success/5' : 'border-danger bg-danger/5',
       )}
     >
@@ -69,7 +70,9 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
           <Info className="size-3.5" aria-hidden="true" />
           Penjelasan
         </p>
-        <p className="whitespace-pre-wrap text-sm leading-relaxed text-fg">{soal.penjelasan}</p>
+        <p className="whitespace-pre-wrap text-sm leading-relaxed text-fg">
+          {barisKonten(soal.penjelasan)}
+        </p>
       </div>
 
       {/* Tombol lanjut */}
@@ -77,7 +80,7 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
         type="button"
         onClick={onLanjut}
         className={cn(
-          'mt-5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg',
+          'mt-5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-md',
           'bg-primary text-base font-medium text-on-primary',
           'transition-opacity duration-150 hover:opacity-90',
         )}

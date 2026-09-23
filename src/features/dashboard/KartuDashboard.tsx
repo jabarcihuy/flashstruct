@@ -68,7 +68,7 @@ export function KartuSemuaSelesai({
     <Card className="border-success/40 bg-success/5 p-5 sm:p-6">
       <div className="flex items-start gap-4">
         <div
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-success/15"
+          className="flex size-11 shrink-0 items-center justify-center rounded-md bg-success/15"
           aria-hidden="true"
         >
           <Check className="size-5 text-success" />
@@ -87,7 +87,7 @@ export function KartuSemuaSelesai({
           </p>
 
           {modulTerlemah && (
-            <div className="mt-4 rounded-lg border border-border bg-surface p-3">
+            <div className="mt-4 border-t border-border pt-3">
               <p className="text-sm text-fg">
                 <span className="font-medium">Akurasi terendah: </span>
                 {modulTerlemah.judul} ({modulTerlemah.akurasi}%)

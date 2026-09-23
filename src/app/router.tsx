@@ -1,12 +1,13 @@
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { RootLayout } from '@/components/layout/RootLayout';
+import { LandingLayout } from '@/components/layout/LandingLayout';
 
 /**
  * Semua halaman dimuat lazy agar bundle awal tetap kecil.
  * Target: < 200 KB gzip untuk bundle awal (docs/README.md §Standar Kualitas).
  */
-const HomePage = lazy(() => import('@/pages/HomePage'));
+const LandingPage = lazy(() => import('@/pages/LandingPage'));
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const MateriPage = lazy(() => import('@/pages/MateriPage'));
 const ModulDetailPage = lazy(() => import('@/pages/ModulDetailPage'));
@@ -31,9 +32,12 @@ const DemoPage = import.meta.env.DEV ? lazy(() => import('@/pages/DemoPage')) : 
 export const router = createBrowserRouter([
   {
     path: '/',
+    element: <LandingLayout />,
+    children: [{ index: true, element: <LandingPage /> }],
+  },
+  {
     element: <RootLayout />,
     children: [
-      { index: true, element: <HomePage /> },
       { path: 'dashboard', element: <DashboardPage /> },
       { path: 'materi', element: <MateriPage /> },
       { path: 'materi/:slug', element: <ModulDetailPage /> },

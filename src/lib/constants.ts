@@ -27,6 +27,9 @@ export const AMBANG_TOPIK_CUKUP = 80;
 export const KUNCI_PROGRES = 'flashstruct:progres:v1';
 export const KUNCI_TEMA = 'flashstruct:tema';
 
+/** ID placeholder pada seed lama; bukan video pembelajaran yang sesuai judulnya. */
+export const YOUTUBE_ID_VIDEO_CONTOH = 'dQw4w9WgXcQ';
+
 /** Batas nilai streak agar tidak menampilkan angka aneh */
 export const MAKS_STREAK = 999;
 

@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
-import { BookOpen, PlayCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, PlayCircle } from 'lucide-react';
 import { Card, Badge, PageHeader } from '@/components/ui/Card';
-import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
+import { ErrorState, Skeleton } from '@/components/ui/States';
 import { useSemuaVideo } from '@/features/video/hooks';
 import { VideoPlayer } from '@/features/video/VideoPlayer';
-import { LABEL_TOPIK } from '@/lib/constants';
+import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { durasi } from '@/lib/format';
 import { useState } from 'react';
 import type { TopikModul, VideoDenganModul } from '@/types/database';
@@ -21,12 +21,13 @@ export default function VideoPage() {
   useJudulHalaman('Video');
   const { data: daftarVideo, isPending, isError, error, refetch } = useSemuaVideo();
   const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
+  const videoTayang = daftarVideo?.filter((video) => video.youtube_id !== YOUTUBE_ID_VIDEO_CONTOH);
 
   if (isPending) return <VideoSkeleton />;
 
   if (isError) {
     return (
-      <div className="container-base py-8">
+      <div className="container-base video-page py-8">
         <PageHeader
           judul="Video"
           deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan"
@@ -44,40 +45,62 @@ export default function VideoPage() {
   }
 
   // Halaman kosong harus JUJUR dan mengarahkan, bukan sekadar "Belum ada data"
-  if (!daftarVideo || daftarVideo.length === 0) {
+  if (!videoTayang || videoTayang.length === 0) {
     return (
       <div className="container-base py-8">
         <PageHeader
           judul="Video"
           deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan"
         />
-        <EmptyState
-          ikon={<PlayCircle className="size-12" strokeWidth={1.5} />}
-          judul="Video sedang disiapkan"
-          pesan="Untuk saat ini, semua konsep sudah dijelaskan lengkap di halaman Materi. Video hanya pendukung, dan tidak wajib untuk menyelesaikan tahap belajar."
-          aksi={
-            <Link to="/materi" className="inline-flex no-underline">
-              <span className="inline-flex h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-on-primary md:h-10">
-                <BookOpen className="size-4" aria-hidden="true" />
-                Buka Halaman Materi
-              </span>
+        <section className="video-empty">
+          <div className="video-empty-copy">
+            <PlayCircle className="size-8 text-link" strokeWidth={1.5} aria-hidden="true" />
+            <h2>Video sedang disiapkan</h2>
+            <p>
+              Untuk saat ini, semua konsep sudah dijelaskan lengkap di halaman Materi. Video hanya
+              pendukung, dan tidak wajib untuk menyelesaikan tahap belajar.
+            </p>
+            <Link to="/materi" className="video-empty-action">
+              <BookOpen className="size-4" aria-hidden="true" />
+              Buka Halaman Materi
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
-          }
-        />
+          </div>
+          <div className="video-empty-path">
+            <h3>Belajar tetap bisa lanjut</h3>
+            <ol>
+              <li>
+                <span>1</span>
+                <strong>Pahami</strong>
+                <small>Baca modul dan contoh kodenya.</small>
+              </li>
+              <li>
+                <span>2</span>
+                <strong>Hafalkan</strong>
+                <small>Ulangi konsep lewat flashcard.</small>
+              </li>
+              <li>
+                <span>3</span>
+                <strong>Buktikan</strong>
+                <small>Kerjakan quiz untuk mengecek pemahaman.</small>
+              </li>
+            </ol>
+          </div>
+        </section>
       </div>
     );
   }
 
   // Kelompokkan per topik modul
   const perTopik = new Map<TopikModul, VideoDenganModul[]>();
-  for (const v of daftarVideo) {
+  for (const v of videoTayang) {
     const daftar = perTopik.get(v.modul.topik) ?? [];
     daftar.push(v);
     perTopik.set(v.modul.topik, daftar);
   }
 
   return (
-    <div className="container-base py-8">
+    <div className="container-base video-page py-8">
       <PageHeader judul="Video" deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan" />
 
       <div className="space-y-10">
@@ -107,7 +130,7 @@ function KartuVideo({ video, onPutar }: { video: VideoDenganModul; onPutar: () =
   const warnaTopik = `var(--topik-${video.modul.topik})`;
 
   return (
-    <Card className="flex flex-col overflow-hidden">
+    <Card className="video-card flex flex-col overflow-hidden">
       <button
         type="button"
         onClick={onPutar}
@@ -162,7 +185,7 @@ function VideoSkeleton() {
         <Skeleton className="mb-4 h-6 w-24" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="overflow-hidden rounded-lg border border-border">
+            <div key={i} className="overflow-hidden rounded-md border border-border">
               <Skeleton className="aspect-video w-full rounded-none" />
               <div className="p-4">
                 <Skeleton className="h-5 w-16" />

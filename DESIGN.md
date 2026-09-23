@@ -120,17 +120,17 @@ components:
   card:
     backgroundColor: '{colors.surface}'
     textColor: '{colors.fg}'
-    rounded: '{rounded.lg}'
+    rounded: '{rounded.md}'
     padding: '23px 23px 28px'
   badge:
     backgroundColor: 'transparent'
     textColor: '{colors.topik-array}'
-    rounded: '{rounded.full}'
+    rounded: '{rounded.sm}'
     padding: '2px 10px'
   chip-stage-number:
     backgroundColor: '{colors.surface-raised}'
     textColor: '{colors.fg}'
-    rounded: '{rounded.full}'
+    rounded: '{rounded.md}'
     size: '32px'
 ---
 
@@ -141,7 +141,7 @@ components:
 **Creative North Star: "Ruang Belajar yang Tenang"**
 
 FlashStruct adalah aplikasi belajar struktur data dengan tiga tahap berurutan
-(Pahami, Hafalkan, Buktikan). Bahasanya visualnya tertahan: latar putih, teks
+(Pahami, Hafalkan, Buktikan). Bahasa visualnya tertahan: latar putih, teks
 navy gelap, biru hanya untuk aksi dan penanda aktif, border tipis satu piksel,
 radius sedang. Tidak ada dekorasi yang bersaing dengan materi — kartu,
 tabel, dan blok kode tampil datar di atas permukaan putih.
@@ -160,7 +160,7 @@ di nama tahapnya. Lihat `src/components/ui/LearningStages.tsx`.
 
 - Latar putih, teks navy gelap, biru tertahan untuk aksi.
 - Border tipis satu piksel sebagai pemisah utama, bukan bayangan.
-- Radius sedang (5–14px); pil penuh hanya untuk badge dan nomor tahap.
+- Sudut tegas (5–7px) pada kartu, label topik, dan nomor tahap; pil hanya pada trek progres.
 - Satu keluarga font untuk UI dan heading (Encode Sans), mono untuk kode.
 - Datar secara default; bayangan hanya untuk dialog/lapisan mengambang.
 
@@ -268,13 +268,47 @@ untuk deskripsi sepanjang apa pun.
 
 Responsif: di ≤1100px padding dan kolom menyempit; di ≤767px semuanya
 menjadi satu kolom — ringkasan menjadi baris label-kiri/angka-kanan,
-modul menjadi kartu wrap, footer disembunyikan karena bottom nav sudah
-mengambil alih. Header 62px (64px mobile) dengan tautan nav 40px; footer
-hanya desktop. Safe-area notch dihormati (`viewport-fit=cover`); konten
+modul menjadi kartu wrap, footer kerangka aplikasi disembunyikan karena bottom nav sudah
+mengambil alih. Header aplikasi 62px (64px mobile) dengan tautan nav 40px;
+footer kerangka aplikasi hanya desktop. Landing pada `/` memakai header dan footer
+publik sendiri tanpa bottom nav; halaman belajar dimulai di `/dashboard`.
+Header publik tetap terlihat saat menggulir, menyediakan jangkar Cara belajar dan
+Kurikulum serta tautan Buka aplikasi. Hero memakai dua kolom (janji belajar dan
+demo kode) hingga 680px, lalu menumpuk; bagian berikutnya memakai baris terbuka
+untuk tiga tahap dan kurikulum. Area materi dan kuis tetap berada dalam kerangka
+aplikasi.
+Safe-area notch dihormati (`viewport-fit=cover`); konten
 mobile diberi ruang gesture bar.
 
 Ritme spacing mengikuti skala `--space-*` (0.25 / 0.5 / 0.75 / 1 / 1.5 /
 2 / 3 / 4rem).
+
+### Komposisi Halaman
+
+- **Landing:** halaman publik di `/` membuka dengan tantangan menjelaskan hasil kode,
+  demo C++ Array dengan pilihan 30/40/50, lalu urutan Pahami → Hafalkan → Buktikan,
+  daftar topik, CTA penutup, dan footer publik. Setelah satu jawaban dipilih, sel indeks
+  3 disorot dan penjelasan hasil 40 muncul. Satu timeline GSAP menggerakkan sel dan
+  umpan balik; saat `prefers-reduced-motion: reduce`, keduanya langsung tampil tanpa
+  animasi. CTA utama menuju `/materi/array-dasar` bila belum ada progres, atau
+  `/dashboard` bila progres modul sudah ada. Baris topik memakai judul modul pertama
+  dan hitungan modul dari `useDaftarModul`; judul fallback berasal dari modul pembuka
+  yang tercatat di kurikulum. Hitungan tidak ditampilkan sebelum data tersedia.
+- **Dashboard:** rekomendasi berikutnya tetap memimpin, diikuti ringkasan dan daftar modul.
+- **Materi:** kurikulum dikelompokkan per topik dengan baris modul, informasi durasi,
+  status tiga tahap, serta aksi berikutnya yang terlihat pada setiap baris.
+- **Pembaca modul:** daftar isi tetap di sisi kiri pada desktop dan tersedia sebagai drawer
+  pada mobile; lebar konten utama dibatasi agar paragraf, tabel, dan kode nyaman dibaca.
+- **Video:** jika belum ada video pembelajaran yang sah, halaman menjelaskan jalur belajar
+  lewat Materi. Video bersifat pendukung dan tidak memblokir progres.
+- **Soal:** daftar dikelompokkan per topik. Setiap modul menunjukkan Hafalkan dan Buktikan
+  dalam satu baris dengan alasan penguncian dan tautan untuk membaca modul.
+- **Flashcard dan Quiz:** sesi aktif menggunakan ruang fokus yang lebih sempit. Keadaan
+  terkunci memakai tata letak dua kolom: alasan dan aksi di kiri, urutan tiga tahap di kanan.
+  Di mobile kolom tahap berpindah ke bawah. Aksi utama menuju tahap yang sudah tersedia;
+  tautan kembali ke daftar soal tetap terlihat.
+
+Semua komposisi mengikuti sudut tegas, pemisah tipis, dan target sentuh mobile 44px.
 
 ## Elevation & Depth
 
@@ -298,11 +332,11 @@ ada di token tetapi cadangannya sempit.
 
 ## Shapes
 
-Bahasanya: sudut lembut sedang di mana-mana. Skala radius 5px (kecil:
-fokus, tombol salin) → 7px (sedang: tombol, kartu tahap, baris modul,
-blok kode) → 10px (besar: kartu) → 14px (sangat besar) → penuh (badge,
-nomor tahap, trek progres). Border selalu 1px (`--border`), 1.5–2px hanya
-untuk ikon status dan kutipan. Tidak ada border berwarna di sisi kartu,
+Bahasanya: sudut tegas dan konsisten. Skala radius 5px (label topik,
+fokus, tombol salin) → 7px (tombol, kartu, baris modul, blok kode,
+nomor tahap) → penuh hanya untuk trek progres. Token 10px dan 14px tetap
+tersedia bagi lapisan khusus seperti dialog. Border selalu 1px (`--border`), 1.5–2px hanya
+untuk ikon status dan kutipan. Tidak ada aksen border kiri/kanan pada kartu,
 tidak ada kliping dekoratif, tidak ada nomor section dekoratif.
 
 ## Components
@@ -327,14 +361,14 @@ permukaan putih dengan border tegas.
 
 ### Chips
 
-Badge pil penuh (9999px), teks 12px semibold, tint 6% dari warnanya sendiri
+Badge bersudut 5px, teks 12px semibold, tint 6% dari warnanya sendiri
 dengan border 28% (`color-mix`) — 6% adalah nilai tertinggi yang tetap
 lolos WCAG AA di semua kombinasi topik × permukaan × tema (terendah
 4.54:1; 14% gagal di 4.07:1). Lihat `Card.tsx`.
 
 ### Cards / Containers
 
-Sudut besar (10px), latar permukaan, border tipis, padding 23px/bawah 28px
+Sudut sedang (7px), latar permukaan, border tipis, padding 23px/bawah 28px
 (panel rekomendasi). Baris modul: sudut sedang (7px), min-tinggi 84px,
 hover mengangkat ke permukaan-raised dengan border tegas. Kutipan biasa:
 border-kiri 2px tegas-meredup + italic sekunder. Tidak ada border
@@ -352,8 +386,23 @@ Header sticky dengan border bawah: brand 27px/700/−0.045em, tautan nav
 600 dengan hover permukaan-raised, halaman aktif ditandai garis bawah
 2px primary + warna (tidak pernah warna saja). Mobile memakai bottom nav
 tetap (ikon + label 11px, garis atas untuk aktif); footer disembunyikan
-di mobile. Pengalih tema memutar terang → gelap → sistem (ikon
+di mobile untuk kerangka aplikasi. Pengalih tema memutar terang → gelap → sistem (ikon
 Sun/Moon/Monitor).
+
+Navigasi publik pada `/` berdiri sendiri: brand, jangkar Cara belajar/Kurikulum,
+pengalih tema, dan tautan Buka aplikasi. Pada lebar ≤680px, jangkar header
+disembunyikan; konten dan CTA tetap tersedia lewat halaman. Navigasi belajar,
+termasuk bottom nav mobile, dimulai di `/dashboard`.
+
+### Demo Landing (signature)
+
+Wadah datar dengan border 1px dan radius 7px memuat kode C++, lima sel memori,
+serta tiga tombol jawaban. Pilihan memakai `aria-pressed`; umpan balik memakai
+`role=status` dan menjelaskan bahwa `*(p + 3)` membaca nilai 40 di indeks 3.
+Sorotan biru memakai tint token primary, bukan warna baru. Gerak satu kali per
+jawaban memakai skala sel 0.9 → 1 selama 350ms lalu penjelasan naik 12px dan
+muncul selama 350ms, tumpang tindih 120ms. Reduced motion langsung menampilkan
+keadaan akhir. Tombol Coba lagi mengembalikan pilihan ke keadaan awal.
 
 ### Sel Tahap (signature)
 
@@ -364,17 +413,25 @@ sekunder. Status: tersedia = lingkaran primary; selesai = tint sukses
 label** (keputusan disengaja, berbeda dari comp) + teks "Selesaikan X
 untuk membuka." Perubahan status bertransisi 180ms. Varian ringkas
 menampilkan lingkaran + sr-only; indikator tiga tahap (Progress.tsx)
-memakai ikon cincang/centang/gembok dengan label teks wajib.
+memakai ikon centang/gembok dengan label teks wajib.
+
+### Gerbang Tahap (signature)
+
+Flashcard dan Quiz berbagi `StageGate`: ikon gembok netral, judul dan alasan
+prasyarat yang jelas, penjelasan singkat, aksi utama menuju tahap yang
+tersedia, serta aksi sekunder kembali ke Soal. Ringkasan urutan
+Pahami → Hafalkan → Buktikan terletak di kolom samping pada desktop dan
+di bawah pada mobile. Pemisahnya garis 1px, tanpa permukaan peringatan
+atau dekorasi yang membuat status terkunci terasa seperti kesalahan.
 
 ### Progres
 
 Bar linier 8px pil-penuh di atas trek permukaan-raised dengan isian
 primary + label "nilai / maks" tabular; ring SVG 96px dengan tutup bulat.
 Setiap indikator wajib punya label untuk pembaca layar (`role=progressbar`
-
-- `aria-label`). Angka statistik: 32px/700 tabular dengan label sekunder.
-  Progres tersimpan di `localStorage` (`flashstruct:progres:v1`) dengan
-  export/import/reset; penguncian 3 tahap dipertahankan.
+dan `aria-label`). Angka statistik: 32px/700 tabular dengan label sekunder.
+Progres tersimpan di `localStorage` (`flashstruct:progres:v1`) dengan
+export/import/reset; penguncian 3 tahap dipertahankan.
 
 ### Blok Kode (signature)
 

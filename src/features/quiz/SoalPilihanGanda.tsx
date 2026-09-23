@@ -3,6 +3,7 @@ import { cn } from '@/lib/cn';
 import { CodeBlock } from '@/components/code/CodeBlock';
 import type { SoalDenganOpsi } from '@/types/database';
 import { opsiBenar } from './sesi';
+import { barisKonten } from '@/lib/format';
 
 /**
  * Soal pilihan ganda (tipe PG, TRACE, dan ANALISIS).
@@ -35,22 +36,30 @@ interface SoalPilihanGandaProps {
 export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalPilihanGandaProps) {
   const benar = opsiBenar(soal);
   const opsi = soal.opsi_soal ?? [];
+  const kode = soal.kode ? barisKonten(soal.kode) : null;
+  const pertanyaan = barisKonten(soal.pertanyaan);
+  const teksPertanyaan =
+    kode && pertanyaan.startsWith(kode) ? pertanyaan.slice(kode.length).trim() : pertanyaan;
 
   return (
     <div>
       {/* Label tipe soal */}
-      <span className="inline-block rounded-full bg-surface-raised px-3 py-1 text-xs font-semibold uppercase tracking-wide text-fg-muted">
+      <span className="inline-block rounded-sm bg-surface-raised px-3 py-1 text-xs font-semibold uppercase tracking-wide text-fg-muted">
         {LABEL_TIPE[soal.tipe] ?? soal.tipe}
       </span>
 
       {/* Pertanyaan */}
-      <p className="mt-3 text-lg font-medium leading-relaxed text-fg">{soal.pertanyaan}</p>
+      {teksPertanyaan && (
+        <p className="mt-3 whitespace-pre-wrap text-lg font-medium leading-relaxed text-fg">
+          {teksPertanyaan}
+        </p>
+      )}
 
       {/* Blok kode — untuk soal TRACE dan ANALISIS */}
-      {soal.kode && (
+      {kode && (
         <div className="mt-4">
           <CodeBlock
-            kode={soal.kode}
+            kode={kode}
             bahasa={soal.bahasa_kode ?? undefined}
             nomorBaris
             className="my-0"
@@ -93,7 +102,7 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
               disabled={sudahDijawab}
               aria-pressed={iniDipilih}
               className={cn(
-                'flex w-full cursor-pointer items-start gap-3 rounded-lg border-2 p-4 text-left',
+                'flex w-full cursor-pointer items-start gap-3 rounded-md border-2 p-4 text-left',
                 'transition-colors duration-150',
                 'disabled:cursor-default',
                 gaya,
@@ -102,7 +111,7 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
               {/* Label opsi */}
               <span
                 className={cn(
-                  'flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-semibold',
+                  'flex size-7 shrink-0 items-center justify-center rounded-sm text-sm font-semibold',
                   iniDipilih || (sudahDijawab && iniBenar)
                     ? 'bg-fg text-bg'
                     : 'bg-surface-raised text-fg-muted',

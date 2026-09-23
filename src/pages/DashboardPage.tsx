@@ -114,7 +114,7 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className="dashboard-page container-wide">
+    <div className="dashboard-page container-base">
       <PageHeader
         judul="Lanjutkan belajarmu"
         deskripsi="Bangun pemahaman Struktur Data secara bertahap dan konsisten."
@@ -159,8 +159,7 @@ export default function DashboardPage() {
       {/* Daftar modul */}
       <section className="dashboard-modules">
         <div className="module-list-heading">
-          {/* Ukuran dari comp: cap height 16,7px -> font 23px (spec.json region list-title) */}
-          <h2 className="font-heading text-[23px] font-bold text-fg">Daftar Modul</h2>
+          <h2 className="font-heading text-title font-bold text-fg">Daftar Modul</h2>
 
           {/* Filter topik — tombol, bukan dropdown, karena hanya 4 pilihan */}
           <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter topik">

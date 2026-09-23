@@ -55,7 +55,7 @@ export function HasilQuiz({
         {/* Status lulus */}
         <div
           className={cn(
-            'mx-auto mt-4 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold',
+            'mx-auto mt-4 inline-flex items-center gap-2 rounded-sm px-4 py-1.5 text-sm font-semibold',
             hasil.lulus ? 'bg-success/15 text-success' : 'bg-surface-raised text-fg-muted',
           )}
         >
@@ -98,7 +98,7 @@ export function HasilQuiz({
 
         {/* Saran untuk topik lemah */}
         {topikLemah.length > 0 && (
-          <div className="mt-5 rounded-lg border border-danger/30 bg-danger/5 p-4">
+          <div className="mt-5 rounded-md border border-danger/30 bg-danger/5 p-4">
             <p className="text-sm font-semibold text-fg">
               Perlu diulang: {topikLemah.map((t) => LABEL_TIPE_KARTU[t.cardType]).join(', ')}
             </p>

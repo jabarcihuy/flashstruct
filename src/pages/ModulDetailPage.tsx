@@ -9,7 +9,7 @@ import { useProgres } from '@/features/progres/context';
 import { useProgresBaca } from '@/features/materi/useProgresBaca';
 import { SidebarDaftarIsi, TombolDaftarIsiMobile } from '@/features/materi/DaftarIsi';
 import { PanelLanjut } from '@/features/materi/PanelLanjut';
-import { LABEL_TOPIK } from '@/lib/constants';
+import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { urutkan } from '@/lib/format';
 
 /**
@@ -94,10 +94,10 @@ export default function ModulDetailPage() {
   }
 
   const warnaTopik = `var(--topik-${modul.topik})`;
-  const video = urutkan(modul.video);
+  const video = urutkan(modul.video).filter((v) => v.youtube_id !== YOUTUBE_ID_VIDEO_CONTOH);
 
   return (
-    <div className="container-base py-8">
+    <div className="container-base reader-page py-8">
       {/* Header modul */}
       <Link
         to="/materi"
@@ -107,22 +107,14 @@ export default function ModulDetailPage() {
         Kembali ke daftar materi
       </Link>
 
-      <div className="flex items-start gap-4">
-        <span
-          className="mt-1.5 h-12 w-1 shrink-0 rounded-full"
-          style={{ backgroundColor: warnaTopik }}
-          aria-hidden="true"
+      <div className="reader-heading">
+        <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
+        <PageHeader
+          judul={modul.judul}
+          deskripsi={`${modul.estimasi_menit} menit baca · ${bagian.length} bagian${video.length > 0 ? ` · ${video.length} video` : ''}`}
         />
-        <div className="min-w-0 flex-1">
-          <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
-          <PageHeader
-            judul={modul.judul}
-            deskripsi={`${modul.estimasi_menit} menit baca · ${bagian.length} bagian${video.length > 0 ? ` · ${video.length} video` : ''}`}
-          />
-        </div>
+        <p className="reader-intro text-fg-muted">{modul.deskripsi}</p>
       </div>
-
-      <p className="mb-8 text-fg-muted">{modul.deskripsi}</p>
 
       {/* Tombol daftar isi untuk MOBILE saja.
           Sidebar desktop dirender terpisah di dalam layout flex di bawah,
@@ -139,9 +131,9 @@ export default function ModulDetailPage() {
       )}
 
       {/* Isi modul — dua kolom di desktop, satu kolom di mobile */}
-      <div className="lg:flex lg:gap-10">
+      <div className="reader-layout lg:flex lg:gap-10">
         {bagian.length > 0 && (
-          <div className="hidden lg:block lg:w-60 lg:shrink-0">
+          <div className="reader-sidebar hidden lg:block lg:w-60 lg:shrink-0">
             <SidebarDaftarIsi
               bagian={bagian}
               bagianDibaca={bagianDibaca}
@@ -151,13 +143,13 @@ export default function ModulDetailPage() {
           </div>
         )}
 
-        <div className="min-w-0 flex-1">
+        <div className="reader-body min-w-0 flex-1">
           {bagian.map((b) => (
             <article
               key={b.id}
               id={b.slug}
               data-bagian-slug={b.slug}
-              className="scroll-mt-20 border-b border-border py-8 first:pt-0 last:border-0"
+              className="reader-section scroll-mt-20 border-b border-border py-8 first:pt-0 last:border-0"
             >
               <h2 className="mb-4 font-heading text-2xl font-semibold text-fg">{b.judul}</h2>
               <MarkdownRenderer konten={b.konten_md} />

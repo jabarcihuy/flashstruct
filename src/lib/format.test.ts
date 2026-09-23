@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { durasi, kunciTanggal, persen, selisihHari, urutkan, acak } from './format';
+import { durasi, kunciTanggal, persen, selisihHari, urutkan, acak, barisKonten } from './format';
+
+describe('barisKonten', () => {
+  it('menampilkan pemisah baris dari seed lama tanpa merusak escape dalam string kode', () => {
+    expect(barisKonten('int arr[5];\\narr[5] = 100;')).toBe('int arr[5];\narr[5] = 100;');
+    expect(barisKonten('cout << "\\n";\\nreturn 0;')).toBe('cout << "\\n";\nreturn 0;');
+  });
+});
 
 describe('persen', () => {
   it('membulatkan ke bilangan bulat', () => {

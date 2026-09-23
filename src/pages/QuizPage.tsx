@@ -1,9 +1,9 @@
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ClipboardCheck, Lock } from 'lucide-react';
+import { ArrowLeft, ClipboardCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
+import { StageGate } from '@/components/ui/StageGate';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
 import { Dialog } from '@/components/ui/Dialog';
 import { ProgressBar } from '@/components/ui/Progress';
@@ -13,7 +13,7 @@ import { UmpanBalik } from '@/features/quiz/UmpanBalik';
 import { HasilQuiz } from '@/features/quiz/HasilQuiz';
 import { useDaftarModul } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
-import { alasanTerkunci, statusTahap } from '@/features/progres/aturan';
+import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progres/aturan';
 
 /**
  * Halaman sesi quiz — Tahap 3 (Buktikan).
@@ -100,39 +100,19 @@ export default function QuizPage() {
 
   if (statusTahap3 === 'terkunci') {
     return (
-      <div className="container-narrow py-12">
-        <Card className="border-dashed p-6 text-center sm:p-8">
-          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-surface-raised">
-            <Lock className="size-6 text-fg-muted" aria-hidden="true" />
-          </div>
-
-          <h1 className="font-heading text-xl font-semibold text-fg">Quiz masih terkunci</h1>
-
-          <p className="mx-auto mt-3 max-w-md text-sm text-fg-muted">
-            {modul ? (
-              <>
-                <strong className="text-fg">{modul.judul}</strong> — {alasanTerkunci(3)}
-              </>
-            ) : (
-              'Modul tidak ditemukan.'
-            )}
-          </p>
-
-          <p className="mx-auto mt-2 max-w-md text-xs text-fg-muted">
-            Kamu membuka halaman ini lewat tautan langsung. Untuk membukanya, kuasai dulu semua
-            kartu di tahap menghafal.
-          </p>
-
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <Link to={`/soal/flashcard/${slug}`} className="inline-flex no-underline">
-              <Button>Mulai Flashcard</Button>
-            </Link>
-            <Link to="/soal" className="inline-flex no-underline">
-              <Button varian="secondary">Kembali ke Soal</Button>
-            </Link>
-          </div>
-        </Card>
-      </div>
+      <StageGate
+        judul="Quiz masih terkunci"
+        modulJudul={modul?.judul}
+        alasan={modul ? alasanTerkunci(3) : 'Modul tidak ditemukan.'}
+        penjelasan="Kuasai semua kartu di tahap menghafal sebelum mengerjakan quiz. Kartu yang lupa dapat diulang sampai siap."
+        aksiLabel={statusTahap(progresModul, 2) === 'terkunci' ? 'Baca Modul' : 'Mulai Flashcard'}
+        aksiKe={
+          statusTahap(progresModul, 2) === 'terkunci'
+            ? `/materi/${slug}`
+            : `/soal/flashcard/${slug}`
+        }
+        tahap={statusSemuaTahap(progresModul)}
+      />
     );
   }
 
@@ -187,7 +167,7 @@ export default function QuizPage() {
   const jawabanDipilih = soal ? state.jawaban[soal.id] : undefined;
 
   return (
-    <div className="container-narrow py-6">
+    <div className="container-narrow practice-session py-6">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <Link

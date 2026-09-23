@@ -40,7 +40,7 @@ export function Header() {
         <NavLink
           to="/"
           className="site-brand inline-flex items-center font-heading font-bold text-fg no-underline"
-          aria-label="FlashStruct — ke beranda"
+          aria-label="FlashStruct — ke halaman depan"
         >
           FlashStruct
         </NavLink>

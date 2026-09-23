@@ -3,6 +3,7 @@ import { cn } from '@/lib/cn';
 import { CodeBlock } from '@/components/code/CodeBlock';
 import { Badge } from '@/components/ui/Card';
 import { LABEL_TIPE_KARTU, LABEL_TOPIK } from '@/lib/constants';
+import { barisKonten } from '@/lib/format';
 import type { KartuDenganModul, TopikModul } from '@/types/database';
 
 /**
@@ -57,7 +58,7 @@ export function Flashcard({
         <div
           className={cn(
             'flashcard-face flashcard-front absolute inset-0 flex flex-col',
-            'rounded-xl border border-border bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8',
+            'rounded-md border border-border bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8',
           )}
         >
           <KepalaKartu
@@ -70,8 +71,8 @@ export function Flashcard({
 
           {/* Pertanyaan — bisa di-scroll kalau panjang */}
           <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto py-4">
-            <p className="text-center text-xl font-semibold leading-snug text-fg sm:text-2xl">
-              {kartu.depan}
+            <p className="whitespace-pre-wrap text-center text-xl font-semibold leading-snug text-fg sm:text-2xl">
+              {barisKonten(kartu.depan)}
             </p>
           </div>
 
@@ -81,7 +82,7 @@ export function Flashcard({
             onClick={onBalik}
             className={cn(
               'mt-4 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2',
-              'rounded-lg border border-border-strong bg-surface-raised',
+              'rounded-md border border-border-strong bg-surface-raised',
               'text-sm font-medium text-fg transition-colors duration-150',
               'hover:bg-surface',
             )}
@@ -96,7 +97,7 @@ export function Flashcard({
         <div
           className={cn(
             'flashcard-face flashcard-back absolute inset-0 flex flex-col',
-            'rounded-xl border border-border bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8',
+            'rounded-md border border-border bg-surface p-6 shadow-[var(--shadow-md)] sm:p-8',
           )}
         >
           <KepalaKartu
@@ -110,14 +111,14 @@ export function Flashcard({
           {/* Jawaban — bisa di-scroll */}
           <div className="flex min-h-0 flex-1 flex-col overflow-y-auto py-4">
             <p className="whitespace-pre-wrap text-base leading-relaxed text-fg sm:text-lg">
-              {kartu.belakang}
+              {barisKonten(kartu.belakang)}
             </p>
 
             {/* Blok kode kalau kartu punya kode */}
             {kartu.kode && (
               <div className="mt-3">
                 <CodeBlock
-                  kode={kartu.kode}
+                  kode={barisKonten(kartu.kode)}
                   bahasa={kartu.bahasa_kode ?? undefined}
                   className="my-0"
                 />

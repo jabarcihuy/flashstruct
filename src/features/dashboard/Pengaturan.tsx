@@ -127,7 +127,7 @@ export function Pengaturan() {
 
           <label
             className={cn(
-              'inline-flex h-9 cursor-pointer items-center gap-2 rounded-md border border-border-strong px-3 text-sm',
+              'inline-flex h-11 md:h-9 cursor-pointer items-center gap-2 rounded-md border border-border-strong px-3 text-sm',
               'text-fg transition-colors duration-150 hover:bg-surface',
             )}
           >

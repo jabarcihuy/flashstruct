@@ -19,6 +19,30 @@ export function durasi(detik: number): string {
   return `${menit}:${String(sisaDetik).padStart(2, '0')}`;
 }
 
+/** Konten seed lama menyimpan pemisah baris sebagai teks `\\n`. */
+export function barisKonten(isi: string): string {
+  let hasil = '';
+  let kutip: '"' | "'" | null = null;
+
+  for (let i = 0; i < isi.length; i++) {
+    const karakter = isi[i];
+    const berikutnya = isi[i + 1];
+
+    if (karakter === '\\' && berikutnya === 'n' && !kutip) {
+      hasil += '\n';
+      i++;
+    } else if (karakter === '\\' && kutip && berikutnya) {
+      hasil += karakter + berikutnya;
+      i++;
+    } else {
+      if (karakter === '"' || karakter === "'") kutip = kutip === karakter ? null : karakter;
+      hasil += karakter;
+    }
+  }
+
+  return hasil;
+}
+
 /** Format tanggal Indonesia: "21 September 2026" */
 export function tanggal(epochMs: number): string {
   return new Intl.DateTimeFormat('id-ID', {
