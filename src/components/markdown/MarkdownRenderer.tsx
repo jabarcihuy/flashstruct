@@ -1,4 +1,4 @@
-import { Children, isValidElement, type ReactNode } from 'react';
+import { Children, cloneElement, isValidElement, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { CodeBlock } from '@/components/code/CodeBlock';
@@ -126,32 +126,43 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
 
           /* ---------- Kutipan dan callout ---------- */
           blockquote: ({ children }) => {
-            /*
-             * Deteksi callout.
-             *
-             * Sintaks yang didukung:
-             *   > [!INFO]
-             *   > isi pesan
-             *
-             * react-markdown mengubahnya menjadi blockquote yang berisi
-             * satu atau lebih paragraf. Penanda [!TIPE] bisa berada:
-             *   a) di paragraf yang sama dengan isinya
-             *   b) di paragraf terpisah (karena baris baru setelah penanda)
-             *
-             * Keduanya harus ditangani.
-             */
             const anakArray = Children.toArray(children);
-
-            // Kumpulkan seluruh teks dari blockquote
             const teksLengkap = teksDari(anakArray);
 
             const cocok = /^\s*\[!(\w+)\]\s*/.exec(teksLengkap);
             if (cocok) {
               const tipe = tipeDariPenanda(cocok[1] ?? '');
               if (tipe) {
-                // Buang penanda dari teks, lalu render sisanya
-                const sisaTeks = teksLengkap.replace(cocok[0], '').trim();
-                return <Callout tipe={tipe}>{sisaTeks ? <p>{sisaTeks}</p> : null}</Callout>;
+                // Bersihkan penanda [!TIPE] dari node teks pertama sambil
+                // mempertahankan elemen React anak (kode, bold, list, dsb.)
+                let penandaDihapus = false;
+
+                function bersihkanNode(node: ReactNode): ReactNode {
+                  if (penandaDihapus) return node;
+
+                  if (typeof node === 'string') {
+                    const match = /^\s*\[!\w+\]\s*/.exec(node);
+                    if (match) {
+                      penandaDihapus = true;
+                      return node.slice(match[0].length);
+                    }
+                    return node;
+                  }
+
+                  if (isValidElement<{ children?: ReactNode }>(node)) {
+                    const anakBersih = bersihkanNode(node.props.children);
+                    return cloneElement(node, {}, anakBersih);
+                  }
+
+                  if (Array.isArray(node)) {
+                    return node.map((item) => bersihkanNode(item));
+                  }
+
+                  return node;
+                }
+
+                const anakBersih = anakArray.map((anak) => bersihkanNode(anak));
+                return <Callout tipe={tipe}>{anakBersih}</Callout>;
               }
             }
 

@@ -55,17 +55,34 @@ Total **10 modul**: 3 Array, 3 Struct, 4 Pointer.
 
 | Slug | Topik | Judul Modul | Bagian | Kartu | Soal | Estimasi |
 |------|-------|-------------|--------|-------|------|----------|
-| `array-dasar` | Array | Dasar Array & Indeks | 5 | 20 | 18 | 12 mnt |
-| `array-multidimensi` | Array | Array Multidimensi | 4 | 16 | 15 | 10 mnt |
-| `array-dinamis` | Array | Array Dinamis: `vector` & `list` | 5 | 20 | 18 | 14 mnt |
-| `struct-dasar` | Struct | Mendefinisikan Struct | 4 | 18 | 16 | 11 mnt |
-| `struct-nested` | Struct | Nested Struct & Array of Struct | 5 | 20 | 18 | 13 mnt |
-| `struct-memori` | Struct | Padding, Alignment & `sizeof` | 5 | 22 | 20 | 16 mnt |
-| `pointer-dasar` | Pointer | Dasar Pointer & Alamat Memori | 6 | 24 | 20 | 16 mnt |
-| `pointer-array` | Pointer | Pointer & Array: Aritmetika Pointer | 5 | 22 | 20 | 15 mnt |
-| `pointer-struct` | Pointer | Pointer ke Struct & Arrow Operator | 4 | 18 | 16 | 12 mnt |
-| `pointer-dinamis` | Pointer | Alokasi Memori Dinamis | 6 | 26 | 22 | 18 mnt |
-| | | **TOTAL** | **49** | **206** | **183** | **± 137 mnt** |
+| `array-dasar` | Array | Dasar Array & Indeks | 5 | 10 | 10 | 12 mnt |
+| `array-multidimensi` | Array | Array Multidimensi | 4 | 10 | 10 | 10 mnt |
+| `array-dinamis` | Array | Array Dinamis: `vector` & `list` | 5 | 10 | 10 | 14 mnt |
+| `struct-dasar` | Struct | Mendefinisikan Struct | 4 | 10 | 10 | 11 mnt |
+| `struct-nested` | Struct | Nested Struct & Array of Struct | 5 | 10 | 10 | 13 mnt |
+| `struct-memori` | Struct | Padding, Alignment & `sizeof` | 5 | 10 | 10 | 16 mnt |
+| `pointer-dasar` | Pointer | Dasar Pointer & Alamat Memori | 6 | 10 | 10 | 16 mnt |
+| `pointer-array` | Pointer | Pointer & Array: Aritmetika Pointer | 5 | 10 | 10 | 15 mnt |
+| `pointer-struct` | Pointer | Pointer ke Struct & Arrow Operator | 4 | 10 | 10 | 12 mnt |
+| `pointer-dinamis` | Pointer | Alokasi Memori Dinamis | 6 | 10 | 10 | 18 mnt |
+| | | **TOTAL** | **49** | **100** | **100** | **± 137 mnt** |
+
+### 2.1 Daftar Video Pembelajaran Pendukung
+
+Setiap modul dilengkapi video tutorial C++ (Bahasa Indonesia oleh Kelas Terbuka) yang dapat ditonton langsung via modal pemutar tersemat di halaman Video (`/video`) maupun pada bagian Video Pendukung di halaman baca modul (`/materi/:slug`):
+
+| No | Modul | YouTube ID | Judul Video | Durasi |
+|:--:|---|---|---|:--:|
+| 1 | `array-dasar` | `8WhUADLI4RQ` | Belajar C++ [Dasar] - 42 - Pendahuluan Array | 17:13 |
+| 2 | `array-multidimensi` | `-hsKUD4fVRE` | Belajar C++ [Dasar] - 46 - Multidimensi Array \| Built-in | 09:54 |
+| 3 | `array-dinamis` | `o1DegduG140` | Belajar C++ [Dasar] - 43 - Array \|\| Standard Library | 08:55 |
+| 4 | `struct-dasar` | `ELCI_U4OF5w` | Belajar C++ [Dasar] - 56 - Struct | 09:55 |
+| 5 | `struct-nested` | `b2N3_dA8VBU` | Belajar C++ [Dasar] - 57 - Nesting Struct | 10:40 |
+| 6 | `struct-memori` | `4wWobjVejnU` | Belajar C++ [OOP] - 08 - Memory dan Address dari Object | 27:34 |
+| 7 | `pointer-dasar` | `O1kWNj5Ikro` | Belajar C++ [Dasar] - 38 - Pointer | 14:33 |
+| 8 | `pointer-array` | `ah8RcGXoK5A` | Belajar C++ [Dasar] - 40 - Fungsi dengan Pointer | 09:20 |
+| 9 | `pointer-struct` | `9C03NT254rA` | Belajar C++ [OOP] - 20 - This & Cascading Function Calls | 18:50 |
+| 10 | `pointer-dinamis` | `LaFxsl8rhTs` | Belajar C++ [OOP] - 07 - Berbagai cara membuat Object | 14:56 |
 
 ---
 
@@ -751,8 +768,8 @@ Sebelum konten dianggap final, lakukan validasi berikut:
 |------|--------|
 | Modul | 10 |
 | Bagian modul | 49 |
-| Flashcard | ± 206 |
-| Soal quiz | ± 183 |
+| Flashcard | 100 (10 per modul) |
+| Soal quiz | 100 (10 per modul) |
 | Video (ideal) | 18 |
 | Video (minimum v1) | 3 |
 | Estimasi waktu baca total | ± 137 menit |

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ExternalLink, PlayCircle } from 'lucide-react';
 import { PageHeader, Badge, Card } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
 import { MarkdownRenderer } from '@/components/markdown/MarkdownRenderer';
@@ -9,8 +9,10 @@ import { useProgres } from '@/features/progres/context';
 import { useProgresBaca } from '@/features/materi/useProgresBaca';
 import { SidebarDaftarIsi, TombolDaftarIsiMobile } from '@/features/materi/DaftarIsi';
 import { PanelLanjut } from '@/features/materi/PanelLanjut';
+import { VideoPlayer } from '@/features/video/VideoPlayer';
 import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
-import { urutkan } from '@/lib/format';
+import { durasi, urutkan } from '@/lib/format';
+import type { VideoDenganModul } from '@/types/database';
 
 /**
  * Halaman baca modul — Tahap 1 (Pahami).
@@ -37,25 +39,44 @@ export default function ModulDetailPage() {
 
   // Bagian yang sedang terlihat — untuk menandai item aktif di daftar isi
   const [bagianAktif, setBagianAktif] = useState<string | undefined>();
+  const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
 
   useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
+    function periksaBagianAktif() {
+      const daftarElemen = document.querySelectorAll<HTMLElement>('[data-bagian-slug]');
+      if (daftarElemen.length === 0) return;
 
-    const pengamat = new IntersectionObserver(
-      (entri) => {
-        // Ambil bagian yang paling terlihat
-        const terlihat = entri
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      // Garis fokus pembacaan: 140px dari bagian atas viewport
+      const garisBaca = 140;
+      let kandidat: string | undefined;
 
-        const slugBagian = terlihat?.target.getAttribute('data-bagian-slug');
-        if (slugBagian) setBagianAktif(slugBagian);
-      },
-      { threshold: [0.1, 0.5, 0.9] },
-    );
+      for (const el of daftarElemen) {
+        const rect = el.getBoundingClientRect();
+        // Bagian yang telah mencapai garis baca dan belum lewat sepenuhnya
+        if (rect.top <= garisBaca && rect.bottom > 80) {
+          kandidat = el.getAttribute('data-bagian-slug') ?? undefined;
+        }
+      }
 
-    document.querySelectorAll('[data-bagian-slug]').forEach((el) => pengamat.observe(el));
-    return () => pengamat.disconnect();
+      // Bila masih di paling atas halaman (sebelum garis baca), tandai bagian pertama
+      if (!kandidat && daftarElemen[0]) {
+        const rectPertama = daftarElemen[0].getBoundingClientRect();
+        if (rectPertama.bottom > 0) {
+          kandidat = daftarElemen[0].getAttribute('data-bagian-slug') ?? undefined;
+        }
+      }
+
+      if (kandidat) {
+        setBagianAktif(kandidat);
+      }
+    }
+
+    window.addEventListener('scroll', periksaBagianAktif, { passive: true });
+    periksaBagianAktif();
+
+    return () => {
+      window.removeEventListener('scroll', periksaBagianAktif);
+    };
   }, [slug]);
 
   if (isPending) return <ModulSkeleton />;
@@ -98,6 +119,14 @@ export default function ModulDetailPage() {
 
   return (
     <div className="container-base reader-page py-8">
+      {/* Bilah progres baca di puncak viewport */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-transparent" aria-hidden="true">
+        <div
+          className="h-full bg-primary transition-[width] duration-150 ease-out"
+          style={{ width: `${persen}%` }}
+        />
+      </div>
+
       {/* Header modul */}
       <Link
         to="/materi"
@@ -160,19 +189,90 @@ export default function ModulDetailPage() {
           {video.length > 0 && (
             <section className="mt-10">
               <h2 className="mb-4 font-heading text-xl font-semibold text-fg">Video Pendukung</h2>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {video.map((v) => (
-                  <Card key={v.id} className="p-4">
-                    <h3 className="font-medium text-fg">{v.judul}</h3>
-                    {v.deskripsi && <p className="mt-1 text-sm text-fg-muted">{v.deskripsi}</p>}
-                    <a
-                      href={`https://www.youtube.com/watch?v=${v.youtube_id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 inline-block font-mono text-xs text-link underline"
-                    >
-                      youtube.com/watch?v={v.youtube_id}
-                    </a>
+                  <Card key={v.id} className="overflow-hidden border border-border">
+                    <div className="flex flex-col sm:flex-row">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setVideoDiputar({
+                            ...v,
+                            modul: {
+                              slug: modul.slug,
+                              judul: modul.judul,
+                              topik: modul.topik,
+                              urutan: modul.urutan,
+                            },
+                          })
+                        }
+                        className="group relative block aspect-video w-full shrink-0 cursor-pointer overflow-hidden bg-surface-sunken sm:w-56"
+                        aria-label={`Putar video: ${v.judul}`}
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`}
+                          alt=""
+                          width={480}
+                          height={270}
+                          loading="lazy"
+                          decoding="async"
+                          className="size-full object-cover transition-transform duration-200 group-hover:scale-105"
+                        />
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-150 group-hover:bg-black/40"
+                        >
+                          <PlayCircle className="size-10 text-white drop-shadow" strokeWidth={1.5} />
+                        </span>
+                        {v.durasi_detik && (
+                          <span className="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 font-mono text-xs text-white">
+                            {durasi(v.durasi_detik)}
+                          </span>
+                        )}
+                      </button>
+
+                      <div className="flex flex-1 flex-col justify-between p-4">
+                        <div>
+                          <h3 className="font-heading text-base font-semibold text-fg">{v.judul}</h3>
+                          {v.deskripsi && (
+                            <p className="mt-1.5 text-sm text-fg-muted">{v.deskripsi}</p>
+                          )}
+                        </div>
+
+                        <div className="mt-4 flex flex-wrap items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setVideoDiputar({
+                                ...v,
+                                modul: {
+                                  slug: modul.slug,
+                                  judul: modul.judul,
+                                  topik: modul.topik,
+                                  urutan: modul.urutan,
+                                },
+                              })
+                            }
+                            className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-link hover:underline"
+                          >
+                            <PlayCircle className="size-3.5" aria-hidden="true" />
+                            Tonton Sekarang
+                          </button>
+                          <span className="text-fg-muted/40" aria-hidden="true">
+                            •
+                          </span>
+                          <a
+                            href={`https://www.youtube.com/watch?v=${v.youtube_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-fg-muted hover:text-fg hover:underline"
+                          >
+                            Buka di YouTube
+                            <ExternalLink className="size-3" aria-hidden="true" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
                   </Card>
                 ))}
               </div>
@@ -192,6 +292,8 @@ export default function ModulDetailPage() {
           </div>
         </div>
       </div>
+
+      {videoDiputar && <VideoPlayer video={videoDiputar} onTutup={() => setVideoDiputar(null)} />}
     </div>
   );
 }

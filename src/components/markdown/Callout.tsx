@@ -71,7 +71,9 @@ export function Callout({ tipe, children, judul }: CalloutProps) {
           <p className="mb-1 text-sm font-semibold" style={{ color: warna }}>
             {judul ?? label}
           </p>
-          <div className="text-sm text-fg [&>p]:my-0 [&>p+p]:mt-2">{children}</div>
+          <div className="text-sm text-fg [&>p]:my-0 [&>p+p]:mt-2 [&>ul]:my-2 [&>ol]:my-2 [&>pre]:my-2">
+            {children}
+          </div>
         </div>
       </div>
     </aside>

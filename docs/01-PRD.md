@@ -272,9 +272,9 @@ Mata Kuliah: Struktur Data
     └── Modul: Alokasi Memori Dinamis
 ```
 
-Setiap modul memiliki: 1 modul tulis, 0–3 video, 15–25 flashcard, dan 15–20 soal quiz.
+Setiap modul memiliki: 1 modul tulis, 0–3 video, tepat 10 flashcard, dan tepat 10 soal quiz.
 
-Total konten v1: **10 modul · 206 flashcard · 183 soal** (rincian di `02-KURIKULUM.md` §2).
+Total konten v1: **10 modul · 100 flashcard · 100 soal** (rincian di `02-KURIKULUM.md` §2).
 
 ---
 

@@ -385,307 +385,154 @@ Perhatikan batasnya: **`<= n`** untuk membentuk pointer, **`< n`** untuk mendere
 ) as v(slug, judul, konten_md, urutan)
 where m.slug = 'pointer-dasar';
 
--- ============ FLASHCARD (24 kartu) ============
+-- ============ FLASHCARD (10 kartu) ============
 insert into public.flashcard (modul_id, depan, belakang, card_type, kode, bahasa_kode, urutan)
 select m.id, v.depan, v.belakang, v.card_type::tipe_kartu, v.kode, v.bahasa::bahasa_kode, v.urutan
 from public.modul m, (values
-
-('Apa itu pointer?',
+(E'Apa itu pointer?',
  E'Variabel yang menyimpan ALAMAT memori,\nbukan nilai langsung.\n\nint nilai = 42;\nint* p = &nilai;   // p menyimpan alamat nilai',
  'ISTILAH', null, null, 1),
 
-('Bagaimana cara mendeklarasikan pointer ke int?',
+(E'Bagaimana cara mendeklarasikan pointer ke int?',
  E'int* p;\n\nCara membaca: "p adalah pointer ke int".\nBaca dari KANAN ke KIRI.',
- 'SINTAKS', 'int* p;', 'cpp', 2),
+ 'SINTAKS', E'int* p;', 'cpp', 2),
 
-('Bagaimana cara mengambil alamat sebuah variabel?',
+(E'Bagaimana cara mengambil alamat sebuah variabel?',
  E'Pakai operator & (address-of):\n\nint nilai = 42;\ncout << &nilai;   // 0x7ffd...\n\n& adalah kebalikan dari * (dereferensi).',
- 'SINTAKS', 'int nilai = 42;\nint* p = &nilai;', 'cpp', 3),
+ 'SINTAKS', E'int nilai = 42;\\nint* p = &nilai;', 'cpp', 3),
 
-('Bagaimana cara membaca nilai lewat pointer?',
- E'Pakai operator * (dereferensi):\n\nint nilai = 42;\nint* p = &nilai;\n\ncout << *p;   // 42',
- 'SINTAKS', 'int nilai = 42;\nint* p = &nilai;\ncout << *p;  // 42', 'cpp', 4),
-
-('Apa yang salah dari int* a, b;?',
+(E'Apa yang salah dari int* a, b;?',
  E'HANYA a yang pointer. b adalah int BIASA.\n\nBukti:\nsizeof(a) = 8 (pointer)\nsizeof(b) = 4 (int)\n\nTanda * hanya berlaku untuk variabel PERTAMA.\n\nBenar: int* a; int* b;',
- 'JEBAKAN', 'int* a, b;   // HANYA a yang pointer!', 'cpp', 5),
+ 'JEBAKAN', E'int* a, b;   // HANYA a yang pointer!', 'cpp', 4),
 
-('Bagaimana cara mengubah nilai variabel lewat pointer?',
- E'int nilai = 42;\nint* p = &nilai;\n\n*p = 100;\ncout << nilai;   // 100 - nilai ASLI berubah\n\nInilah kekuatan pointer.',
- 'SINTAKS', 'int nilai = 42;\nint* p = &nilai;\n*p = 100;  // nilai jadi 100', 'cpp', 6),
-
-('Apa dua arti tanda bintang pada pointer?',
+(E'Apa dua arti tanda bintang pada pointer?',
  E'1. Di DEKLARASI = bagian dari TIPE\n   int* p;\n\n2. Di EKSPRESI = operator DEREFERENSI\n   *p = 100;\n\nIni yang sering membingungkan pemula.',
- 'ISTILAH', null, null, 7),
+ 'ISTILAH', null, null, 5),
 
-('Apa yang terjadi jika mendereferensi nullptr?',
+(E'Apa yang terjadi jika mendereferensi nullptr?',
  E'UNDEFINED BEHAVIOR - biasanya crash,\ntetapi standar tidak menjamin itu.\n\nint* p = nullptr;\ncout << *p;   // UB!\n\nSelalu periksa: if (p) { cout << *p; }',
- 'JEBAKAN', null, null, 8),
+ 'JEBAKAN', null, null, 6),
 
-('Mengapa pointer harus selalu diinisialisasi?',
+(E'Mengapa pointer harus selalu diinisialisasi?',
  E'Pointer yang tidak diinisialisasi berisi ALAMAT ACAK\n(wild pointer).\n\nint* p;        // BAHAYA - alamat acak\ncout << *p;    // UB!\n\nKalau belum tahu mau menunjuk ke mana:\nint* p = nullptr;',
- 'JEBAKAN', null, null, 9),
+ 'JEBAKAN', null, null, 7),
 
-('Apa arti const pada const int* p?',
- E'Pointer ke int yang KONSTAN.\n\nconst int* p = &nilai;\n// *p = 10;   // ERROR - nilai tidak bisa diubah\np = &lain;    // BOLEH - alamat bisa diubah\n\nBaca dari kanan ke kiri:\n"p adalah pointer ke int yang const"',
- 'SINTAKS', 'const int* p = &nilai;\n// *p = 10;  // ERROR', 'cpp', 10),
-
-('Apa arti const pada int* const p?',
- E'Pointer KONSTAN ke int.\n\nint* const p = &nilai;\n*p = 10;      // BOLEH - nilai bisa diubah\n// p = &lain; // ERROR - alamat tidak bisa diubah\n\nBaca dari kanan ke kiri:\n"p adalah pointer const ke int"',
- 'SINTAKS', 'int* const p = &nilai;\n*p = 10;  // BOLEH', 'cpp', 11),
-
-('Apa perbedaan const int* p dan int* const p?',
+(E'Apa perbedaan const int* p dan int* const p?',
  E'const int* p  : nilai tidak bisa diubah, alamat BOLEH\nint* const p  : alamat tidak bisa diubah, nilai BOLEH\nconst int* const p : keduanya tidak bisa diubah\n\nCara ingat: baca dari kanan ke kiri.\nconst yang paling dekat dengan p mengunci p.',
- 'BANDING', null, null, 12),
+ 'BANDING', null, null, 8),
 
-('Apa yang terjadi jika mengakses nilai variabel lokal yang sudah keluar scope lewat pointer?',
+(E'Apa yang terjadi jika mengakses nilai variabel lokal yang sudah keluar scope lewat pointer?',
  E'UNDEFINED BEHAVIOR.\n\nint* f() {\n    int lokal = 42;\n    return &lokal;   // BAHAYA!\n}\n\nSetelah f() selesai, lokal sudah tidak ada.\nPointer yang dikembalikan adalah DANGLING POINTER.\n\nMemakainya = UB.',
- 'JEBAKAN', 'int* f() {\n    int lokal = 42;\n    return &lokal;  // UB!\n}', 'cpp', 13),
-
-(E'int arr[5] = {10, 20, 30, 40, 50};\nint* p = arr;\ncout << *(p + 3);\n\nApa outputnya?',
- E'Output: 40\n\np menunjuk ke arr[0].\np + 3 menunjuk ke arr[3].\n*(p + 3) = arr[3] = 40',
- 'TRACING', 'int arr[5] = {10, 20, 30, 40, 50};\nint* p = arr;\ncout << *(p + 3);', 'cpp', 14),
+ 'JEBAKAN', E'int* f() {\\n    int lokal = 42;\\n    return &lokal;  // UB!\\n}', 'cpp', 9),
 
 (E'int nilai = 42;\nint* p = &nilai;\n*p = 100;\ncout << nilai;',
  E'Output: 100\n\n*p = 100 mengubah nilai di alamat yang ditunjuk p.\nKarena p menunjuk ke nilai, maka nilai ikut berubah.\n\nIni kekuatan pointer: mengubah variabel lain\ntanpa menyentuh namanya.',
- 'TRACING', 'int nilai = 42;\nint* p = &nilai;\n*p = 100;\ncout << nilai;', 'cpp', 15),
-
-('Apa itu pointer ke pointer?',
- E'Pointer yang menyimpan alamat pointer lain.\n\nint x = 42;\nint* px = &x;\nint** ppx = &px;\n\ncout << **ppx;   // 42\n\nDua tanda bintang untuk dua level.',
- 'ISTILAH', 'int x = 42;\nint* px = &x;\nint** ppx = &px;\ncout << **ppx;  // 42', 'cpp', 16),
-
-('Bagaimana pointer bisa mengubah variabel dari dalam fungsi?',
- E'Dengan mengirim ALAMAT variabel:\n\nvoid ubah(int* q) { *q = 777; }\n\nint y = 1;\nubah(&y);\ncout << y;   // 777 - BERUBAH\n\nBandingkan dengan kirim nilai biasa:\nvoid ubahSalah(int q) { q = 888; }\nubahSalah(y);   // y TIDAK berubah',
- 'SINTAKS', 'void ubah(int* q) { *q = 777; }\nint y = 1;\nubah(&y);  // y jadi 777', 'cpp', 17),
-
-('Apakah membentuk pointer one-past-the-end itu undefined behavior?',
- E'TIDAK! Itu LEGAL.\n\nint arr[5];\nint* akhir = arr + 5;   // LEGAL\n\nStandar C++ mengizinkan membentuk pointer\nsatu langkah melewati elemen terakhir.\n\nYang UB adalah MENdereferensinya atau\nmelangkah LEBIH JAUH.',
- 'JEBAKAN', 'int arr[5];\nint* akhir = arr + 5;   // LEGAL, bukan UB!', 'cpp', 18),
-
-('Apa perbedaan membentuk dan mendereferensi pointer one-past-the-end?',
- E'MEMBENTUK arr + n  : LEGAL (0 <= i <= n)\nDEREFERENSI *(arr+n): UB untuk i == n\nMELANGKAH LEBIH     : UB\n\nint arr[5];\nint* p = arr + 5;   // LEGAL\n// *p;              // UB\n// arr + 6;         // UB',
- 'MEMORI', null, null, 19),
-
-('Mengapa idiom loop p != arr + n itu SAH?',
- E'Karena membentuk arr + n itu LEGAL.\n\nfor (int* p = arr; p != arr + 5; ++p) {\n    cout << *p << " ";\n}\n\nKalau arr + 5 UB, idiom loop standar ini juga UB -\npadahal ini cara lazim mengiterasi array di C++.',
- 'MEMORI', 'for (int* p = arr; p != arr + 5; ++p) {\n    cout << *p << " ";\n}', 'cpp', 20),
-
-('Apa aturan batas aritmetika pointer pada array berukuran n?',
- E'MEMBENTUK pointer:\n  arr + i LEGAL jika 0 <= i <= n\n  arr + i UB    jika i < 0 atau i > n\n\nDEREFERENSI:\n  *(arr + i) LEGAL jika 0 <= i < n\n  *(arr + i) UB    jika i == n\n\nPerhatikan: <= n untuk membentuk, < n untuk dereferensi.',
- 'MEMORI', null, null, 21),
-
-('Apakah Python punya pointer?',
- E'TIDAK. Python tidak punya pointer eksplisit.\n\nTetapi semua nama di Python adalah REFERENSI:\n\nx = [1, 2, 3]\ny = x          # objek SAMA\ny.append(4)\nprint(x)       # [1, 2, 3, 4] - ikut berubah\n\nMirip pointer, tapi TIDAK ada aritmetika pointer.',
- 'BANDING', null, null, 22),
-
-('Apa perbedaan pointer C++ dan referensi Python?',
- E'C++ pointer:\n- menyimpan alamat\n- bisa aritmetika (p + 1)\n- bisa di-cast\n- alamat terlihat (cout << p)\n- manajemen memori MANUAL\n\nPython nama:\n- referensi ke objek\n- TIDAK bisa aritmetika\n- tidak bisa di-cast\n- alamat tidak langsung terlihat (id())\n- manajemen memori OTOMATIS',
- 'BANDING', null, null, 23),
-
-('Bagaimana cara membuat salinan mendalam di Python?',
- E'Pakai copy.deepcopy():\n\nimport copy\n\nx = [[1, 2], [3, 4]]\ny = copy.deepcopy(x)\n\ny[0].append(99)\nprint(x)   # TIDAK berubah\n\nPERHATIAN: x.copy() hanya menyalin SATU level.\nUntuk objek bersarang, WAJIB deepcopy.',
- 'SINTAKS', 'import copy\ny = copy.deepcopy(x)', 'python', 24)
-
+ 'TRACING', E'int nilai = 42;\\nint* p = &nilai;\\n*p = 100;\\ncout << nilai;', 'cpp', 10)
 ) as v(depan, belakang, card_type, kode, bahasa, urutan)
 where m.slug = 'pointer-dasar';
 
--- ============ SOAL QUIZ (20 soal) ============
+-- ============ SOAL QUIZ (10 soal) ============
 insert into public.soal (modul_id, pertanyaan, kode, bahasa_kode, tipe, card_type, penjelasan, urutan)
 select m.id, v.pertanyaan, v.kode, v.bahasa::bahasa_kode, v.tipe::tipe_soal, v.card_type::tipe_kartu, v.penjelasan, v.urutan
 from public.modul m, (values
-
-('Apa yang disimpan oleh pointer?',
+(E'Apa yang disimpan oleh pointer?',
  null, null, 'PG', 'ISTILAH',
  E'Jawaban: Alamat memori, bukan nilai langsung.\n\nint nilai = 42;\nint* p = &nilai;   // p menyimpan ALAMAT nilai\n\nPengecoh "nilai variabel" salah - itu isi, bukan alamat.\nPengecoh "salinan variabel" salah - pointer tidak menyalin.',
  1),
 
-('Apa yang salah dari deklarasi int* a, b;?',
+(E'Apa yang salah dari deklarasi int* a, b;?',
  null, null, 'PG', 'JEBAKAN',
  E'Jawaban: Hanya a yang pointer; b adalah int biasa.\n\nBukti: sizeof(a) = 8 (pointer), sizeof(b) = 4 (int).\n\nTanda * hanya berlaku untuk variabel PERTAMA dalam deklarasi.\n\nCara benar: int* a; int* b; atau int *a, *b;',
  2),
 
 (E'int nilai = 42;\nint* p = &nilai;\n*p = 100;\ncout << nilai;',
- 'int nilai = 42;\nint* p = &nilai;\n*p = 100;\ncout << nilai;',
- 'cpp', 'TRACE', 'TRACING',
+ E'int nilai = 42;\\nint* p = &nilai;\\n*p = 100;\\ncout << nilai;', 'cpp', 'TRACE', 'TRACING',
  E'Output: 100\n\n*p = 100 mengubah nilai di ALAMAT yang ditunjuk p.\nKarena p menunjuk ke nilai, maka nilai ikut berubah.\n\nIni kekuatan pointer: mengubah variabel lain tanpa menyentuh namanya.\n\nPengecoh 42 = nilai sebelum diubah.',
  3),
 
-('Apa dua arti tanda bintang pada pointer?',
+(E'Apa dua arti tanda bintang pada pointer?',
  null, null, 'PG', 'ISTILAH',
  E'Jawaban: Di deklarasi ia bagian dari TIPE; di ekspresi ia operator DEREFERENSI.\n\nint* p = &nilai;   // * bagian dari tipe\n*p = 100;          // * operator dereferensi\n\nIni yang sering membingungkan pemula karena simbolnya sama tetapi maknanya berbeda.',
  4),
 
-('Apa yang terjadi jika mendereferensi nullptr?',
+(E'Apa yang terjadi jika mendereferensi nullptr?',
  null, null, 'PG', 'JEBAKAN',
  E'Jawaban: Undefined behavior - biasanya crash, tetapi standar tidak menjamin itu.\n\nint* p = nullptr;\ncout << *p;   // UB!\n\nPengecoh "selalu crash" kurang tepat - standar hanya bilang UB, jadi bisa saja tampak berjalan.\nPengecoh "mengembalikan 0" salah - tidak ada nilai yang dikembalikan.',
  5),
 
-('Mengapa pointer yang tidak diinisialisasi berbahaya?',
+(E'Mengapa pointer yang tidak diinisialisasi berbahaya?',
  null, null, 'PG', 'JEBAKAN',
  E'Jawaban: Karena berisi alamat acak (wild pointer), dan mendereferensinya adalah undefined behavior.\n\nint* p;        // berisi alamat acak\ncout << *p;    // UB!\n\nSelalu inisialisasi: int* p = nullptr;',
  6),
 
-('Apa arti const int* p?',
- null, null, 'PG', 'SINTAKS',
- E'Jawaban: Pointer ke int yang konstan - nilai tidak bisa diubah, alamat boleh diubah.\n\nconst int* p = &nilai;\n// *p = 10;   // ERROR\np = &lain;    // BOLEH\n\nCara baca: dari kanan ke kiri - "p adalah pointer ke int yang const".',
- 7),
-
-('Apa arti int* const p?',
- null, null, 'PG', 'SINTAKS',
- E'Jawaban: Pointer konstan ke int - alamat tidak bisa diubah, nilai boleh diubah.\n\nint* const p = &nilai;\n*p = 10;      // BOLEH\n// p = &lain; // ERROR\n\nCara baca: dari kanan ke kiri - "p adalah pointer const ke int".',
- 8),
-
-('Apa perbedaan const int* p dan int* const p?',
+(E'Apa perbedaan const int* p dan int* const p?',
  null, null, 'PG', 'BANDING',
  E'Jawaban: const int* p mengunci NILAI; int* const p mengunci ALAMAT.\n\nconst int* p  : nilai tidak bisa diubah, alamat boleh\nint* const p  : alamat tidak bisa diubah, nilai boleh\n\nCara ingat: baca dari kanan ke kiri. const yang paling dekat dengan p mengunci p.',
- 9),
+ 7),
 
-('Mengapa mengembalikan pointer ke variabel lokal berbahaya?',
+(E'Mengapa mengembalikan pointer ke variabel lokal berbahaya?',
  null, null, 'PG', 'JEBAKAN',
  E'Jawaban: Karena variabel lokal sudah tidak ada setelah fungsi selesai, sehingga pointer menjadi dangling dan memakainya adalah UB.\n\nint* f() {\n    int lokal = 42;\n    return &lokal;   // BAHAYA!\n}\n\nSetelah f() selesai, memori lokal sudah dibebaskan.',
- 10),
+ 8),
 
-(E'int arr[5] = {10, 20, 30, 40, 50};\nint* p = arr;\ncout << *(p + 2);',
- 'int arr[5] = {10, 20, 30, 40, 50};\nint* p = arr;\ncout << *(p + 2);',
- 'cpp', 'TRACE', 'TRACING',
- E'Output: 30\n\np menunjuk ke arr[0].\np + 2 menunjuk ke arr[2].\n*(p + 2) = arr[2] = 30\n\nIndeks dimulai dari 0, jadi p+2 adalah elemen KETIGA.',
- 11),
-
-('Apakah membentuk pointer one-past-the-end (arr + n) itu undefined behavior?',
- null, null, 'PG', 'MEMORI',
- E'Jawaban: TIDAK - itu LEGAL menurut standar C++.\n\nint arr[5];\nint* akhir = arr + 5;   // LEGAL\n\nStandar mengizinkan membentuk pointer satu langkah melewati elemen terakhir.\n\nYang UB adalah MENdereferensinya atau melangkah LEBIH JAUH.\n\nIni kesalahpahaman yang sangat umum - banyak yang mengira ini UB padahal bukan.',
- 12),
-
-('Apa perbedaan membentuk dan mendereferensi pointer one-past-the-end?',
- null, null, 'PG', 'MEMORI',
- E'Jawaban: Membentuk arr + n LEGAL; mendereferensi *(arr + n) UB.\n\nint arr[5];\nint* p = arr + 5;   // LEGAL\n// *p;              // UB\n// arr + 6;         // UB\n\nBatas: <= n untuk membentuk pointer, < n untuk mendereferensi.',
- 13),
-
-('Mengapa idiom loop p != arr + n itu sah?',
- null, null, 'PG', 'MEMORI',
- E'Jawaban: Karena membentuk arr + n itu legal menurut standar.\n\nfor (int* p = arr; p != arr + 5; ++p) {\n    cout << *p << " ";\n}\n\nKalau arr + 5 UB, idiom loop standar ini juga UB - padahal ini cara lazim mengiterasi array di C++.\n\nAturan one-past-the-end ada JUSTRU agar idiom ini sah.',
- 14),
-
-('Apa aturan batas aritmetika pointer pada array berukuran n?',
- null, null, 'PG', 'MEMORI',
- E'Jawaban: arr + i legal untuk 0 <= i <= n; *(arr + i) legal untuk 0 <= i < n.\n\nMEMBENTUK pointer  : 0 <= i <= n\nDEREFERENSI        : 0 <= i < n\n\nPerhatikan batas atasnya BERBEDA: <= n untuk membentuk, < n untuk dereferensi.',
- 15),
-
-('Bagaimana pointer bisa mengubah variabel dari dalam fungsi?',
+(E'Bagaimana pointer bisa mengubah variabel dari dalam fungsi?',
  null, null, 'PG', 'SINTAKS',
  E'Jawaban: Dengan mengirim alamat variabel, lalu fungsi mendereferensinya.\n\nvoid ubah(int* q) { *q = 777; }\nint y = 1;\nubah(&y);   // y jadi 777\n\nKalau dikirim nilai biasa, perubahan tidak mempengaruhi aslinya:\nvoid ubahSalah(int q) { q = 888; }   // y tidak berubah',
- 16),
+ 9),
 
-(E'int x = 42;\nint* px = &x;\nint** ppx = &px;\ncout << **ppx;',
- 'int x = 42;\nint* px = &x;\nint** ppx = &px;\ncout << **ppx;',
- 'cpp', 'TRACE', 'TRACING',
- E'Output: 42\n\nppx adalah pointer ke pointer.\n*ppx  = px (pointer ke x)\n**ppx = x = 42\n\nDua tanda bintang untuk dua level dereferensi.',
- 17),
-
-('Apakah Python punya pointer?',
- null, null, 'PG', 'BANDING',
- E'Jawaban: Tidak, Python tidak punya pointer eksplisit. Tetapi semua nama Python adalah referensi.\n\nx = [1, 2, 3]\ny = x          # objek SAMA\ny.append(4)\nprint(x)       # [1, 2, 3, 4]\n\nMirip pointer, tetapi TIDAK ada aritmetika pointer - kamu tidak bisa melakukan "x + 1".',
- 18),
-
-('Apa perbedaan utama pointer C++ dan referensi Python?',
+(E'Apa perbedaan utama pointer C++ dan referensi Python?',
  null, null, 'PG', 'BANDING',
  E'Jawaban: C++ bisa aritmetika pointer dan manajemen memori manual; Python tidak bisa aritmetika dan memori dikelola otomatis.\n\nC++: p + 1 (aritmetika), delete (manual), alamat terlihat\nPython: tidak bisa aritmetika, garbage collector otomatis, id() untuk identitas\n\nKeduanya sama-sama menunjuk objek, tetapi tingkat kontrolnya berbeda jauh.',
- 19),
-
-('Bagaimana cara membuat salinan mendalam di Python?',
- null, null, 'PG', 'SINTAKS',
- E'Jawaban: copy.deepcopy()\n\nimport copy\nx = [[1, 2], [3, 4]]\ny = copy.deepcopy(x)\n\nPENTING: x.copy() hanya menyalin SATU level. Untuk objek bersarang, list di dalamnya masih dibagi, sehingga mengubah y[0] ikut mengubah x[0].\n\nUntuk objek bersarang, WAJIB deepcopy.',
- 20)
-
+ 10)
 ) as v(pertanyaan, kode, bahasa, tipe, card_type, penjelasan, urutan)
 where m.slug = 'pointer-dasar';
 
--- ============ OPSI JAWABAN ============
+-- ============ OPSI JAWABAN (40 opsi) ============
 insert into public.opsi_soal (soal_id, label, teks, benar, urutan)
 select s.id, v.label, v.teks, v.benar, v.urutan
 from public.soal s
 join public.modul m on m.id = s.modul_id
 join (values
-  (1, 'A', 'Alamat memori, bukan nilai langsung', true, 1),
-  (1, 'B', 'Nilai variabel', false, 2),
-  (1, 'C', 'Salinan variabel', false, 3),
-  (1, 'D', 'Nama variabel', false, 4),
-  (2, 'A', 'Hanya a yang pointer; b adalah int biasa', true, 1),
-  (2, 'B', 'a dan b keduanya pointer', false, 2),
-  (2, 'C', 'Keduanya bukan pointer', false, 3),
-  (2, 'D', 'Deklarasi tidak valid dan gagal kompilasi', false, 4),
-  (3, 'A', '100', true, 1),
-  (3, 'B', '42', false, 2),
-  (3, 'C', '0', false, 3),
-  (3, 'D', 'Error', false, 4),
-  (4, 'A', 'Di deklarasi bagian dari tipe; di ekspresi operator dereferensi', true, 1),
-  (4, 'B', 'Selalu berarti perkalian', false, 2),
-  (4, 'C', 'Selalu berarti dereferensi', false, 3),
-  (4, 'D', 'Tidak ada arti khusus', false, 4),
-  (5, 'A', 'Undefined behavior - biasanya crash, tetapi standar tidak menjamin itu', true, 1),
-  (5, 'B', 'Selalu crash', false, 2),
-  (5, 'C', 'Mengembalikan nilai 0', false, 3),
-  (5, 'D', 'Melempar exception', false, 4),
-  (6, 'A', 'Karena berisi alamat acak (wild pointer), dan mendereferensinya adalah UB', true, 1),
-  (6, 'B', 'Karena pointer tidak bisa dibandingkan', false, 2),
-  (6, 'C', 'Karena pointer memakan lebih banyak memori', false, 3),
-  (6, 'D', 'Karena compiler menolak pointer tanpa nilai', false, 4),
-  (7, 'A', 'Nilai tidak bisa diubah, alamat boleh diubah', true, 1),
-  (7, 'B', 'Alamat tidak bisa diubah, nilai boleh diubah', false, 2),
-  (7, 'C', 'Keduanya tidak bisa diubah', false, 3),
-  (7, 'D', 'Keduanya bisa diubah', false, 4),
-  (8, 'A', 'Alamat tidak bisa diubah, nilai boleh diubah', true, 1),
-  (8, 'B', 'Nilai tidak bisa diubah, alamat boleh diubah', false, 2),
-  (8, 'C', 'Keduanya tidak bisa diubah', false, 3),
-  (8, 'D', 'Keduanya bisa diubah', false, 4),
-  (9, 'A', 'const int* p mengunci NILAI; int* const p mengunci ALAMAT', true, 1),
-  (9, 'B', 'Keduanya sama saja', false, 2),
-  (9, 'C', 'const int* p mengunci alamat; int* const p mengunci nilai', false, 3),
-  (9, 'D', 'Keduanya mengunci nilai dan alamat', false, 4),
-  (10, 'A', 'Variabel lokal sudah tidak ada setelah fungsi selesai, pointer menjadi dangling, dan memakainya UB', true, 1),
-  (10, 'B', 'Compiler menolak mengembalikan pointer', false, 2),
-  (10, 'C', 'Pointer otomatis menjadi nullptr', false, 3),
-  (10, 'D', 'Nilai variabel lokal ikut dikembalikan', false, 4),
-  (11, 'A', '10', false, 1),
-  (11, 'B', '20', false, 2),
-  (11, 'C', '30', true, 3),
-  (11, 'D', '40', false, 4),
-  (12, 'A', 'Tidak - membentuk arr + n itu LEGAL menurut standar', true, 1),
-  (12, 'B', 'Ya, selalu undefined behavior', false, 2),
-  (12, 'C', 'Ya, tetapi hanya untuk array char', false, 3),
-  (12, 'D', 'Tergantung compiler', false, 4),
-  (13, 'A', 'Membentuk arr + n LEGAL; mendereferensi *(arr + n) UB', true, 1),
-  (13, 'B', 'Keduanya legal', false, 2),
-  (13, 'C', 'Keduanya undefined behavior', false, 3),
-  (13, 'D', 'Membentuk UB; mendereferensi legal', false, 4),
-  (14, 'A', 'Karena membentuk arr + n itu legal menurut standar', true, 1),
-  (14, 'B', 'Karena compiler mengoptimalkan loop', false, 2),
-  (14, 'C', 'Karena arr + n tidak pernah dievaluasi', false, 3),
-  (14, 'D', 'Karena pointer tidak pernah dibandingkan', false, 4),
-  (15, 'A', 'arr + i legal untuk 0 <= i <= n; *(arr + i) legal untuk 0 <= i < n', true, 1),
-  (15, 'B', 'Keduanya legal untuk 0 <= i <= n', false, 2),
-  (15, 'C', 'Keduanya legal untuk 0 <= i < n', false, 3),
-  (15, 'D', 'Tidak ada batas selama alamatnya valid', false, 4),
-  (16, 'A', 'Dengan mengirim alamat variabel, lalu fungsi mendereferensinya', true, 1),
-  (16, 'B', 'Dengan mengirim variabel sebagai nilai', false, 2),
-  (16, 'C', 'Dengan mendeklarasikan variabel sebagai global', false, 3),
-  (16, 'D', 'Dengan mengembalikan nilai dari fungsi', false, 4),
-  (17, 'A', '42', true, 1),
-  (17, 'B', 'Alamat x', false, 2),
-  (17, 'C', 'Error', false, 3),
-  (17, 'D', '0', false, 4),
-  (18, 'A', 'Tidak, tetapi semua nama Python adalah referensi ke objek', true, 1),
-  (18, 'B', 'Ya, sama seperti C++', false, 2),
-  (18, 'C', 'Ya, tetapi hanya untuk list', false, 3),
-  (18, 'D', 'Tidak, dan Python juga tidak punya referensi', false, 4),
-  (19, 'A', 'C++ bisa aritmetika pointer dan manajemen memori manual; Python tidak bisa aritmetika dan memori otomatis', true, 1),
-  (19, 'B', 'C++ dan Python sama-sama punya aritmetika pointer', false, 2),
-  (19, 'C', 'Python punya aritmetika pointer, C++ tidak', false, 3),
-  (19, 'D', 'Keduanya tidak bisa menunjuk objek', false, 4),
-  (20, 'A', 'copy.deepcopy()', true, 1),
-  (20, 'B', 'x.copy()', false, 2),
-  (20, 'C', 'x[:]', false, 3),
-  (20, 'D', 'list(x)', false, 4)
-) as v(urutan_soal, label, teks, benar, urutan)
-  on v.urutan_soal = s.urutan
+  (1, 'A', E'Alamat memori, bukan nilai langsung', true, 1),
+  (1, 'B', E'Nilai variabel', false, 2),
+  (1, 'C', E'Salinan variabel', false, 3),
+  (1, 'D', E'Nama variabel', false, 4),
+  (2, 'A', E'Hanya a yang pointer; b adalah int biasa', true, 1),
+  (2, 'B', E'a dan b keduanya pointer', false, 2),
+  (2, 'C', E'Keduanya bukan pointer', false, 3),
+  (2, 'D', E'Deklarasi tidak valid dan gagal kompilasi', false, 4),
+  (3, 'A', E'100', true, 1),
+  (3, 'B', E'42', false, 2),
+  (3, 'C', E'0', false, 3),
+  (3, 'D', E'Error', false, 4),
+  (4, 'A', E'Di deklarasi bagian dari tipe; di ekspresi operator dereferensi', true, 1),
+  (4, 'B', E'Selalu berarti perkalian', false, 2),
+  (4, 'C', E'Selalu berarti dereferensi', false, 3),
+  (4, 'D', E'Tidak ada arti khusus', false, 4),
+  (5, 'A', E'Undefined behavior - biasanya crash, tetapi standar tidak menjamin itu', true, 1),
+  (5, 'B', E'Selalu crash', false, 2),
+  (5, 'C', E'Mengembalikan nilai 0', false, 3),
+  (5, 'D', E'Melempar exception', false, 4),
+  (6, 'A', E'Karena berisi alamat acak (wild pointer), dan mendereferensinya adalah UB', true, 1),
+  (6, 'B', E'Karena pointer tidak bisa dibandingkan', false, 2),
+  (6, 'C', E'Karena pointer memakan lebih banyak memori', false, 3),
+  (6, 'D', E'Karena compiler menolak pointer tanpa nilai', false, 4),
+  (7, 'A', E'const int* p mengunci NILAI; int* const p mengunci ALAMAT', true, 1),
+  (7, 'B', E'Keduanya sama saja', false, 2),
+  (7, 'C', E'const int* p mengunci alamat; int* const p mengunci nilai', false, 3),
+  (7, 'D', E'Keduanya mengunci nilai dan alamat', false, 4),
+  (8, 'A', E'Variabel lokal sudah tidak ada setelah fungsi selesai, pointer menjadi dangling, dan memakainya UB', true, 1),
+  (8, 'B', E'Compiler menolak mengembalikan pointer', false, 2),
+  (8, 'C', E'Pointer otomatis menjadi nullptr', false, 3),
+  (8, 'D', E'Nilai variabel lokal ikut dikembalikan', false, 4),
+  (9, 'A', E'Dengan mengirim alamat variabel, lalu fungsi mendereferensinya', true, 1),
+  (9, 'B', E'Dengan mengirim variabel sebagai nilai', false, 2),
+  (9, 'C', E'Dengan mendeklarasikan variabel sebagai global', false, 3),
+  (9, 'D', E'Dengan mengembalikan nilai dari fungsi', false, 4),
+  (10, 'A', E'C++ bisa aritmetika pointer dan manajemen memori manual; Python tidak bisa aritmetika dan memori otomatis', true, 1),
+  (10, 'B', E'C++ dan Python sama-sama punya aritmetika pointer', false, 2),
+  (10, 'C', E'Python punya aritmetika pointer, C++ tidak', false, 3),
+  (10, 'D', E'Keduanya tidak bisa menunjuk objek', false, 4)
+) as v(soal_urutan, label, teks, benar, urutan)
+  on s.urutan = v.soal_urutan
 where m.slug = 'pointer-dasar';
