@@ -15,7 +15,6 @@ import { PERSEN_MINIMAL_BACA } from '@/lib/constants';
  * Rincian: docs/06-SPESIFIKASI-HALAMAN.md §4.3
  */
 
-
 interface HasilProgresBaca {
   /** Slug bagian yang sudah dibaca */
   bagianDibaca: string[];
@@ -87,7 +86,7 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
     function periksaPosisiScroll() {
       const tinggiLayar = window.innerHeight;
       const daftarElemen = document.querySelectorAll<HTMLElement>('[data-bagian-slug]');
-      
+
       daftarElemen.forEach((el) => {
         const slug = el.getAttribute('data-bagian-slug');
         if (!slug) return;

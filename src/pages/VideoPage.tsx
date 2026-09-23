@@ -6,9 +6,9 @@ import { ErrorState, Skeleton } from '@/components/ui/States';
 import { useSemuaVideo } from '@/features/video/hooks';
 import { VideoPlayer } from '@/features/video/VideoPlayer';
 import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
-import { durasi } from '@/lib/format';
+import { durasi, urutkan } from '@/lib/format';
 import { useState } from 'react';
-import type { TopikModul, VideoDenganModul } from '@/types/database';
+import type { VideoDenganModul } from '@/types/database';
 
 /**
  * Halaman galeri video.
@@ -91,32 +91,27 @@ export default function VideoPage() {
     );
   }
 
-  // Kelompokkan per topik modul
-  const perTopik = new Map<TopikModul, VideoDenganModul[]>();
-  for (const v of videoTayang) {
-    const daftar = perTopik.get(v.modul.topik) ?? [];
-    daftar.push(v);
-    perTopik.set(v.modul.topik, daftar);
-  }
+  /**
+   * Semua video ditampilkan dalam SATU baris horizontal, bukan
+   * dikelompokkan per topik.
+   *
+   * Alasan: kurikulum kini berisi satu modul per topik, sehingga
+   * setiap topik hanya punya satu video. Kalau tetap dikelompokkan,
+   * tiap section berisi satu kartu dan menyisakan dua pertiga lebar
+   * kosong — halaman jadi sangat panjang tanpa manfaat.
+   *
+   * Topik tiap video tetap terlihat lewat badge di kartunya, jadi
+   * tidak ada informasi yang hilang.
+   */
+  const videoTerurut = urutkan(videoTayang);
 
   return (
     <div className="container-base video-page py-8">
       <PageHeader judul="Video" deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan" />
 
-      <div className="space-y-10">
-        {[...perTopik.entries()].map(([topik, daftarTopik]) => (
-          <section key={topik}>
-            <div className="mb-4 flex items-center gap-3">
-              <h2 className="font-heading text-xl font-semibold text-fg">{LABEL_TOPIK[topik]}</h2>
-              <span className="text-sm text-fg-muted">{daftarTopik.length} video</span>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {daftarTopik.map((v) => (
-                <KartuVideo key={v.id} video={v} onPutar={() => setVideoDiputar(v)} />
-              ))}
-            </div>
-          </section>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {videoTerurut.map((v) => (
+          <KartuVideo key={v.id} video={v} onPutar={() => setVideoDiputar(v)} />
         ))}
       </div>
 
@@ -181,20 +176,17 @@ function VideoSkeleton() {
       <span className="sr-only">Memuat video…</span>
       <Skeleton className="h-9 w-32" />
       <Skeleton className="mt-3 h-4 w-80" />
-      <div className="mt-8">
-        <Skeleton className="mb-4 h-6 w-24" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="overflow-hidden rounded-md border border-border">
-              <Skeleton className="aspect-video w-full rounded-none" />
-              <div className="p-4">
-                <Skeleton className="h-5 w-16" />
-                <Skeleton className="mt-2 h-5 w-3/4" />
-                <Skeleton className="mt-2 h-4 w-full" />
-              </div>
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="overflow-hidden rounded-md border border-border">
+            <Skeleton className="aspect-video w-full rounded-none" />
+            <div className="p-4">
+              <Skeleton className="h-5 w-16" />
+              <Skeleton className="mt-2 h-5 w-3/4" />
+              <Skeleton className="mt-2 h-4 w-full" />
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

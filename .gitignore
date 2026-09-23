@@ -98,3 +98,21 @@ supabase/.branches/
 .impeccable/**/*.backup.json
 *-backup.json
 *.backup.json
+
+# =========================================================
+# Manual Book (manual/)
+#
+# Diabaikan seluruhnya: berisi PDF hasil cetak (4,5 MB),
+# 34 screenshot (4,8 MB), dan font (1,2 MB) — total ± 10 MB
+# yang tidak perlu masuk riwayat git.
+#
+# CATATAN: konten/ , gaya.css , dan README.md di dalamnya juga
+# ikut terabaikan. Bila ingin sumbernya tetap terversi, hapus
+# baris `manual/` di bawah dan pakai pola yang lebih sempit:
+#   manual/img/
+#   manual/fonts/
+#   manual/*.pdf
+#   manual/.rakitan.html
+# =========================================================
+manual/
+

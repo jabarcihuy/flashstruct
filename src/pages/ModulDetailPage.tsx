@@ -222,7 +222,10 @@ export default function ModulDetailPage() {
                           aria-hidden="true"
                           className="absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-150 group-hover:bg-black/40"
                         >
-                          <PlayCircle className="size-10 text-white drop-shadow" strokeWidth={1.5} />
+                          <PlayCircle
+                            className="size-10 text-white drop-shadow"
+                            strokeWidth={1.5}
+                          />
                         </span>
                         {v.durasi_detik && (
                           <span className="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 font-mono text-xs text-white">
@@ -233,7 +236,9 @@ export default function ModulDetailPage() {
 
                       <div className="flex flex-1 flex-col justify-between p-4">
                         <div>
-                          <h3 className="font-heading text-base font-semibold text-fg">{v.judul}</h3>
+                          <h3 className="font-heading text-base font-semibold text-fg">
+                            {v.judul}
+                          </h3>
                           {v.deskripsi && (
                             <p className="mt-1.5 text-sm text-fg-muted">{v.deskripsi}</p>
                           )}

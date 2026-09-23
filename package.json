@@ -19,7 +19,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:a11y": "playwright test aksesibilitas",
-    "test:all": "npm run test && npm run test:e2e"
+    "test:all": "npm run test && npm run test:e2e",
+    "manual:capture": "node scripts/capture-manual.mjs",
+    "manual:build": "node scripts/build-manual.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
