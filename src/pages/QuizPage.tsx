@@ -1,5 +1,5 @@
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ClipboardCheck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -54,6 +54,11 @@ export default function QuizPage() {
 
   const sudahDijawab = Object.keys(state.jawaban).length;
   const totalSoal = state.soal.length;
+
+  // Scroll kembali ke atas saat soal berganti atau quiz selesai
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [state.indeks, state.fase]);
 
   /* =========================================================
      Keluar

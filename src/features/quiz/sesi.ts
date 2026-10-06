@@ -109,22 +109,32 @@ export function reducerQuiz(state: StateQuiz, aksi: AksiQuiz): StateQuiz {
    ========================================================= */
 
 /**
+ * Urutkan opsi soal agar berurutan A, B, C, D (tidak diacak).
+ */
+export function urutkanOpsi(opsi: OpsiSoal[] | null | undefined): OpsiSoal[] {
+  if (!opsi) return [];
+  return [...opsi].sort((a, b) => {
+    if (a.label && b.label) {
+      return a.label.localeCompare(b.label);
+    }
+    return a.urutan - b.urutan;
+  });
+}
+
+/**
  * Pilih soal untuk satu sesi.
  *
  * Langkah:
  *   1. Acak urutan soal
  *   2. Ambil maksimal JUMLAH_SOAL_QUIZ soal
- *   3. Acak urutan opsi di setiap soal (agar tidak selalu A-B-C-D)
- *
- * Mengapa opsi diacak: kalau jawaban selalu di posisi yang sama,
- * mahasiswa bisa menebak tanpa memahami.
+ *   3. Pastikan opsi berurutan A, B, C, D (tidak diacak)
  */
 export function susunSoal(bankSoal: SoalDenganOpsi[]): SoalDenganOpsi[] {
   const terpilih = acak(bankSoal).slice(0, JUMLAH_SOAL_QUIZ);
 
   return terpilih.map((s) => ({
     ...s,
-    opsi_soal: acak(urutkan(s.opsi_soal)),
+    opsi_soal: urutkanOpsi(s.opsi_soal),
   }));
 }
 

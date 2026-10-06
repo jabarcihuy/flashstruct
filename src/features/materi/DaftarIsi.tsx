@@ -105,16 +105,19 @@ function ItemDaftarIsi({
   nomor,
   sudahDibaca,
   aktif,
+  onKlik,
 }: {
   bagian: BagianModul;
   nomor: number;
   sudahDibaca: boolean;
   aktif: boolean;
+  onKlik?: () => void;
 }) {
   return (
     <li>
       <a
         href={`#${bagian.slug}`}
+        onClick={onKlik}
         className={cn(
           'flex items-start gap-2 rounded-md px-2 py-1.5 text-sm no-underline',
           'transition-colors duration-150',
@@ -217,6 +220,7 @@ function DrawerDaftarIsi({
               nomor={i + 1}
               sudahDibaca={bagianDibaca.includes(b.slug)}
               aktif={bagianAktif === b.slug}
+              onKlik={onTutup}
             />
           ))}
         </ol>

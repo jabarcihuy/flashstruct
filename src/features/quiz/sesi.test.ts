@@ -152,12 +152,13 @@ describe('susunSoal', () => {
     expect(susunSoal(bank)).toHaveLength(2);
   });
 
-  it('mengacak urutan opsi di setiap soal', () => {
+  it('mengurutkan opsi di setiap soal berurutan A, B, C, D', () => {
     const bank = [soal('s1')];
     const hasil = susunSoal(bank);
 
-    // Opsi harus tetap lengkap 4 buah
+    // Opsi harus tetap lengkap 4 buah dan berurutan A, B, C, D
     expect(hasil[0]?.opsi_soal).toHaveLength(4);
+    expect(hasil[0]?.opsi_soal?.map((o) => o.label)).toEqual(['A', 'B', 'C', 'D']);
   });
 
   it('tidak mengubah array asli', () => {

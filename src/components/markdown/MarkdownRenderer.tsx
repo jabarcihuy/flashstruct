@@ -48,6 +48,7 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
             return (
               <h2
                 id={id}
+                data-bagian-slug={id}
                 className="mt-10 mb-4 scroll-mt-20 font-heading text-2xl font-semibold text-fg"
               >
                 {children}

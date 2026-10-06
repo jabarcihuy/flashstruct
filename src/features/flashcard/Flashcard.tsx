@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Eye, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { CodeBlock } from '@/components/code/CodeBlock';
@@ -39,6 +40,13 @@ export function Flashcard({
   onBalik,
 }: FlashcardProps) {
   const warnaTopik = `var(--topik-${kartu.modul.topik})`;
+  const frontScrollRef = useRef<HTMLDivElement>(null);
+  const backScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (frontScrollRef.current) frontScrollRef.current.scrollTop = 0;
+    if (backScrollRef.current) backScrollRef.current.scrollTop = 0;
+  }, [kartu.id, terbuka]);
 
   return (
     <div
@@ -70,7 +78,7 @@ export function Flashcard({
           />
 
           {/* Pertanyaan — bisa di-scroll kalau panjang */}
-          <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto py-4">
+          <div ref={frontScrollRef} className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto py-4">
             <p className="whitespace-pre-wrap text-center text-xl font-semibold leading-snug text-fg sm:text-2xl">
               {barisKonten(kartu.depan)}
             </p>
@@ -109,7 +117,7 @@ export function Flashcard({
           />
 
           {/* Jawaban — bisa di-scroll */}
-          <div className="flex min-h-0 flex-1 flex-col overflow-y-auto py-4">
+          <div ref={backScrollRef} className="flex min-h-0 flex-1 flex-col overflow-y-auto py-4">
             <p className="whitespace-pre-wrap text-base leading-relaxed text-fg sm:text-lg">
               {barisKonten(kartu.belakang)}
             </p>

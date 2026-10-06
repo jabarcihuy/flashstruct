@@ -2,7 +2,7 @@ import { Check, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { CodeBlock } from '@/components/code/CodeBlock';
 import type { SoalDenganOpsi } from '@/types/database';
-import { opsiBenar } from './sesi';
+import { opsiBenar, urutkanOpsi } from './sesi';
 import { barisKonten } from '@/lib/format';
 
 /**
@@ -35,7 +35,7 @@ interface SoalPilihanGandaProps {
 
 export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalPilihanGandaProps) {
   const benar = opsiBenar(soal);
-  const opsi = soal.opsi_soal ?? [];
+  const opsi = urutkanOpsi(soal.opsi_soal);
   const kode = soal.kode ? barisKonten(soal.kode) : null;
   const pertanyaan = barisKonten(soal.pertanyaan);
   const teksPertanyaan =

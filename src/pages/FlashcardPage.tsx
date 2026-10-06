@@ -1,5 +1,5 @@
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -54,6 +54,11 @@ export default function FlashcardPage() {
   const sudahDinilai = Object.keys(state.hasil).length;
   const totalSesi = state.kartu.length;
   const judulModul = kartu?.modul.judul ?? '';
+
+  // Scroll kembali ke atas saat berpindah kartu atau fase
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [state.indeks, state.fase]);
 
   /* =========================================================
      Keluar

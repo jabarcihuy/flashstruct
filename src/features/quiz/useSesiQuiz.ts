@@ -9,6 +9,7 @@ import {
   soalTerakhir,
   stateAwal,
   susunSoal,
+  urutkanOpsi,
   type AkurasiTopik,
   type HasilSesiQuiz,
   type StateQuiz,
@@ -115,10 +116,17 @@ export function useSesiQuiz(slugModul: string) {
         return;
       }
 
-      // Belum dijawab: 1-4 untuk pilih opsi
+      // Belum dijawab: 1-4 atau A-D untuk pilih opsi
+      const keyUpper = e.key.toUpperCase();
+      if (['A', 'B', 'C', 'D'].includes(keyUpper)) {
+        e.preventDefault();
+        jawab(keyUpper);
+        return;
+      }
+
       const nomor = Number(e.key);
       if (nomor >= 1 && nomor <= 4) {
-        const opsi = soal?.opsi_soal?.[nomor - 1];
+        const opsi = urutkanOpsi(soal?.opsi_soal)?.[nomor - 1];
         if (opsi) {
           e.preventDefault();
           jawab(opsi.label);

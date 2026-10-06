@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Check, Info, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { SoalDenganOpsi } from '@/types/database';
@@ -27,11 +28,17 @@ interface UmpanBalikProps {
 }
 
 export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalikProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const benar = opsiBenar(soal);
   const betul = benar?.label === dipilih;
 
+  useEffect(() => {
+    containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       role="status"
       aria-live="polite"
       className={cn(

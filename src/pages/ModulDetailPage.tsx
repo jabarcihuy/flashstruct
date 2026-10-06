@@ -4,6 +4,7 @@ import { ArrowLeft, ExternalLink, PlayCircle } from 'lucide-react';
 import { PageHeader, Badge, Card } from '@/components/ui/Card';
 import { EmptyState, ErrorState, Skeleton } from '@/components/ui/States';
 import { MarkdownRenderer } from '@/components/markdown/MarkdownRenderer';
+import { slugHeading } from '@/components/markdown/util';
 import { useModulLengkap } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
 import { useProgresBaca } from '@/features/materi/useProgresBaca';
@@ -12,7 +13,7 @@ import { PanelLanjut } from '@/features/materi/PanelLanjut';
 import { VideoPlayer } from '@/features/video/VideoPlayer';
 import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { durasi, urutkan } from '@/lib/format';
-import type { VideoDenganModul } from '@/types/database';
+import type { BagianModul, VideoDenganModul } from '@/types/database';
 
 /**
  * Halaman baca modul — Tahap 1 (Pahami).
@@ -29,7 +30,35 @@ export default function ModulDetailPage() {
   const { data: modul, isPending, isError, error, refetch } = useModulLengkap(slug);
   const { ambilModul, tandaiModulSelesai, batalkanModulSelesai } = useProgres();
 
-  const bagian = useMemo(() => urutkan(modul?.bagian_modul), [modul?.bagian_modul]);
+  const bagianAsli = useMemo(() => urutkan(modul?.bagian_modul), [modul?.bagian_modul]);
+
+  // Jika modul berisi 1 bagian materi utuh, ekstrak subjudul ## agar daftar isi navigatif
+  const bagian = useMemo(() => {
+    if (bagianAsli.length !== 1 || !bagianAsli[0]?.konten_md) {
+      return bagianAsli;
+    }
+    const konten = bagianAsli[0].konten_md;
+    const baris = konten.split('\n');
+    const items: BagianModul[] = [];
+    let urutan = 1;
+    for (const b of baris) {
+      const match = b.match(/^##\s+(.+)$/);
+      if (match && match[1]) {
+        const judul = match[1].trim();
+        const slug = slugHeading(judul);
+        items.push({
+          id: `heading-${slug}`,
+          modul_id: bagianAsli[0].modul_id,
+          slug,
+          judul,
+          konten_md: '',
+          urutan: urutan++,
+        });
+      }
+    }
+    return items.length > 0 ? items : bagianAsli;
+  }, [bagianAsli]);
+
   const slugBagian = useMemo(() => bagian.map((b) => b.slug), [bagian]);
 
   const progresModul = modul ? ambilModul(modul.id) : undefined;

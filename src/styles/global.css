@@ -87,6 +87,7 @@
 html {
   /* Cegah layout shift saat scrollbar muncul/hilang */
   scrollbar-gutter: stable;
+  scroll-behavior: smooth;
 }
 
 body {

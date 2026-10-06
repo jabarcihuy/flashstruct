@@ -34,8 +34,11 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
 
   // Paksa render ulang saat bagian dibaca bertambah
   const [, setPenanda] = useState(0);
+  // Kedalaman scroll aktual dalam persen (0 - 100)
+  const [scrollDepth, setScrollDepth] = useState(0);
 
-  const bagianDibaca = ambilModul(modulId)?.bagianDibaca ?? [];
+  const modulProgres = ambilModul(modulId);
+  const bagianDibaca = modulProgres?.bagianDibaca ?? [];
 
   // Kunci stabil untuk dependency — join dipakai agar array tidak
   // dianggap berubah setiap render (array baru = referensi baru).
@@ -62,14 +65,19 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
           if (!slug) continue;
 
           const rect = e.boundingClientRect;
-          // Kasus 1: rasio keterlihatan >= 35%
-          const rasioCukup = e.intersectionRatio >= 0.35;
-          // Kasus 2: bagian panjang (tinggi > 60% viewport) dan sedang berada di area baca layar
           const bagianPanjang = rect.height >= tinggiLayar * 0.6;
-          const aktifDiLayar =
-            bagianPanjang && rect.top <= tinggiLayar * 0.6 && rect.bottom >= tinggiLayar * 0.25;
+          let terbaca = false;
 
-          if (rasioCukup || aktifDiLayar) {
+          if (!bagianPanjang) {
+            // Bagian pendek: terbaca saat setidaknya 35% terlihat
+            terbaca = e.intersectionRatio >= 0.35;
+          } else {
+            // Bagian panjang: terbaca saat pengguna menggulir melewati mayoritas isinya
+            const ratioRead = (-rect.top + tinggiLayar) / rect.height;
+            terbaca = ratioRead >= 0.75 || rect.bottom <= tinggiLayar * 0.9;
+          }
+
+          if (terbaca) {
             tandai(slug);
           }
         }
@@ -85,15 +93,27 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
     // Pemeriksa scroll untuk menangani bagian panjang & mendeteksi scroll ke akhir halaman
     function periksaPosisiScroll() {
       const tinggiLayar = window.innerHeight;
+      const scrollMax = Math.max(1, document.documentElement.scrollHeight - tinggiLayar);
+      const rasioScroll = Math.min(100, Math.round((window.scrollY / scrollMax) * 100));
+      setScrollDepth((prev) => Math.max(prev, rasioScroll));
+
       const daftarElemen = document.querySelectorAll<HTMLElement>('[data-bagian-slug]');
 
       daftarElemen.forEach((el) => {
         const slug = el.getAttribute('data-bagian-slug');
         if (!slug) return;
         const rect = el.getBoundingClientRect();
-        // Bagian sedang berada di fokus baca (tengah layar)
-        if (rect.top <= tinggiLayar * 0.55 && rect.bottom >= tinggiLayar * 0.2) {
-          tandai(slug);
+        const bagianPanjang = rect.height >= tinggiLayar * 0.6;
+
+        if (!bagianPanjang) {
+          if (rect.top <= tinggiLayar * 0.55 && rect.bottom >= tinggiLayar * 0.2) {
+            tandai(slug);
+          }
+        } else {
+          const ratioRead = (-rect.top + tinggiLayar) / rect.height;
+          if (ratioRead >= 0.75 || rect.bottom <= tinggiLayar * 0.9) {
+            tandai(slug);
+          }
         }
       });
 
@@ -104,6 +124,11 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
         const bagianAkhir = daftarElemen[daftarElemen.length - 1]?.getAttribute('data-bagian-slug');
         if (bagianAkhir) tandai(bagianAkhir);
       }
+
+      // Jika modul 1 bagian dan scroll sudah melewati 80%, tandai bagian
+      if (daftarSlugBagian.length === 1 && rasioScroll >= PERSEN_MINIMAL_BACA) {
+        tandai(daftarSlugBagian[0]);
+      }
     }
 
     window.addEventListener('scroll', periksaPosisiScroll, { passive: true });
@@ -111,17 +136,24 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
     periksaPosisiScroll();
 
     return () => {
-      pengamat.disconnect();
       window.removeEventListener('scroll', periksaPosisiScroll);
       refPengamat.current = null;
     };
-  }, [modulId, kunciBagian, tandai]);
+  }, [modulId, kunciBagian, tandai, daftarSlugBagian]);
 
   const jumlahBagian = daftarSlugBagian.length;
   // Hanya hitung bagian yang memang ada di modul ini
   const dibacaValid = bagianDibaca.filter((s) => daftarSlugBagian.includes(s));
   const jumlahDibaca = dibacaValid.length;
-  const persen = jumlahBagian > 0 ? Math.round((jumlahDibaca / jumlahBagian) * 100) : 0;
+
+  // Untuk modul 1 bagian, persentase mengikuti kedalaman scroll sampai selesai
+  let persen = 0;
+  if (jumlahBagian === 1) {
+    const sudahDitandai = dibacaValid.length === 1 || modulProgres?.tahap1Selesai;
+    persen = sudahDitandai ? 100 : Math.min(100, scrollDepth);
+  } else if (jumlahBagian > 1) {
+    persen = Math.round((jumlahDibaca / jumlahBagian) * 100);
+  }
 
   return {
     bagianDibaca: dibacaValid,
