@@ -103,6 +103,10 @@ function KartuPilihanModul({
   const statusTahap2 = statusTahap(progresModul, 2);
   const statusTahap3 = statusTahap(progresModul, 3);
   const statistik = hitungStatistikModul(progresModul);
+  const riwayatQuiz = progresModul?.riwayatQuiz ?? [];
+  const skorTerakhir = riwayatQuiz.at(-1)?.skor;
+  const skorTerbaik =
+    riwayatQuiz.length > 0 ? Math.max(...riwayatQuiz.map((hasil) => hasil.skor)) : 0;
 
   return (
     <Card className="rounded-none border-b-0 p-5 first:rounded-t-md last:rounded-b-md last:border-b sm:p-6">
@@ -152,7 +156,7 @@ function KartuPilihanModul({
           keterangan={`${jumlahSoal} soal`}
           statistik={
             statistik.jumlahPercobaan > 0
-              ? `Akurasi ${statistik.akurasiQuiz}% · ${statistik.jumlahPercobaan}x`
+              ? `Terakhir ${skorTerakhir}% · terbaik ${skorTerbaik}% · ${statistik.jumlahPercobaan}x`
               : 'Belum pernah dikerjakan'
           }
           status={statusTahap3}
@@ -160,6 +164,7 @@ function KartuPilihanModul({
           labelTombol="Mulai"
           warna={warnaTopik}
           alasanTerkunci={statusTahap3 === 'terkunci' ? alasanTerkunci(3) : undefined}
+          progresPersen={skorTerakhir}
         />
       </div>
     </Card>
@@ -223,7 +228,7 @@ function PanelTahap({
         <div className="mt-3">
           <ProgressBar
             nilai={progresPersen}
-            label="Kartu dikuasai"
+            label={judul === 'Buktikan' ? 'Nilai quiz terakhir' : 'Kartu dikuasai'}
             tanpaLabelVisual
             warna={warna}
           />

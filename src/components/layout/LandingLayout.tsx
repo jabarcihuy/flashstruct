@@ -31,7 +31,7 @@ export function LandingLayout() {
           <div className="landing-header-actions">
             <ThemeToggle />
             <Link to="/dashboard" className="landing-app-link">
-              Buka aplikasi <ArrowRight size={16} aria-hidden="true" />
+              Dashboard <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>

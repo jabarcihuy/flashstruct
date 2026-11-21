@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
-import { ArrowRight, BookOpen, PlayCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, PlayCircle, Clock3 } from 'lucide-react';
 import { Card, Badge, PageHeader } from '@/components/ui/Card';
 import { ErrorState, Skeleton } from '@/components/ui/States';
 import { useSemuaVideo } from '@/features/video/hooks';
@@ -9,6 +9,26 @@ import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { durasi, urutkan } from '@/lib/format';
 import { useState } from 'react';
 import type { VideoDenganModul } from '@/types/database';
+
+const KUNCI_RIWAYAT_VIDEO = 'flashstruct:riwayat-video:v1';
+type EntriRiwayatVideo = { id: string; judul: string; modul: string; waktu: number };
+
+function bacaRiwayatVideo(): EntriRiwayatVideo[] {
+  try {
+    const data: unknown = JSON.parse(localStorage.getItem(KUNCI_RIWAYAT_VIDEO) ?? '[]');
+    if (!Array.isArray(data)) return [];
+    return data.filter(
+      (item): item is EntriRiwayatVideo =>
+        item &&
+        typeof item.id === 'string' &&
+        typeof item.judul === 'string' &&
+        typeof item.modul === 'string' &&
+        typeof item.waktu === 'number',
+    );
+  } catch {
+    return [];
+  }
+}
 
 /**
  * Halaman galeri video.
@@ -21,7 +41,27 @@ export default function VideoPage() {
   useJudulHalaman('Video');
   const { data: daftarVideo, isPending, isError, error, refetch } = useSemuaVideo();
   const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
+  const [riwayat, setRiwayat] = useState<EntriRiwayatVideo[]>(bacaRiwayatVideo);
   const videoTayang = daftarVideo?.filter((video) => video.youtube_id !== YOUTUBE_ID_VIDEO_CONTOH);
+
+  function tutupPemutar() {
+    if (videoDiputar) {
+      const entri: EntriRiwayatVideo = {
+        id: videoDiputar.id,
+        judul: videoDiputar.judul,
+        modul: videoDiputar.modul.judul,
+        waktu: Date.now(),
+      };
+      const berikutnya = [entri, ...riwayat.filter((item) => item.id !== entri.id)].slice(0, 20);
+      setRiwayat(berikutnya);
+      try {
+        localStorage.setItem(KUNCI_RIWAYAT_VIDEO, JSON.stringify(berikutnya));
+      } catch {
+        // Riwayat tidak wajib jika penyimpanan browser tidak tersedia.
+      }
+    }
+    setVideoDiputar(null);
+  }
 
   if (isPending) return <VideoSkeleton />;
 
@@ -115,7 +155,37 @@ export default function VideoPage() {
         ))}
       </div>
 
-      {videoDiputar && <VideoPlayer video={videoDiputar} onTutup={() => setVideoDiputar(null)} />}
+      {riwayat.length > 0 && (
+        <section className="mt-10" aria-labelledby="riwayat-video-title">
+          <div className="mb-3 flex items-center gap-2">
+            <Clock3 className="size-4 text-fg-muted" aria-hidden="true" />
+            <h2 id="riwayat-video-title" className="font-heading text-lg font-semibold text-fg">
+              Terakhir ditonton
+            </h2>
+          </div>
+          <ul className="divide-y divide-border border-y border-border">
+            {riwayat.map((item) => (
+              <li key={item.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+                <div>
+                  <p className="font-medium text-fg">{item.judul}</p>
+                  <p className="text-sm text-fg-muted">{item.modul}</p>
+                </div>
+                <time
+                  className="text-sm text-fg-muted"
+                  dateTime={new Date(item.waktu).toISOString()}
+                >
+                  {new Intl.DateTimeFormat('id-ID', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short',
+                  }).format(item.waktu)}
+                </time>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {videoDiputar && <VideoPlayer video={videoDiputar} onTutup={tutupPemutar} />}
     </div>
   );
 }

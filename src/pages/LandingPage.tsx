@@ -54,11 +54,7 @@ export default function LandingPage() {
             <br />
             <span>Bisa menjelaskan hasilnya?</span>
           </h1>
-          <p>
-            Belajar Struktur Data tidak berhenti saat kode berhasil dijalankan. FlashStruct
-            membawamu dari memahami Array, Struct, dan Pointer sampai bisa mengingat dan
-            membuktikannya sendiri.
-          </p>
+          <p>Latihan singkat untuk mengingat dan menguji Array, Struct, dan Pointer.</p>
           <div className="landing-hero-actions">
             <Link to={mulaiKe} className="landing-primary-action">
               {adaProgres ? 'Lanjutkan belajar' : 'Mulai belajar'}
@@ -68,7 +64,6 @@ export default function LandingPage() {
               Lihat cara belajar <ArrowRight size={16} aria-hidden="true" />
             </a>
           </div>
-          <p className="landing-hero-note">Gratis · Tanpa akun · Progres tersimpan di browser</p>
         </div>
 
         <div className="landing-demo" ref={demoRef}>
@@ -131,25 +126,11 @@ export default function LandingPage() {
       <section className="landing-path" id="cara-kerja">
         <div className="container-wide">
           <div className="landing-section-heading">
-            <h2>Tiga langkah untuk benar-benar menguasai konsep.</h2>
-            <p>
-              Setiap modul punya urutan yang jelas. Tahap berikutnya terbuka setelah tahap
-              sebelumnya selesai, jadi kamu tahu apa yang perlu dikerjakan sekarang.
-            </p>
+            <h2>Hafalkan, lalu buktikan.</h2>
           </div>
           <div className="landing-stage-list">
             <article className="landing-stage-row">
               <span className="landing-stage-number">1</span>
-              <div>
-                <h3>Pahami</h3>
-                <p>
-                  Baca penjelasan, diagram, serta contoh C++ dan Python sampai alurnya masuk akal.
-                </p>
-              </div>
-              <span className="landing-stage-proof">Materi & contoh kode</span>
-            </article>
-            <article className="landing-stage-row">
-              <span className="landing-stage-number">2</span>
               <div>
                 <h3>Hafalkan</h3>
                 <p>
@@ -159,7 +140,7 @@ export default function LandingPage() {
               <span className="landing-stage-proof">Flashcard & pengulangan</span>
             </article>
             <article className="landing-stage-row">
-              <span className="landing-stage-number">3</span>
+              <span className="landing-stage-number">2</span>
               <div>
                 <h3>Buktikan</h3>
                 <p>Kerjakan quiz dan baca penjelasan jawabannya untuk menemukan celah pemahaman.</p>
@@ -192,10 +173,6 @@ export default function LandingPage() {
         <div className="container-wide landing-close-inner">
           <div>
             <h2>Belajar berurutan. Ulangi sampai ingat.</h2>
-            <p>
-              Tidak perlu membuat akun. Progresmu disimpan di browser ini dan bisa diekspor dari
-              Dashboard.
-            </p>
           </div>
           <Link to={mulaiKe} className="landing-primary-action">
             {adaProgres ? 'Kembali belajar' : 'Mulai dari modul pertama'}
