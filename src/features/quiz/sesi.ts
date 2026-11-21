@@ -1,6 +1,6 @@
 import type { OpsiSoal, SoalDenganOpsi, TipeKartu } from '@/types/database';
 import { JUMLAH_SOAL_QUIZ } from '@/lib/constants';
-import { acak, urutkan } from '@/lib/format';
+import { acak } from '@/lib/format';
 
 /**
  * State machine sesi quiz.

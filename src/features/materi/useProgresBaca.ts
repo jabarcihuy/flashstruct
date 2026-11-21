@@ -126,7 +126,11 @@ export function useProgresBaca(modulId: string, daftarSlugBagian: string[]): Has
       }
 
       // Jika modul 1 bagian dan scroll sudah melewati 80%, tandai bagian
-      if (daftarSlugBagian.length === 1 && rasioScroll >= PERSEN_MINIMAL_BACA) {
+      if (
+        daftarSlugBagian.length === 1 &&
+        daftarSlugBagian[0] !== undefined &&
+        rasioScroll >= PERSEN_MINIMAL_BACA
+      ) {
         tandai(daftarSlugBagian[0]);
       }
     }
