@@ -9,6 +9,7 @@ import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { durasi, urutkan } from '@/lib/format';
 import { useState } from 'react';
 import type { VideoDenganModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 const KUNCI_RIWAYAT_VIDEO = 'flashstruct:riwayat-video:v1';
 type EntriRiwayatVideo = { id: string; judul: string; modul: string; waktu: number };
@@ -38,7 +39,9 @@ function bacaRiwayatVideo(): EntriRiwayatVideo[] {
  * sedikit video, dengan pesan yang jujur dan mengarahkan.
  */
 export default function VideoPage() {
-  useJudulHalaman('Video');
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(en ? 'Videos' : 'Video');
   const { data: daftarVideo, isPending, isError, error, refetch } = useSemuaVideo();
   const [videoDiputar, setVideoDiputar] = useState<VideoDenganModul | null>(null);
   const [riwayat, setRiwayat] = useState<EntriRiwayatVideo[]>(bacaRiwayatVideo);
@@ -70,11 +73,19 @@ export default function VideoPage() {
       <div className="container-base video-page py-8">
         <PageHeader
           judul="Video"
-          deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan"
+          deskripsi={
+            en
+              ? 'Visual explanations for concepts that are hard to picture'
+              : 'Penjelasan visual untuk konsep yang sulit dibayangkan'
+          }
         />
         <ErrorState
-          judul="Gagal memuat video"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load videos' : 'Gagal memuat video'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && (
@@ -90,39 +101,52 @@ export default function VideoPage() {
       <div className="container-base py-8">
         <PageHeader
           judul="Video"
-          deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan"
+          deskripsi={
+            en
+              ? 'Visual explanations for concepts that are hard to picture'
+              : 'Penjelasan visual untuk konsep yang sulit dibayangkan'
+          }
         />
         <section className="video-empty">
           <div className="video-empty-copy">
             <PlayCircle className="size-8 text-link" strokeWidth={1.5} aria-hidden="true" />
-            <h2>Video sedang disiapkan</h2>
+            <h2>{en ? 'Videos are being prepared' : 'Video sedang disiapkan'}</h2>
             <p>
-              Untuk saat ini, semua konsep sudah dijelaskan lengkap di halaman Materi. Video hanya
-              pendukung, dan tidak wajib untuk menyelesaikan tahap belajar.
+              {en
+                ? 'For now, every concept is covered in the Lessons section. Videos are optional supporting material and are not required to complete a learning stage.'
+                : 'Untuk saat ini, semua konsep sudah dijelaskan lengkap di halaman Materi. Video hanya pendukung, dan tidak wajib untuk menyelesaikan tahap belajar.'}
             </p>
             <Link to="/materi" className="video-empty-action">
               <BookOpen className="size-4" aria-hidden="true" />
-              Buka Halaman Materi
+              {en ? 'Browse lessons' : 'Buka Halaman Materi'}
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
           <div className="video-empty-path">
-            <h3>Belajar tetap bisa lanjut</h3>
+            <h3>{en ? 'You can keep learning' : 'Belajar tetap bisa lanjut'}</h3>
             <ol>
               <li>
                 <span>1</span>
-                <strong>Pahami</strong>
-                <small>Baca modul dan contoh kodenya.</small>
+                <strong>{en ? 'Understand' : 'Pahami'}</strong>
+                <small>
+                  {en ? 'Read the module and its code examples.' : 'Baca modul dan contoh kodenya.'}
+                </small>
               </li>
               <li>
                 <span>2</span>
-                <strong>Hafalkan</strong>
-                <small>Ulangi konsep lewat flashcard.</small>
+                <strong>{en ? 'Remember' : 'Hafalkan'}</strong>
+                <small>
+                  {en ? 'Review concepts with flashcards.' : 'Ulangi konsep lewat flashcard.'}
+                </small>
               </li>
               <li>
                 <span>3</span>
-                <strong>Buktikan</strong>
-                <small>Kerjakan quiz untuk mengecek pemahaman.</small>
+                <strong>{en ? 'Prove it' : 'Buktikan'}</strong>
+                <small>
+                  {en
+                    ? 'Take quizzes to check your understanding.'
+                    : 'Kerjakan quiz untuk mengecek pemahaman.'}
+                </small>
               </li>
             </ol>
           </div>
@@ -147,7 +171,14 @@ export default function VideoPage() {
 
   return (
     <div className="container-base video-page py-8">
-      <PageHeader judul="Video" deskripsi="Penjelasan visual untuk konsep yang sulit dibayangkan" />
+      <PageHeader
+        judul={en ? 'Videos' : 'Video'}
+        deskripsi={
+          en
+            ? 'Visual explanations for concepts that are hard to picture'
+            : 'Penjelasan visual untuk konsep yang sulit dibayangkan'
+        }
+      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {videoTerurut.map((v) => (
@@ -160,7 +191,7 @@ export default function VideoPage() {
           <div className="mb-3 flex items-center gap-2">
             <Clock3 className="size-4 text-fg-muted" aria-hidden="true" />
             <h2 id="riwayat-video-title" className="font-heading text-lg font-semibold text-fg">
-              Terakhir ditonton
+              {en ? 'Recently watched' : 'Terakhir ditonton'}
             </h2>
           </div>
           <ul className="divide-y divide-border border-y border-border">
@@ -174,7 +205,7 @@ export default function VideoPage() {
                   className="text-sm text-fg-muted"
                   dateTime={new Date(item.waktu).toISOString()}
                 >
-                  {new Intl.DateTimeFormat('id-ID', {
+                  {new Intl.DateTimeFormat(en ? 'en-US' : 'id-ID', {
                     dateStyle: 'medium',
                     timeStyle: 'short',
                   }).format(item.waktu)}

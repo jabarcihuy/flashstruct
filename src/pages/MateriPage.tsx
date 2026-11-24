@@ -16,6 +16,7 @@ import { LABEL_TOPIK } from '@/lib/constants';
 import { urutkan } from '@/lib/format';
 import { cn } from '@/lib/cn';
 import type { ModulRingkas, TopikModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 type FilterTopik = 'semua' | TopikModul;
 
@@ -27,7 +28,9 @@ type FilterTopik = 'semua' | TopikModul;
  * filter topik, dan ringkasan progres keseluruhan.
  */
 export default function MateriPage() {
-  useJudulHalaman('Materi');
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(en ? 'Lessons' : 'Materi');
   const { hash } = useLocation();
   const [filterTopik, setFilterTopik] = useState<FilterTopik>('semua');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
@@ -70,12 +73,18 @@ export default function MateriPage() {
           Materi
         </h1>
         <p className="mt-2 text-base text-fg-muted">
-          Pelajari konsepnya sebelum menghafal dan menguji pemahaman.
+          {en
+            ? 'Learn the concepts before memorizing and testing your understanding.'
+            : 'Pelajari konsepnya sebelum menghafal dan menguji pemahaman.'}
         </p>
         <div className="mt-8">
           <ErrorState
-            judul="Gagal memuat materi"
-            pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+            judul={en ? 'Could not load lessons' : 'Gagal memuat materi'}
+            pesan={
+              en
+                ? 'Could not connect to the server. Check your internet connection and try again.'
+                : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+            }
             onCobaLagi={() => void refetch()}
           />
           {import.meta.env.DEV && (
@@ -98,15 +107,19 @@ export default function MateriPage() {
         <div className="mt-8">
           <EmptyState
             ikon={<BookOpen className="size-12" strokeWidth={1.5} />}
-            judul="Belum ada modul"
-            pesan="Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi."
+            judul={en ? 'No modules yet' : 'Belum ada modul'}
+            pesan={
+              en
+                ? 'Content is being prepared. Please reload the page in a moment.'
+                : 'Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi.'
+            }
             aksi={
               <button
                 type="button"
                 onClick={() => void refetch()}
                 className="cursor-pointer rounded-md border border-border-strong px-4 py-2 text-sm"
               >
-                Muat Ulang
+                {en ? 'Reload' : 'Muat Ulang'}
               </button>
             }
           />
@@ -127,24 +140,29 @@ export default function MateriPage() {
             Materi
           </h1>
           <p className="mt-2 text-base text-fg-muted max-w-2xl">
-            Pelajari konsep Struktur Data secara bertahap dengan modul mendalam sebelum menghafal
-            dan menguji diri.
+            {en
+              ? 'Learn data structures step by step with in-depth modules before memorizing and testing yourself.'
+              : 'Pelajari konsep Struktur Data secara bertahap dengan modul mendalam sebelum menghafal dan menguji diri.'}
           </p>
         </div>
 
         {/* Ringkasan Progres Belajar */}
         <div className="flex w-full sm:w-auto shrink-0 items-center justify-between sm:justify-start gap-4 rounded-lg border border-border bg-surface px-4 py-2.5">
           <div>
-            <span className="block text-xs text-fg-muted">Progres Materi</span>
+            <span className="block text-xs text-fg-muted">
+              {en ? 'Lesson progress' : 'Progres Materi'}
+            </span>
             <span className="text-sm font-semibold tabular-nums text-fg">
-              {statistikGlobal.selesai} dari {statistikGlobal.total} tuntas
+              {en
+                ? `${statistikGlobal.selesai} of ${statistikGlobal.total} completed`
+                : `${statistikGlobal.selesai} dari ${statistikGlobal.total} tuntas`}
             </span>
           </div>
           <div className="flex items-center gap-2.5">
             <div className="w-20">
               <ProgressBar
                 nilai={statistikGlobal.persen}
-                label="Progres materi keseluruhan"
+                label={en ? 'Overall lesson progress' : 'Progres materi keseluruhan'}
                 tanpaLabelVisual
               />
             </div>
@@ -156,7 +174,10 @@ export default function MateriPage() {
       </header>
 
       {/* Filter Topik Navigasi */}
-      <nav className="mb-8 flex flex-wrap gap-2.5" aria-label="Filter topik materi">
+      <nav
+        className="mb-8 flex flex-wrap gap-2.5"
+        aria-label={en ? 'Filter lessons by topic' : 'Filter topik materi'}
+      >
         <button
           type="button"
           onClick={() => setFilterTopik('semua')}
@@ -167,7 +188,7 @@ export default function MateriPage() {
               : 'border border-border bg-surface text-fg hover:bg-surface-raised',
           )}
         >
-          Semua ({daftarModul.length})
+          {en ? 'All' : 'Semua'} ({daftarModul.length})
         </button>
         {(['array', 'struct', 'pointer'] as const).map((t) => {
           const modulDalamTopik = perTopik.get(t) ?? [];
@@ -204,14 +225,22 @@ export default function MateriPage() {
                 <div className="flex items-center gap-3">
                   <h2 className="font-heading text-xl font-bold text-fg">{LABEL_TOPIK[topik]}</h2>
                   <span className="text-sm font-medium text-fg-muted">
-                    {modulTopik.length} modul
+                    {modulTopik.length} {en ? 'modules' : 'modul'}
                   </span>
                 </div>
                 <span className="text-xs text-fg-muted">
                   {selesaiTopik === modulTopik.length && modulTopik.length > 0 ? (
-                    <span className="font-semibold text-success">Semua tuntas</span>
+                    <span className="font-semibold text-success">
+                      {en ? 'All completed' : 'Semua tuntas'}
+                    </span>
                   ) : selesaiTopik > 0 ? (
-                    `${selesaiTopik} dari ${modulTopik.length} tuntas`
+                    en ? (
+                      `${selesaiTopik} of ${modulTopik.length} completed`
+                    ) : (
+                      `${selesaiTopik} dari ${modulTopik.length} tuntas`
+                    )
+                  ) : en ? (
+                    'Not started'
                   ) : (
                     'Belum dimulai'
                   )}
@@ -240,6 +269,8 @@ function KartuModulMateri({
   modul: ModulRingkas;
   progresModul: ReturnType<ReturnType<typeof useProgres>['ambilModul']>;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const jumlahBagian = modul.bagian_modul?.length ?? 0;
   const jumlahKartu = modul.flashcard?.length ?? 0;
   const jumlahSoal = modul.soal?.length ?? 0;
@@ -255,18 +286,34 @@ function KartuModulMateri({
 
   // Tentukan aksi CTA kontekstual
   const cta = !tahap1Selesai
-    ? { label: 'Baca Modul', ke: `/materi/${modul.slug}`, varian: 'primary' as const }
+    ? {
+        label: en ? 'Read module' : 'Baca Modul',
+        ke: `/materi/${modul.slug}`,
+        varian: 'primary' as const,
+      }
     : tahap2Terkunci
-      ? { label: 'Baca Modul', ke: `/materi/${modul.slug}`, varian: 'primary' as const }
+      ? {
+          label: en ? 'Read module' : 'Baca Modul',
+          ke: `/materi/${modul.slug}`,
+          varian: 'primary' as const,
+        }
       : status[1] === 'tersedia'
         ? {
-            label: 'Mulai Flashcard',
+            label: en ? 'Start flashcards' : 'Mulai Flashcard',
             ke: `/soal/flashcard/${modul.slug}`,
             varian: 'primary' as const,
           }
         : status[2] === 'tersedia'
-          ? { label: 'Mulai Quiz', ke: `/soal/quiz/${modul.slug}`, varian: 'primary' as const }
-          : { label: 'Buka Materi', ke: `/materi/${modul.slug}`, varian: 'secondary' as const };
+          ? {
+              label: en ? 'Start quiz' : 'Mulai Quiz',
+              ke: `/soal/quiz/${modul.slug}`,
+              varian: 'primary' as const,
+            }
+          : {
+              label: en ? 'Open lesson' : 'Buka Materi',
+              ke: `/materi/${modul.slug}`,
+              varian: 'secondary' as const,
+            };
 
   return (
     <article className="group relative rounded-lg border border-border bg-surface p-5 sm:p-6 transition-all duration-200 hover:border-border-strong hover:bg-surface-raised/40">
@@ -305,7 +352,17 @@ function KartuModulMateri({
                       : 'bg-surface-raised text-fg-muted',
                 )}
               >
-                {tuntas ? 'Tuntas' : sedangBerjalan ? 'Sedang Dipelajari' : 'Belum Dimulai'}
+                {tuntas
+                  ? en
+                    ? 'Completed'
+                    : 'Tuntas'
+                  : sedangBerjalan
+                    ? en
+                      ? 'In progress'
+                      : 'Sedang Dipelajari'
+                    : en
+                      ? 'Not started'
+                      : 'Belum Dimulai'}
               </span>
             </div>
 
@@ -317,7 +374,9 @@ function KartuModulMateri({
             {tahap2Terkunci && !tahap1Selesai && (
               <p className="mt-2 flex items-center gap-1.5 text-xs text-fg-muted">
                 <Lock className="size-3.5 shrink-0 text-fg-muted" aria-hidden="true" />
-                <span>{alasanTerkunci(2)}</span>
+                <span>
+                  {en ? 'Complete the reading stage to unlock flashcards.' : alasanTerkunci(2)}
+                </span>
               </p>
             )}
           </div>
@@ -345,22 +404,22 @@ function KartuModulMateri({
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-fg-muted">
           <span className="inline-flex items-center gap-1.5">
             <BookOpen className="size-3.5" aria-hidden="true" />
-            {jumlahBagian} bagian
+            {jumlahBagian} {en ? 'sections' : 'bagian'}
           </span>
           <span>·</span>
           <span className="inline-flex items-center gap-1.5">
             <Layers className="size-3.5" aria-hidden="true" />
-            {jumlahKartu} kartu
+            {jumlahKartu} {en ? 'cards' : 'kartu'}
           </span>
           <span>·</span>
           <span className="inline-flex items-center gap-1.5">
             <HelpCircle className="size-3.5" aria-hidden="true" />
-            {jumlahSoal} soal
+            {jumlahSoal} {en ? 'questions' : 'soal'}
           </span>
           <span>·</span>
           <span className="inline-flex items-center gap-1.5">
             <Clock className="size-3.5" aria-hidden="true" />
-            {modul.estimasi_menit} mnt
+            {modul.estimasi_menit} {en ? 'min' : 'mnt'}
           </span>
         </div>
 

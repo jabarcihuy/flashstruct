@@ -1,6 +1,7 @@
 import { RotateCcw } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Layar transisi sebelum putaran ulang kartu lupa.
@@ -22,6 +23,8 @@ interface PutaranUlangProps {
 }
 
 export function PutaranUlang({ jumlahLupa, jumlahTotal, onMulai, onLewati }: PutaranUlangProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <div className="mx-auto w-full max-w-md">
       <Card className="p-6 text-center sm:p-8">
@@ -29,24 +32,40 @@ export function PutaranUlang({ jumlahLupa, jumlahTotal, onMulai, onLewati }: Put
           <RotateCcw className="size-6 text-primary" aria-hidden="true" />
         </div>
 
-        <h2 className="font-heading text-xl font-semibold text-fg">Putaran Ulang</h2>
+        <h2 className="font-heading text-xl font-semibold text-fg">
+          {en ? 'Review round' : 'Putaran Ulang'}
+        </h2>
 
         <p className="mt-2 text-sm text-fg-muted">
-          Dari {jumlahTotal} kartu, <strong className="text-fg">{jumlahLupa} kartu</strong> kamu
-          tandai lupa. Mari ulangi kartu itu supaya benar-benar menempel.
+          {en ? (
+            <>
+              You marked{' '}
+              <strong className="text-fg">
+                {jumlahLupa} of {jumlahTotal} cards
+              </strong>{' '}
+              as forgotten. Review them now to help the concepts stick.
+            </>
+          ) : (
+            <>
+              Dari {jumlahTotal} kartu, <strong className="text-fg">{jumlahLupa} kartu</strong> kamu
+              tandai lupa. Mari ulangi kartu itu supaya benar-benar menempel.
+            </>
+          )}
         </p>
 
         <div className="mt-6 flex flex-col gap-3">
           <Button onClick={onMulai} ikonKiri={<RotateCcw className="size-4" aria-hidden="true" />}>
-            Ulangi {jumlahLupa} Kartu
+            {en ? `Review ${jumlahLupa} cards` : `Ulangi ${jumlahLupa} Kartu`}
           </Button>
           <Button varian="ghost" onClick={onLewati}>
-            Lewati, lihat hasil
+            {en ? 'Skip to results' : 'Lewati, lihat hasil'}
           </Button>
         </div>
 
         <p className="mt-4 text-xs text-fg-muted">
-          Putaran ulang hanya sekali. Kartu yang masih lupa akan muncul lagi di sesi berikutnya.
+          {en
+            ? 'This review round happens once. Cards you still forget will return in a future session.'
+            : 'Putaran ulang hanya sekali. Kartu yang masih lupa akan muncul lagi di sesi berikutnya.'}
         </p>
       </Card>
     </div>

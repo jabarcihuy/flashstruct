@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { ExternalLink, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { VideoDenganModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Modal pemutar video YouTube.
@@ -23,6 +24,8 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ video, onTutup }: VideoPlayerProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const refDialog = useRef<HTMLDivElement>(null);
 
   // Kunci scroll body + Escape + perangkap fokus
@@ -89,12 +92,14 @@ export function VideoPlayer({ video, onTutup }: VideoPlayerProps) {
         <div className="flex items-start justify-between gap-4 p-4 pb-0">
           <div className="min-w-0">
             <h2 className="font-heading text-lg font-semibold text-fg">{video.judul}</h2>
-            <p className="mt-0.5 text-sm text-fg-muted">dari: {video.modul.judul}</p>
+            <p className="mt-0.5 text-sm text-fg-muted">
+              {en ? 'From:' : 'dari:'} {video.modul.judul}
+            </p>
           </div>
           <button
             type="button"
             onClick={onTutup}
-            aria-label="Tutup pemutar video"
+            aria-label={en ? 'Close video player' : 'Tutup pemutar video'}
             className="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-fg-muted hover:bg-surface-raised hover:text-fg sm:size-9"
           >
             <X className="size-5" aria-hidden="true" />
@@ -118,7 +123,7 @@ export function VideoPlayer({ video, onTutup }: VideoPlayerProps) {
             rel="noopener noreferrer"
             className="mt-4 inline-flex h-11 items-center gap-2 text-sm text-link underline underline-offset-2 md:h-9"
           >
-            Buka di YouTube
+            {en ? 'Open on YouTube' : 'Buka di YouTube'}
             <ExternalLink className="size-4" aria-hidden="true" />
           </a>
         </div>

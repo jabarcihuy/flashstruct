@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { LABEL_TIPE_KARTU, AMBANG_LULUS_QUIZ } from '@/lib/constants';
 import { cn } from '@/lib/cn';
 import type { AkurasiTopik, HasilSesiQuiz } from './sesi';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman hasil quiz.
@@ -32,6 +33,8 @@ export function HasilQuiz({
   modulJudul,
   onUlangi,
 }: HasilQuizProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const topikLemah = akurasiTopik.filter((a) => a.kategori === 'lemah');
 
   return (
@@ -49,7 +52,7 @@ export function HasilQuiz({
           >
             {hasil.skor}
           </span>
-          <p className="mt-1 text-sm text-fg-muted">dari 100</p>
+          <p className="mt-1 text-sm text-fg-muted">{en ? 'out of 100' : 'dari 100'}</p>
         </div>
 
         {/* Status lulus */}
@@ -62,33 +65,38 @@ export function HasilQuiz({
           {hasil.lulus ? (
             <>
               <Check className="size-4" aria-hidden="true" />
-              Lulus
+              {en ? 'Passed' : 'Lulus'}
             </>
           ) : (
             <>
               <X className="size-4" aria-hidden="true" />
-              Belum lulus
+              {en ? 'Not passed' : 'Belum lulus'}
             </>
           )}
         </div>
 
         <p className="mt-4 text-sm text-fg-muted">
-          {hasil.jumlahBenar} benar · {hasil.jumlahSoal - hasil.jumlahBenar} salah · ambang lulus{' '}
+          {en
+            ? `${hasil.jumlahBenar} correct · ${hasil.jumlahSoal - hasil.jumlahBenar} incorrect · passing score`
+            : `${hasil.jumlahBenar} benar · ${hasil.jumlahSoal - hasil.jumlahBenar} salah · ambang lulus`}{' '}
           {AMBANG_LULUS_QUIZ}
         </p>
 
         {/* Pesan saat tidak lulus — nada mendukung, tidak menghakimi */}
         {!hasil.lulus && (
           <p className="mx-auto mt-4 max-w-md text-sm text-fg">
-            Nilai belum mencapai {AMBANG_LULUS_QUIZ}. Ini bukan masalah — artinya ada bagian yang
-            perlu diperkuat. Lihat analisis di bawah untuk tahu bagian mana.
+            {en
+              ? `Your score is below ${AMBANG_LULUS_QUIZ}. That’s okay — it means some areas need more practice. Review the analysis below to see which ones.`
+              : `Nilai belum mencapai ${AMBANG_LULUS_QUIZ}. Ini bukan masalah — artinya ada bagian yang perlu diperkuat. Lihat analisis di bawah untuk tahu bagian mana.`}
           </p>
         )}
       </Card>
 
       {/* Analisis per topik */}
       <Card className="p-6">
-        <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Analisis per Topik</h2>
+        <h2 className="mb-4 font-heading text-lg font-semibold text-fg">
+          {en ? 'Analysis by topic' : 'Analisis per Topik'}
+        </h2>
 
         <div className="space-y-4">
           {akurasiTopik.map((a) => (
@@ -100,10 +108,27 @@ export function HasilQuiz({
         {topikLemah.length > 0 && (
           <div className="mt-5 rounded-md border border-danger/30 bg-danger/5 p-4">
             <p className="text-sm font-semibold text-fg">
-              Perlu diulang: {topikLemah.map((t) => LABEL_TIPE_KARTU[t.cardType]).join(', ')}
+              {en ? 'Needs review: ' : 'Perlu diulang: '}
+              {topikLemah
+                .map((t) =>
+                  en
+                    ? {
+                        ISTILAH: 'Terms',
+                        SINTAKS: 'Syntax',
+                        TRACING: 'Tracing',
+                        BANDING: 'Comparisons',
+                        JEBAKAN: 'Pitfalls',
+                        MEMORI: 'Memory',
+                        KAPAN: 'When to use',
+                      }[t.cardType]
+                    : LABEL_TIPE_KARTU[t.cardType],
+                )
+                .join(', ')}
             </p>
             <p className="mt-1 text-sm text-fg-muted">
-              Baca ulang modulnya, lalu ulangi kartu dengan topik ini.
+              {en
+                ? 'Reread the module, then review the flashcards for these topics.'
+                : 'Baca ulang modulnya, lalu ulangi kartu dengan topik ini.'}
             </p>
           </div>
         )}
@@ -114,20 +139,26 @@ export function HasilQuiz({
         <div className="flex items-start gap-3">
           <Check className="mt-0.5 size-5 shrink-0 text-success" aria-hidden="true" />
           <div className="min-w-0 flex-1">
-            <p className="font-semibold text-fg">Tahap 3 dari 3 selesai</p>
+            <p className="font-semibold text-fg">
+              {en ? 'Stage 3 of 3 complete' : 'Tahap 3 dari 3 selesai'}
+            </p>
             <p className="mt-1 text-sm text-fg-muted">
               {hasil.lulus
-                ? 'Modul ini tuntas. Lanjut ke modul berikutnya?'
-                : 'Modul ini tuntas. Kamu bisa mengulang quiz kapan saja untuk memperkuat pemahaman.'}
+                ? en
+                  ? 'This module is complete. Ready for the next one?'
+                  : 'Modul ini tuntas. Lanjut ke modul berikutnya?'
+                : en
+                  ? 'This module is complete. You can retake the quiz anytime to reinforce your understanding.'
+                  : 'Modul ini tuntas. Kamu bisa mengulang quiz kapan saja untuk memperkuat pemahaman.'}
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link to="/dashboard" className="inline-flex no-underline">
                 <Button ikonKanan={<ArrowRight className="size-4" aria-hidden="true" />}>
-                  Ke Dashboard
+                  {en ? 'Go to dashboard' : 'Ke Dashboard'}
                 </Button>
               </Link>
               <Link to={`/materi/${modulSlug}`} className="inline-flex no-underline">
-                <Button varian="secondary">Baca Ulang Modul</Button>
+                <Button varian="secondary">{en ? 'Reread module' : 'Baca Ulang Modul'}</Button>
               </Link>
             </div>
           </div>
@@ -141,11 +172,11 @@ export function HasilQuiz({
           onClick={onUlangi}
           ikonKiri={<RotateCcw className="size-4" aria-hidden="true" />}
         >
-          Ulangi Quiz
+          {en ? 'Retake quiz' : 'Ulangi Quiz'}
         </Button>
         <Link to="/soal" className="inline-flex no-underline">
           <Button varian="ghost" className="w-full">
-            Kembali ke Soal
+            {en ? 'Back to quizzes' : 'Kembali ke Soal'}
           </Button>
         </Link>
       </div>
@@ -155,6 +186,8 @@ export function HasilQuiz({
 
 /** Bar akurasi satu topik */
 function BarTopik({ akurasi }: { akurasi: AkurasiTopik }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const warna =
     akurasi.kategori === 'lemah'
       ? 'var(--danger)'
@@ -164,15 +197,33 @@ function BarTopik({ akurasi }: { akurasi: AkurasiTopik }) {
 
   const labelKategori =
     akurasi.kategori === 'lemah'
-      ? 'perlu diulang'
+      ? en
+        ? 'needs review'
+        : 'perlu diulang'
       : akurasi.kategori === 'cukup'
-        ? 'hampir'
-        : 'kuat';
+        ? en
+          ? 'getting there'
+          : 'hampir'
+        : en
+          ? 'strong'
+          : 'kuat';
+
+  const tipe = en
+    ? {
+        ISTILAH: 'Terms',
+        SINTAKS: 'Syntax',
+        TRACING: 'Tracing',
+        BANDING: 'Comparisons',
+        JEBAKAN: 'Pitfalls',
+        MEMORI: 'Memory',
+        KAPAN: 'When to use',
+      }[akurasi.cardType]
+    : LABEL_TIPE_KARTU[akurasi.cardType];
 
   return (
     <div>
       <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
-        <span className="font-medium text-fg">{LABEL_TIPE_KARTU[akurasi.cardType]}</span>
+        <span className="font-medium text-fg">{tipe}</span>
         <span className="shrink-0 tabular-nums text-fg-muted">
           {akurasi.persen}% ({akurasi.benar}/{akurasi.total}) · {labelKategori}
         </span>
@@ -182,7 +233,7 @@ function BarTopik({ akurasi }: { akurasi: AkurasiTopik }) {
         aria-valuenow={akurasi.persen}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-label={`Akurasi ${LABEL_TIPE_KARTU[akurasi.cardType]}`}
+        aria-label={`${en ? 'Accuracy for' : 'Akurasi'} ${tipe}`}
         className="h-2 w-full overflow-hidden rounded-full bg-surface-raised"
       >
         <div

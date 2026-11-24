@@ -1,5 +1,6 @@
 import { Check, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Tombol penilaian diri: Lupa / Ingat.
@@ -19,6 +20,7 @@ interface PenilaianDiriProps {
 }
 
 export function PenilaianDiri({ onNilai, nonaktif = false }: PenilaianDiriProps) {
+  const { bahasa } = useBahasa();
   return (
     <div className="flex w-full max-w-[560px] gap-3">
       <button
@@ -33,7 +35,7 @@ export function PenilaianDiri({ onNilai, nonaktif = false }: PenilaianDiriProps)
         )}
       >
         <X className="size-5" aria-hidden="true" />
-        Lupa
+        {bahasa === 'en' ? 'Forgot' : 'Lupa'}
         <span className="hidden text-xs font-normal opacity-70 md:inline">(1)</span>
       </button>
 
@@ -49,7 +51,7 @@ export function PenilaianDiri({ onNilai, nonaktif = false }: PenilaianDiriProps)
         )}
       >
         <Check className="size-5" aria-hidden="true" />
-        Ingat
+        {bahasa === 'en' ? 'Remembered' : 'Ingat'}
         <span className="hidden text-xs font-normal opacity-70 md:inline">(2)</span>
       </button>
     </div>

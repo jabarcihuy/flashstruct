@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/cn';
 import { NAV_ITEMS } from './nav-items';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Navigasi bawah untuk mobile.
@@ -9,6 +10,7 @@ import { NAV_ITEMS } from './nav-items';
  * Tinggi minimum 56px per item agar nyaman disentuh (target 44px+).
  */
 export function BottomNav() {
+  const { bahasa } = useBahasa();
   return (
     <nav
       aria-label="Navigasi utama"
@@ -34,7 +36,11 @@ export function BottomNav() {
               {({ isActive }) => (
                 <>
                   <Ikon className="size-5" strokeWidth={isActive ? 2.2 : 1.5} aria-hidden="true" />
-                  <span>{label}</span>
+                  <span>
+                    {bahasa === 'en'
+                      ? ({ Materi: 'Learn', Soal: 'Quizzes' }[label] ?? label)
+                      : label}
+                  </span>
                   {/* Penanda aktif: garis atas, bukan warna saja */}
                   {isActive && (
                     <span

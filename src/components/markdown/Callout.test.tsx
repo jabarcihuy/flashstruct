@@ -1,7 +1,15 @@
 import { describe, it, expect } from 'vitest';
+import { useEffect, type ReactNode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { Callout } from './Callout';
 import { slugHeading, tipeDariPenanda } from './util';
+import { BahasaProvider, useBahasa } from '@/app/BahasaProvider';
+
+function EnglishWrapper({ children }: { children: ReactNode }) {
+  const { setBahasa } = useBahasa();
+  useEffect(() => setBahasa('en'), [setBahasa]);
+  return <>{children}</>;
+}
 
 describe('tipeDariPenanda', () => {
   it('mengenali penanda INFO', () => {
@@ -78,6 +86,19 @@ describe('Callout', () => {
       </Callout>,
     );
     expect(screen.getByText('Perhatian')).toBeInTheDocument();
+  });
+
+  it('menerjemahkan label callout saat bahasa Inggris dipilih', async () => {
+    render(
+      <BahasaProvider>
+        <EnglishWrapper>
+          <Callout tipe="bahaya">
+            <p>Pointer warning.</p>
+          </Callout>
+        </EnglishWrapper>
+      </BahasaProvider>,
+    );
+    expect(await screen.findByText('Danger')).toBeInTheDocument();
   });
 
   it('memakai judul kustom bila diberikan', () => {

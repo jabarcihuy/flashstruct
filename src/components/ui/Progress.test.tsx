@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { BahasaProvider } from '@/app/BahasaProvider';
 import {
   IndikatorTigaTahap,
   ProgressBar,
@@ -65,26 +66,42 @@ describe('IndikatorTigaTahap', () => {
   const baru: [StatusTahap, StatusTahap, StatusTahap] = ['tersedia', 'terkunci', 'terkunci'];
 
   it('menampilkan tiga label tahap', () => {
-    render(<IndikatorTigaTahap tahap={baru} />);
+    render(
+      <BahasaProvider>
+        <IndikatorTigaTahap tahap={baru} />
+      </BahasaProvider>,
+    );
     expect(screen.getByText('Pahami')).toBeInTheDocument();
     expect(screen.getByText('Hafalkan')).toBeInTheDocument();
     expect(screen.getByText('Buktikan')).toBeInTheDocument();
   });
 
   it('memberi teks status untuk pembaca layar', () => {
-    render(<IndikatorTigaTahap tahap={baru} />);
+    render(
+      <BahasaProvider>
+        <IndikatorTigaTahap tahap={baru} />
+      </BahasaProvider>,
+    );
     // Tahap 1 tersedia, tahap 2 dan 3 terkunci
     expect(screen.getByText('belum selesai')).toBeInTheDocument();
     expect(screen.getAllByText('terkunci')).toHaveLength(2);
   });
 
   it('menandai tahap selesai dengan teks yang tepat', () => {
-    render(<IndikatorTigaTahap tahap={['selesai', 'tersedia', 'terkunci']} />);
+    render(
+      <BahasaProvider>
+        <IndikatorTigaTahap tahap={['selesai', 'tersedia', 'terkunci']} />
+      </BahasaProvider>,
+    );
     expect(screen.getByText('selesai')).toBeInTheDocument();
   });
 
   it('tetap punya label untuk pembaca layar saat label visual dimatikan', () => {
-    render(<IndikatorTigaTahap tahap={baru} denganLabel={false} />);
+    render(
+      <BahasaProvider>
+        <IndikatorTigaTahap tahap={baru} denganLabel={false} />
+      </BahasaProvider>,
+    );
     expect(screen.getByText('Pahami')).toHaveClass('sr-only');
   });
 });

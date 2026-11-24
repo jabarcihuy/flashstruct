@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ambilDaftarModul, ambilModulLengkap } from './api';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Hook TanStack Query untuk fitur materi.
@@ -15,17 +16,19 @@ export const kunciQuery = {
 
 /** Daftar semua modul untuk halaman Materi dan Dashboard */
 export function useDaftarModul() {
+  const { bahasa } = useBahasa();
   return useQuery({
-    queryKey: kunciQuery.daftarModul,
-    queryFn: ambilDaftarModul,
+    queryKey: [...kunciQuery.daftarModul, bahasa],
+    queryFn: () => ambilDaftarModul(bahasa),
   });
 }
 
 /** Satu modul lengkap untuk halaman baca */
 export function useModulLengkap(slug: string) {
+  const { bahasa } = useBahasa();
   return useQuery({
-    queryKey: kunciQuery.modulLengkap(slug),
-    queryFn: () => ambilModulLengkap(slug),
+    queryKey: [...kunciQuery.modulLengkap(slug), bahasa],
+    queryFn: () => ambilModulLengkap(slug, bahasa),
     // Jangan jalankan query kalau slug kosong
     enabled: Boolean(slug),
   });

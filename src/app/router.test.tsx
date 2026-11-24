@@ -14,6 +14,7 @@ import FlashcardPage from '@/pages/FlashcardPage';
 import QuizPage from '@/pages/QuizPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 import { TemaProvider } from '@/app/TemaProvider';
+import { BahasaProvider } from '@/app/BahasaProvider';
 import { ProgresProvider } from '@/features/progres/ProgresProvider';
 
 /**
@@ -92,9 +93,11 @@ function renderRute(initialPath: string) {
   return render(
     <QueryClientProvider client={queryClient}>
       <TemaProvider>
-        <ProgresProvider>
-          <RouterProvider router={router} />
-        </ProgresProvider>
+        <BahasaProvider>
+          <ProgresProvider>
+            <RouterProvider router={router} />
+          </ProgresProvider>
+        </BahasaProvider>
       </TemaProvider>
     </QueryClientProvider>,
   );
@@ -117,10 +120,7 @@ describe('routing', () => {
     renderRute('/');
     expect(await screen.findByRole('navigation', { name: 'Navigasi landing' })).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Navigasi utama' })).not.toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /buka aplikasi/i })).toHaveAttribute(
-      'href',
-      '/dashboard',
-    );
+    expect(screen.getByRole('link', { name: /dashboard/i })).toHaveAttribute('href', '/dashboard');
   });
 
   it('merender Dashboard di rute /dashboard', async () => {

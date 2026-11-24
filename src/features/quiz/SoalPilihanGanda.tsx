@@ -4,6 +4,7 @@ import { CodeBlock } from '@/components/code/CodeBlock';
 import type { SoalDenganOpsi } from '@/types/database';
 import { opsiBenar, urutkanOpsi } from './sesi';
 import { barisKonten } from '@/lib/format';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Soal pilihan ganda (tipe PG, TRACE, dan ANALISIS).
@@ -34,6 +35,8 @@ interface SoalPilihanGandaProps {
 }
 
 export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalPilihanGandaProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const benar = opsiBenar(soal);
   const opsi = urutkanOpsi(soal.opsi_soal);
   const kode = soal.kode ? barisKonten(soal.kode) : null;
@@ -45,7 +48,9 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
     <div>
       {/* Label tipe soal */}
       <span className="inline-block rounded-sm bg-surface-raised px-3 py-1 text-xs font-semibold uppercase tracking-wide text-fg-muted">
-        {LABEL_TIPE[soal.tipe] ?? soal.tipe}
+        {en
+          ? { PG: 'Multiple Choice', TRACE: 'Code Tracing', ANALISIS: 'Error Analysis' }[soal.tipe]
+          : (LABEL_TIPE[soal.tipe] ?? soal.tipe)}
       </span>
 
       {/* Pertanyaan */}
@@ -68,7 +73,11 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
       )}
 
       {/* Opsi jawaban */}
-      <div className="mt-5 space-y-2.5" role="group" aria-label="Pilihan jawaban">
+      <div
+        className="mt-5 space-y-2.5"
+        role="group"
+        aria-label={en ? 'Answer choices' : 'Pilihan jawaban'}
+      >
         {opsi.map((o, i) => {
           const iniDipilih = dipilih === o.label;
           const iniBenar = o.benar;
@@ -129,19 +138,19 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
                 {status === 'benar' && (
                   <span className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-success">
                     <Check className="size-3.5" aria-hidden="true" />
-                    Jawabanmu benar
+                    {en ? 'Correct answer' : 'Jawabanmu benar'}
                   </span>
                 )}
                 {status === 'salah' && (
                   <span className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-danger">
                     <X className="size-3.5" aria-hidden="true" />
-                    Jawabanmu salah
+                    {en ? 'Incorrect answer' : 'Jawabanmu salah'}
                   </span>
                 )}
                 {status === 'jawaban-benar' && (
                   <span className="mt-1.5 flex items-center gap-1 text-xs font-semibold text-success">
                     <Check className="size-3.5" aria-hidden="true" />
-                    Ini jawaban yang benar
+                    {en ? 'This is the correct answer' : 'Ini jawaban yang benar'}
                   </span>
                 )}
               </span>
@@ -163,7 +172,7 @@ export function SoalPilihanGanda({ soal, dipilih, sudahDijawab, onPilih }: SoalP
       {/* Keterangan untuk pembaca layar */}
       {sudahDijawab && benar && (
         <p className="sr-only" role="status">
-          Jawaban benar adalah {benar.label}: {benar.teks}
+          {en ? 'The correct answer is' : 'Jawaban benar adalah'} {benar.label}: {benar.teks}
         </p>
       )}
     </div>

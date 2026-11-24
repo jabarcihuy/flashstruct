@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /* =========================================================
    Indikator Progres
@@ -156,13 +157,15 @@ export function IndikatorTigaTahap({
   denganLabel = true,
   className,
 }: IndikatorTigaTahapProps) {
+  const { bahasa } = useBahasa();
+  const labels = bahasa === 'en' ? ['Understand', 'Remember', 'Prove'] : LABEL_TAHAP;
   return (
     <ol
       className={cn('flex flex-wrap items-center gap-x-3 gap-y-1.5', className)}
-      aria-label="Status tiga tahap"
+      aria-label={bahasa === 'en' ? 'Three-stage status' : 'Status tiga tahap'}
     >
       {tahap.map((status, i) => (
-        <li key={LABEL_TAHAP[i]} className="flex items-center gap-1.5 text-xs">
+        <li key={labels[i]} className="flex items-center gap-1.5 text-xs">
           <IkonTahap status={status} />
           <span
             className={cn(
@@ -170,14 +173,20 @@ export function IndikatorTigaTahap({
               status === 'selesai' && 'font-medium',
             )}
           >
-            {denganLabel ? LABEL_TAHAP[i] : <span className="sr-only">{LABEL_TAHAP[i]}</span>}
+            {denganLabel ? labels[i] : <span className="sr-only">{labels[i]}</span>}
           </span>
           <span className="sr-only">
             {status === 'selesai'
-              ? 'selesai'
+              ? bahasa === 'en'
+                ? 'complete'
+                : 'selesai'
               : status === 'tersedia'
-                ? 'belum selesai'
-                : 'terkunci'}
+                ? bahasa === 'en'
+                  ? 'not complete'
+                  : 'belum selesai'
+                : bahasa === 'en'
+                  ? 'locked'
+                  : 'terkunci'}
           </span>
         </li>
       ))}

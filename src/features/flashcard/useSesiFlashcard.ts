@@ -12,6 +12,8 @@ import {
 import { susunDeck } from './prioritas';
 import { useProgres } from '@/features/progres/context';
 import { MAKS_KARTU_PER_SESI } from '@/lib/constants';
+import { useBahasa } from '@/app/BahasaProvider';
+import { digitFromKeyboardEvent } from '@/lib/keyboard';
 
 /**
  * Hook sesi flashcard.
@@ -33,6 +35,7 @@ import { MAKS_KARTU_PER_SESI } from '@/lib/constants';
 const DURASI_KELUAR_MS = 160;
 
 export function useSesiFlashcard(slugModul: string) {
+  const { bahasa } = useBahasa();
   const { ambilModul, simpanHasilSesiKartu, tandaiFlashcardSelesai } = useProgres();
 
   const [state, dispatch] = useReducer(reducerSesi, undefined, () => stateAwal([]));
@@ -45,8 +48,8 @@ export function useSesiFlashcard(slugModul: string) {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['flashcard', slugModul],
-    queryFn: () => ambilKartuModul(slugModul),
+    queryKey: ['flashcard', slugModul, bahasa],
+    queryFn: () => ambilKartuModul(slugModul, bahasa),
     enabled: Boolean(slugModul),
   });
 
@@ -131,7 +134,14 @@ export function useSesiFlashcard(slugModul: string) {
     function onKeyDown(e: KeyboardEvent) {
       // Jangan tangkap tombol kalau fokus ada di input
       const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
+      if (
+        target.isContentEditable ||
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) ||
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey
+      )
+        return;
 
       // Spasi/Enter: balik kartu
       if (e.key === ' ' || e.key === 'Enter') {
@@ -143,17 +153,18 @@ export function useSesiFlashcard(slugModul: string) {
       // Hanya bisa menilai setelah kartu dibalik
       if (!state.terbuka || state.keluar) return;
 
-      if (e.key === '1' || e.key === 'ArrowLeft') {
+      const nomor = digitFromKeyboardEvent(e);
+      if (nomor === 1 || e.key === 'ArrowLeft') {
         e.preventDefault();
         nilai(false);
-      } else if (e.key === '2' || e.key === 'ArrowRight') {
+      } else if (nomor === 2 || e.key === 'ArrowRight') {
         e.preventDefault();
         nilai(true);
       }
     }
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
   }, [state.terbuka, state.keluar, balik, nilai]);
 
   return {

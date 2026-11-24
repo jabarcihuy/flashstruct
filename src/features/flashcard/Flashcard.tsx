@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/Card';
 import { LABEL_TIPE_KARTU, LABEL_TOPIK } from '@/lib/constants';
 import { barisKonten } from '@/lib/format';
 import type { KartuDenganModul, TopikModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Kartu flashcard dengan animasi flip.
@@ -39,6 +40,8 @@ export function Flashcard({
   total,
   onBalik,
 }: FlashcardProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const warnaTopik = `var(--topik-${kartu.modul.topik})`;
   const frontScrollRef = useRef<HTMLDivElement>(null);
   const backScrollRef = useRef<HTMLDivElement>(null);
@@ -78,7 +81,10 @@ export function Flashcard({
           />
 
           {/* Pertanyaan — bisa di-scroll kalau panjang */}
-          <div ref={frontScrollRef} className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto py-4">
+          <div
+            ref={frontScrollRef}
+            className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto py-4"
+          >
             <p className="whitespace-pre-wrap text-center text-xl font-semibold leading-snug text-fg sm:text-2xl">
               {barisKonten(kartu.depan)}
             </p>
@@ -96,8 +102,8 @@ export function Flashcard({
             )}
           >
             <Eye className="size-4" aria-hidden="true" />
-            Lihat Jawaban
-            <span className="hidden text-xs text-fg-muted sm:inline">(Spasi)</span>
+            {en ? 'Show answer' : 'Lihat Jawaban'}
+            <span className="hidden text-xs text-fg-muted sm:inline">({en ? 'Space' : 'Spasi'})</span>
           </button>
         </div>
 
@@ -136,7 +142,9 @@ export function Flashcard({
 
           {/* Petunjuk penilaian */}
           <p className="mt-3 text-center text-xs text-fg-muted">
-            Nilai dirimu sendiri — jujur lebih bermanfaat
+            {en
+              ? 'Rate yourself honestly — it helps you learn'
+              : 'Nilai dirimu sendiri — jujur lebih bermanfaat'}
           </p>
         </div>
       </div>
@@ -158,11 +166,29 @@ function KepalaKartu({
   nomor: number;
   total: number;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="flex flex-wrap items-center gap-2">
-        <Badge warna={warnaTopik}>{LABEL_TOPIK[topik]}</Badge>
-        <span className="text-xs text-fg-muted">{LABEL_TIPE_KARTU[tipe]}</span>
+        <Badge warna={warnaTopik}>
+          {en
+            ? { array: 'Array', struct: 'Structs', pointer: 'Pointers' }[topik]
+            : LABEL_TOPIK[topik]}
+        </Badge>
+        <span className="text-xs text-fg-muted">
+          {en
+            ? ({
+                ISTILAH: 'Term',
+                SINTAKS: 'Syntax',
+                TRACING: 'Tracing',
+                BANDING: 'Comparison',
+                JEBAKAN: 'Common pitfall',
+                MEMORI: 'Memory',
+                KAPAN: 'When to use',
+              }[tipe] ?? tipe)
+            : LABEL_TIPE_KARTU[tipe]}
+        </span>
       </div>
       <span className="shrink-0 font-mono text-xs tabular-nums text-fg-muted">
         {nomor} / {total}
@@ -178,16 +204,19 @@ function KepalaKartu({
  * di HP. Di mobile, petunjuk ini hanya menambah kebisingan visual.
  */
 export function PetunjukKeyboard({ terbuka }: { terbuka: boolean }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <div className="hidden text-center text-xs text-fg-muted md:block">
       {terbuka ? (
         <span>
-          <TombolKecil>1</TombolKecil> Lupa · <TombolKecil>2</TombolKecil> Ingat ·{' '}
-          <TombolKecil>Esc</TombolKecil> Keluar
+          <TombolKecil>1</TombolKecil> {en ? 'Forgot' : 'Lupa'} · <TombolKecil>2</TombolKecil>{' '}
+          {en ? 'Remembered' : 'Ingat'} · <TombolKecil>Esc</TombolKecil> {en ? 'Exit' : 'Keluar'}
         </span>
       ) : (
         <span>
-          <TombolKecil>Spasi</TombolKecil> untuk membalik kartu
+          <TombolKecil>{en ? 'Space' : 'Spasi'}</TombolKecil>{' '}
+          {en ? 'to flip the card' : 'untuk membalik kartu'}
         </span>
       )}
     </div>

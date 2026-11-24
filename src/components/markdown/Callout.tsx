@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { AlertTriangle, Info, Lightbulb } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import type { TipeCallout } from './util';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Callout untuk menyorot hal penting di modul.
@@ -53,7 +54,12 @@ const KONFIG: Record<
 };
 
 export function Callout({ tipe, children, judul }: CalloutProps) {
-  const { ikon: Ikon, label, warna, latar } = KONFIG[tipe];
+  const { bahasa } = useBahasa();
+  const { ikon: Ikon, label: labelAsli, warna, latar } = KONFIG[tipe];
+  const label =
+    bahasa === 'en'
+      ? { info: 'Info', perhatian: 'Caution', bahaya: 'Danger', tips: 'Tip' }[tipe]
+      : labelAsli;
 
   return (
     <aside

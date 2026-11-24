@@ -16,6 +16,7 @@ import { useProgres } from '@/features/progres/context';
 import { hitungStatistikModul } from '@/features/progres/util';
 import { kartuLupa } from '@/features/flashcard/sesi';
 import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progres/aturan';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman sesi flashcard — Tahap 2 (Hafalkan).
@@ -27,7 +28,9 @@ import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progre
  * dilewati — dan itu merusak inti produk.
  */
 export default function FlashcardPage() {
-  useJudulHalaman('Flashcard');
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(en ? 'Flashcards' : 'Flashcard');
   const { slug = '' } = useParams();
   const {
     state,
@@ -86,8 +89,12 @@ export default function FlashcardPage() {
     return (
       <div className="container-narrow py-8">
         <ErrorState
-          judul="Gagal memuat kartu"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load flashcards' : 'Gagal memuat kartu'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && error && (
@@ -106,15 +113,21 @@ export default function FlashcardPage() {
       <div className="container-narrow py-8">
         <EmptyState
           ikon={<Layers className="size-12" strokeWidth={1.5} />}
-          judul="Modul ini belum punya kartu"
-          pesan="Kartu hafalan untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca modulnya atau mencoba modul lain."
+          judul={en ? 'This module has no flashcards yet' : 'Modul ini belum punya kartu'}
+          pesan={
+            en
+              ? 'Flashcards for this module are being prepared. For now, you can read the module or choose another one.'
+              : 'Kartu hafalan untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca modulnya atau mencoba modul lain.'
+          }
           aksi={
             <div className="flex flex-wrap justify-center gap-2">
               <Link to={`/materi/${slug}`} className="inline-flex no-underline">
-                <Button>Baca Modul</Button>
+                <Button>{en ? 'Read module' : 'Baca Modul'}</Button>
               </Link>
               <Link to="/soal" className="inline-flex no-underline">
-                <Button varian="secondary">Pilih Modul Lain</Button>
+                <Button varian="secondary">
+                  {en ? 'Choose another module' : 'Pilih Modul Lain'}
+                </Button>
               </Link>
             </div>
           }
@@ -132,11 +145,15 @@ export default function FlashcardPage() {
   if (statusTahap2 === 'terkunci') {
     return (
       <StageGate
-        judul="Flashcard masih terkunci"
+        judul={en ? 'Flashcards are locked' : 'Flashcard masih terkunci'}
         modulJudul={judulModul}
         alasan={alasanTerkunci(2)}
-        penjelasan="Selesaikan dulu membaca minimal 80% bagian modul, lalu tandai selesai untuk membuka kartu hafalan."
-        aksiLabel="Baca Modul"
+        penjelasan={
+          en
+            ? 'Read at least 80% of the module sections, then mark it complete to unlock the flashcards.'
+            : 'Selesaikan dulu membaca minimal 80% bagian modul, lalu tandai selesai untuk membuka kartu hafalan.'
+        }
+        aksiLabel={en ? 'Read module' : 'Baca Modul'}
         aksiKe={`/materi/${slug}`}
         tahap={statusSemuaTahap(progresModul)}
       />
@@ -198,7 +215,11 @@ export default function FlashcardPage() {
         <ProgressBar
           nilai={sudahDinilai}
           maks={totalSesi}
-          label={`Kartu ${Math.min(state.indeks + 1, totalSesi)} dari ${totalSesi}`}
+          label={
+            en
+              ? `Card ${Math.min(state.indeks + 1, totalSesi)} of ${totalSesi}`
+              : `Kartu ${Math.min(state.indeks + 1, totalSesi)} dari ${totalSesi}`
+          }
         />
       </div>
 
@@ -223,13 +244,17 @@ export default function FlashcardPage() {
       <Dialog
         terbuka={dialogKeluar}
         onTutup={() => setDialogKeluar(false)}
-        judul="Keluar dari sesi?"
-        deskripsi={`Kamu sudah menyelesaikan ${sudahDinilai} dari ${totalSesi} kartu. Progres sesi ini akan hilang.`}
+        judul={en ? 'Leave this session?' : 'Keluar dari sesi?'}
+        deskripsi={
+          en
+            ? `You have completed ${sudahDinilai} of ${totalSesi} cards. Session progress will be lost.`
+            : `Kamu sudah menyelesaikan ${sudahDinilai} dari ${totalSesi} kartu. Progres sesi ini akan hilang.`
+        }
         ukuran="sm"
       >
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button varian="secondary" onClick={() => setDialogKeluar(false)}>
-            Lanjut Belajar
+            {en ? 'Keep studying' : 'Lanjut Belajar'}
           </Button>
           <Button
             varian="danger"
@@ -237,7 +262,7 @@ export default function FlashcardPage() {
               window.location.href = '/soal';
             }}
           >
-            Keluar
+            {en ? 'Leave' : 'Keluar'}
           </Button>
         </div>
       </Dialog>
@@ -260,6 +285,8 @@ function HeaderSesi({
   onKeluar: () => void;
   putaran?: number;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <div className="flex items-center justify-between gap-4">
       <Link
@@ -267,13 +294,13 @@ function HeaderSesi({
         className="inline-flex h-11 items-center gap-2 text-sm text-fg-muted no-underline hover:text-fg md:h-9"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        <span className="hidden sm:inline">Kembali</span>
+        <span className="hidden sm:inline">{en ? 'Back' : 'Kembali'}</span>
       </Link>
 
       <div className="min-w-0 flex-1 text-center">
         <p className="truncate text-sm font-medium text-fg">{judul}</p>
         <p className="text-xs text-fg-muted">
-          Flashcard{putaran && putaran > 0 ? ' · Putaran ulang' : ''}
+          Flashcard{putaran && putaran > 0 ? (en ? ' · Review round' : ' · Putaran ulang') : ''}
         </p>
       </div>
 
@@ -282,7 +309,7 @@ function HeaderSesi({
         onClick={onKeluar}
         className="inline-flex h-11 cursor-pointer items-center px-3 text-sm text-fg-muted hover:text-fg"
       >
-        Keluar
+        {en ? 'Exit' : 'Keluar'}
       </button>
     </div>
   );
@@ -293,9 +320,10 @@ function HeaderSesi({
    ========================================================= */
 
 function FlashcardSkeleton() {
+  const { bahasa } = useBahasa();
   return (
     <div className="container-base py-6" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat kartu…</span>
+      <span className="sr-only">{bahasa === 'en' ? 'Loading flashcards…' : 'Memuat kartu…'}</span>
       <div className="flex items-center justify-between">
         <Skeleton className="h-9 w-24" />
         <Skeleton className="h-5 w-40" />

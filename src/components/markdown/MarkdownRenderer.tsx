@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm';
 import { CodeBlock } from '@/components/code/CodeBlock';
 import { Callout } from './Callout';
 import { slugHeading, tipeDariPenanda } from './util';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Renderer markdown untuk konten modul.
@@ -37,6 +38,7 @@ interface MarkdownRendererProps {
 }
 
 export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
+  const { bahasa } = useBahasa();
   return (
     <div className={className}>
       <ReactMarkdown
@@ -179,7 +181,12 @@ export function MarkdownRenderer({ konten, className }: MarkdownRendererProps) {
           table: ({ children }) => (
             // tabIndex + role: tabel bisa di-scroll horizontal di mobile,
             // jadi pengguna keyboard harus bisa memfokusnya (WCAG 2.1.1)
-            <div className="my-5 overflow-x-auto" tabIndex={0} role="region" aria-label="Tabel">
+            <div
+              className="my-5 overflow-x-auto"
+              tabIndex={0}
+              role="region"
+              aria-label={bahasa === 'en' ? 'Table' : 'Tabel'}
+            >
               <table className="w-full border-collapse text-sm">{children}</table>
             </div>
           ),

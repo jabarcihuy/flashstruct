@@ -12,6 +12,7 @@ import { LABEL_TOPIK } from '@/lib/constants';
 import { urutkan } from '@/lib/format';
 import { cn } from '@/lib/cn';
 import type { ModulRingkas, TopikModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman pemilih mode: Flashcard atau Quiz.
@@ -21,7 +22,9 @@ import type { ModulRingkas, TopikModul } from '@/types/database';
  * bukan sekadar "terkunci".
  */
 export default function SoalPage() {
-  useJudulHalaman('Soal');
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(en ? 'Quizzes' : 'Soal');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { ambilModul, sedangMemuat: progresMemuat } = useProgres();
 
@@ -30,10 +33,17 @@ export default function SoalPage() {
   if (isError) {
     return (
       <div className="container-base py-8">
-        <PageHeader judul="Soal" deskripsi="Hafalkan, lalu buktikan" />
+        <PageHeader
+          judul={en ? 'Quizzes' : 'Soal'}
+          deskripsi={en ? 'Remember, then prove it' : 'Hafalkan, lalu buktikan'}
+        />
         <ErrorState
-          judul="Gagal memuat daftar modul"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load modules' : 'Gagal memuat daftar modul'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && error && (
@@ -46,10 +56,17 @@ export default function SoalPage() {
   if (!daftarModul || daftarModul.length === 0) {
     return (
       <div className="container-base py-8">
-        <PageHeader judul="Soal" deskripsi="Hafalkan, lalu buktikan" />
+        <PageHeader
+          judul={en ? 'Quizzes' : 'Soal'}
+          deskripsi={en ? 'Remember, then prove it' : 'Hafalkan, lalu buktikan'}
+        />
         <EmptyState
-          judul="Belum ada modul"
-          pesan="Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi."
+          judul={en ? 'No modules yet' : 'Belum ada modul'}
+          pesan={
+            en
+              ? 'Content is being prepared. Please reload the page in a moment.'
+              : 'Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi.'
+          }
         />
       </div>
     );
@@ -65,8 +82,12 @@ export default function SoalPage() {
   return (
     <div className="container-base practice-index-page py-8 pb-16 sm:pb-10">
       <PageHeader
-        judul="Soal"
-        deskripsi="Pilih modul, lalu pilih tahapnya. Hafalkan dulu, baru buktikan."
+        judul={en ? 'Practice' : 'Soal'}
+        deskripsi={
+          en
+            ? 'Choose a module and a stage. Remember the concepts first, then prove your understanding.'
+            : 'Pilih modul, lalu pilih tahapnya. Hafalkan dulu, baru buktikan.'
+        }
       />
 
       <div className="space-y-10">
@@ -74,7 +95,9 @@ export default function SoalPage() {
           <section key={topik}>
             <div className="mb-4 flex items-baseline gap-3">
               <h2 className="font-heading text-xl font-semibold text-fg">{LABEL_TOPIK[topik]}</h2>
-              <span className="text-sm text-fg-muted">{modulTopik.length} modul</span>
+              <span className="text-sm text-fg-muted">
+                {modulTopik.length} {en ? 'modules' : 'modul'}
+              </span>
             </div>
             <div className="practice-index-list">
               {modulTopik.map((m) => (
@@ -96,6 +119,8 @@ function KartuPilihanModul({
   modul: ModulRingkas;
   progresModul: ReturnType<ReturnType<typeof useProgres>['ambilModul']>;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const warnaTopik = `var(--topik-${modul.topik})`;
   const jumlahKartu = modul.flashcard?.length ?? 0;
   const jumlahSoal = modul.soal?.length ?? 0;
@@ -122,7 +147,7 @@ function KartuPilihanModul({
             to={`/materi/${modul.slug}`}
             className="mt-1 inline-flex min-h-11 items-center text-sm font-medium text-link no-underline hover:underline md:min-h-9"
           >
-            Baca modul
+            {en ? 'Read module' : 'Baca modul'}
           </Link>
         </div>
       </div>
@@ -131,18 +156,28 @@ function KartuPilihanModul({
       <div className="mt-4 grid border-t border-border sm:grid-cols-2 sm:gap-5 sm:pt-4 sm:[&>*+*]:border-l sm:[&>*+*]:pl-5 [&>*+*]:border-t sm:[&>*+*]:border-t-0">
         <PanelTahap
           ikon={<Layers className="size-5" aria-hidden="true" />}
-          judul="Hafalkan"
-          keterangan={`${jumlahKartu} kartu`}
+          judul={en ? 'Remember' : 'Hafalkan'}
+          keterangan={`${jumlahKartu} ${en ? 'cards' : 'kartu'}`}
           statistik={
             statistik.kartuTotal > 0
-              ? `${statistik.kartuDikuasai} dari ${statistik.kartuTotal} dikuasai`
-              : 'Belum dimulai'
+              ? en
+                ? `${statistik.kartuDikuasai} of ${statistik.kartuTotal} mastered`
+                : `${statistik.kartuDikuasai} dari ${statistik.kartuTotal} dikuasai`
+              : en
+                ? 'Not started'
+                : 'Belum dimulai'
           }
           status={statusTahap2}
           ke={`/soal/flashcard/${modul.slug}`}
-          labelTombol="Mulai"
+          labelTombol={en ? 'Start' : 'Mulai'}
           warna={warnaTopik}
-          alasanTerkunci={statusTahap2 === 'terkunci' ? alasanTerkunci(2) : undefined}
+          alasanTerkunci={
+            statusTahap2 === 'terkunci'
+              ? en
+                ? 'Complete the reading stage to unlock flashcards.'
+                : alasanTerkunci(2)
+              : undefined
+          }
           progresPersen={
             statistik.kartuTotal > 0
               ? Math.round((statistik.kartuDikuasai / statistik.kartuTotal) * 100)
@@ -152,18 +187,28 @@ function KartuPilihanModul({
 
         <PanelTahap
           ikon={<ClipboardCheck className="size-5" aria-hidden="true" />}
-          judul="Buktikan"
-          keterangan={`${jumlahSoal} soal`}
+          judul={en ? 'Prove' : 'Buktikan'}
+          keterangan={`${jumlahSoal} ${en ? 'questions' : 'soal'}`}
           statistik={
             statistik.jumlahPercobaan > 0
-              ? `Terakhir ${skorTerakhir}% · terbaik ${skorTerbaik}% · ${statistik.jumlahPercobaan}x`
-              : 'Belum pernah dikerjakan'
+              ? en
+                ? `Latest ${skorTerakhir}% · best ${skorTerbaik}% · ${statistik.jumlahPercobaan} attempts`
+                : `Terakhir ${skorTerakhir}% · terbaik ${skorTerbaik}% · ${statistik.jumlahPercobaan}x`
+              : en
+                ? 'Not attempted yet'
+                : 'Belum pernah dikerjakan'
           }
           status={statusTahap3}
           ke={`/soal/quiz/${modul.slug}`}
-          labelTombol="Mulai"
+          labelTombol={en ? 'Start' : 'Mulai'}
           warna={warnaTopik}
-          alasanTerkunci={statusTahap3 === 'terkunci' ? alasanTerkunci(3) : undefined}
+          alasanTerkunci={
+            statusTahap3 === 'terkunci'
+              ? en
+                ? 'Master all flashcards to unlock the quiz.'
+                : alasanTerkunci(3)
+              : undefined
+          }
           progresPersen={skorTerakhir}
         />
       </div>
@@ -195,6 +240,8 @@ function PanelTahap({
   alasanTerkunci?: string;
   progresPersen?: number;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const terkunci = status === 'terkunci';
 
   return (
@@ -215,8 +262,12 @@ function PanelTahap({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className={cn('font-semibold', terkunci ? 'text-fg-muted' : 'text-fg')}>{judul}</p>
-            {terkunci && <Lock className="size-3.5 text-fg-muted" aria-label="Terkunci" />}
-            {status === 'selesai' && <Badge warna="var(--success)">Selesai</Badge>}
+            {terkunci && (
+              <Lock className="size-3.5 text-fg-muted" aria-label={en ? 'Locked' : 'Terkunci'} />
+            )}
+            {status === 'selesai' && (
+              <Badge warna="var(--success)">{en ? 'Complete' : 'Selesai'}</Badge>
+            )}
           </div>
           <p className="mt-0.5 text-sm text-fg-muted">{keterangan}</p>
           <p className="mt-1 text-xs text-fg-muted">{statistik}</p>
@@ -228,7 +279,15 @@ function PanelTahap({
         <div className="mt-3">
           <ProgressBar
             nilai={progresPersen}
-            label={judul === 'Buktikan' ? 'Nilai quiz terakhir' : 'Kartu dikuasai'}
+            label={
+              en
+                ? judul === 'Prove'
+                  ? 'Latest quiz score'
+                  : 'Cards mastered'
+                : judul === 'Buktikan'
+                  ? 'Nilai quiz terakhir'
+                  : 'Kartu dikuasai'
+            }
             tanpaLabelVisual
             warna={warna}
           />
@@ -256,7 +315,7 @@ function PanelTahap({
             )}
           >
             <Lock className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />
-            <span>Terkunci</span>
+            <span>{en ? 'Locked' : 'Terkunci'}</span>
           </button>
         </div>
       ) : (
@@ -279,9 +338,12 @@ function PanelTahap({
 }
 
 function SoalSkeleton() {
+  const { bahasa } = useBahasa();
   return (
     <div className="container-base py-8" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat daftar soal…</span>
+      <span className="sr-only">
+        {bahasa === 'en' ? 'Loading quiz list…' : 'Memuat daftar soal…'}
+      </span>
       <Skeleton className="h-9 w-24" />
       <Skeleton className="mt-3 h-4 w-80" />
       <div className="mt-6">

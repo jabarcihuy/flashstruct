@@ -35,6 +35,8 @@ export interface Modul {
   urutan: number;
   dibuat_pada: string;
   diperbarui_pada: string;
+  judul_en?: string | null;
+  deskripsi_en?: string | null;
 }
 
 export interface BagianModul {
@@ -44,6 +46,8 @@ export interface BagianModul {
   judul: string;
   konten_md: string;
   urutan: number;
+  judul_en?: string | null;
+  konten_md_en?: string | null;
 }
 
 export interface Video {
@@ -54,6 +58,8 @@ export interface Video {
   deskripsi: string | null;
   durasi_detik: number | null;
   urutan: number;
+  judul_en?: string | null;
+  deskripsi_en?: string | null;
 }
 
 export interface Flashcard {
@@ -65,6 +71,8 @@ export interface Flashcard {
   kode: string | null;
   bahasa_kode: BahasaKode | null;
   urutan: number;
+  depan_en?: string | null;
+  belakang_en?: string | null;
 }
 
 export interface Soal {
@@ -77,6 +85,8 @@ export interface Soal {
   card_type: TipeKartu;
   penjelasan: string;
   urutan: number;
+  pertanyaan_en?: string | null;
+  penjelasan_en?: string | null;
 }
 
 export interface OpsiSoal {
@@ -86,6 +96,7 @@ export interface OpsiSoal {
   teks: string;
   benar: boolean;
   urutan: number;
+  teks_en?: string | null;
 }
 
 /* =========================================================

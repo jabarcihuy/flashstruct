@@ -1,5 +1,6 @@
 import { Check, Lock } from 'lucide-react';
 import type { StatusTahap } from './Progress';
+import { useBahasa } from '@/app/BahasaProvider';
 
 const LABEL = ['Pahami', 'Hafalkan', 'Buktikan'];
 const PENJELASAN = [
@@ -16,13 +17,23 @@ export function LearningStages({
   tahap: [StatusTahap, StatusTahap, StatusTahap];
   ringkas?: boolean;
 }) {
+  const { bahasa } = useBahasa();
+  const labels = bahasa === 'en' ? ['Understand', 'Remember', 'Prove'] : LABEL;
+  const descriptions =
+    bahasa === 'en'
+      ? [
+          'Read and understand the core material.',
+          'Recall concepts with flashcards.',
+          'Test your understanding with a quiz.',
+        ]
+      : PENJELASAN;
   return (
     <ol
       className={ringkas ? 'learning-stages compact' : 'learning-stages'}
-      aria-label="Status tiga tahap"
+      aria-label={bahasa === 'en' ? 'Three-stage status' : 'Status tiga tahap'}
     >
       {tahap.map((status, i) => (
-        <li key={LABEL[i]} data-status={status} title={`${LABEL[i]}: ${status}`}>
+        <li key={labels[i]} data-status={status} title={`${labels[i]}: ${status}`}>
           <span className="stage-number" aria-hidden="true">
             {status === 'selesai' ? (
               <Check size={16} />
@@ -34,19 +45,26 @@ export function LearningStages({
           </span>
           {ringkas ? (
             <span className="sr-only">
-              {LABEL[i]}: {status}
+              {labels[i]}: {status}
             </span>
           ) : (
             <>
               <strong>
-                {LABEL[i]} {status === 'terkunci' && <Lock size={13} aria-label="Terkunci" />}
+                {labels[i]}{' '}
+                {status === 'terkunci' && (
+                  <Lock size={13} aria-label={bahasa === 'en' ? 'Locked' : 'Terkunci'} />
+                )}
               </strong>
               <span className="stage-description">
                 {status === 'terkunci'
-                  ? `Selesaikan ${LABEL[i - 1]} untuk membuka.`
+                  ? bahasa === 'en'
+                    ? `Complete ${labels[i - 1]} to unlock.`
+                    : `Selesaikan ${labels[i - 1]} untuk membuka.`
                   : status === 'selesai'
-                    ? 'Sudah selesai. Bisa diulang kapan saja.'
-                    : PENJELASAN[i]}
+                    ? bahasa === 'en'
+                      ? 'Completed. You can review it anytime.'
+                      : 'Sudah selesai. Bisa diulang kapan saja.'
+                    : descriptions[i]}
               </span>
             </>
           )}

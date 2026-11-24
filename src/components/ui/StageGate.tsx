@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { LearningStages } from './LearningStages';
 import type { StatusTahap } from './Progress';
+import { useBahasa } from '@/app/BahasaProvider';
 
 interface StageGateProps {
   judul: string;
@@ -23,11 +24,13 @@ export function StageGate({
   aksiKe,
   tahap,
 }: StageGateProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <div className="container-base stage-gate">
       <Link to="/soal" className="stage-gate-back">
         <ArrowLeft className="size-4" aria-hidden="true" />
-        Daftar soal
+        {en ? 'Quiz list' : 'Daftar soal'}
       </Link>
       <div className="stage-gate-layout">
         <div className="stage-gate-copy">
@@ -46,13 +49,17 @@ export function StageGate({
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
             <Link to="/soal" className="stage-gate-secondary">
-              Kembali ke Soal
+              {en ? 'Back to quizzes' : 'Kembali ke Soal'}
             </Link>
           </div>
         </div>
         <section className="stage-gate-overview">
-          <h2>Urutan belajar modul ini</h2>
-          <p>Setiap tahap membuka tahap berikutnya. Lanjutkan dari langkah yang tersedia.</p>
+          <h2>{en ? 'Learning path for this module' : 'Urutan belajar modul ini'}</h2>
+          <p>
+            {en
+              ? 'Each stage unlocks the next. Continue with the available step.'
+              : 'Setiap tahap membuka tahap berikutnya. Lanjutkan dari langkah yang tersedia.'}
+          </p>
           <LearningStages tahap={tahap} />
         </section>
       </div>

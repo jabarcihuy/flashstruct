@@ -27,6 +27,7 @@ import { cn } from '@/lib/cn';
 import { Link } from 'react-router-dom';
 import { useJudulHalaman } from '@/lib/useJudulHalaman';
 import type { ModulRingkas, TopikModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman Dashboard.
@@ -39,7 +40,9 @@ import type { ModulRingkas, TopikModul } from '@/types/database';
  * Rincian: docs/06-SPESIFIKASI-HALAMAN.md §3
  */
 export default function DashboardPage() {
-  useJudulHalaman('Dashboard');
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(en ? 'Dashboard' : 'Dashboard');
   const { data: daftarModul, isPending, isError, error, refetch } = useDaftarModul();
   const { progres, sedangMemuat: progresMemuat, ambilModul } = useProgres();
   const [filterTopik, setFilterTopik] = useState<TopikModul | 'semua'>('semua');
@@ -82,10 +85,17 @@ export default function DashboardPage() {
   if (isError) {
     return (
       <div className="container-wide py-8">
-        <PageHeader judul="Dashboard" deskripsi="Ringkasan progres belajarmu" />
+        <PageHeader
+          judul="Dashboard"
+          deskripsi={en ? 'Your learning progress at a glance' : 'Ringkasan progres belajarmu'}
+        />
         <ErrorState
-          judul="Gagal memuat data"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load data' : 'Gagal memuat data'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && error && (
@@ -98,11 +108,18 @@ export default function DashboardPage() {
   if (!daftarModul || daftarModul.length === 0) {
     return (
       <div className="container-wide py-8">
-        <PageHeader judul="Dashboard" deskripsi="Ringkasan progres belajarmu" />
+        <PageHeader
+          judul="Dashboard"
+          deskripsi={en ? 'Your learning progress at a glance' : 'Ringkasan progres belajarmu'}
+        />
         <EmptyState
           ikon={<LayoutDashboard className="size-12" strokeWidth={1.5} />}
-          judul="Belum ada modul"
-          pesan="Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi."
+          judul={en ? 'No modules yet' : 'Belum ada modul'}
+          pesan={
+            en
+              ? 'Content is being prepared. Please reload the page in a moment.'
+              : 'Konten sedang disiapkan. Coba muat ulang halaman sebentar lagi.'
+          }
         />
       </div>
     );
@@ -116,8 +133,12 @@ export default function DashboardPage() {
   return (
     <div className="dashboard-page container-base">
       <PageHeader
-        judul="Lanjutkan belajarmu"
-        deskripsi="Bangun pemahaman Struktur Data secara bertahap dan konsisten."
+        judul={en ? 'Continue learning' : 'Lanjutkan belajarmu'}
+        deskripsi={
+          en
+            ? 'Build your understanding of data structures step by step.'
+            : 'Bangun pemahaman Struktur Data secara bertahap dan konsisten.'
+        }
       />
 
       {/* Rekomendasi — paling atas, paling menonjol */}
@@ -135,23 +156,23 @@ export default function DashboardPage() {
 
       <dl className="dashboard-summary">
         <div>
-          <dt>Total modul</dt>
+          <dt>{en ? 'Total modules' : 'Total modul'}</dt>
           <dd>
             {jumlahModul}
-            <span>modul tersedia</span>
+            <span>{en ? 'available' : 'modul tersedia'}</span>
           </dd>
         </div>
         <div>
-          <dt>Modul selesai</dt>
+          <dt>{en ? 'Modules completed' : 'Modul selesai'}</dt>
           <dd>
             {statistik.modulSelesai}
-            <span>dari {jumlahModul} modul</span>
+            <span>{en ? `of ${jumlahModul} modules` : `dari ${jumlahModul} modul`}</span>
           </dd>
         </div>
         <div>
-          <dt>Progres belajar</dt>
+          <dt>{en ? 'Learning progress' : 'Progres belajar'}</dt>
           <dd>
-            {persenKeseluruhan}%<span>keseluruhan</span>
+            {persenKeseluruhan}%<span>{en ? 'overall' : 'keseluruhan'}</span>
           </dd>
         </div>
       </dl>
@@ -159,21 +180,31 @@ export default function DashboardPage() {
       {/* Daftar modul */}
       <section className="dashboard-modules">
         <div className="module-list-heading">
-          <h2 className="font-heading text-title font-bold text-fg">Daftar Modul</h2>
+          <h2 className="font-heading text-title font-bold text-fg">
+            {en ? 'Modules' : 'Daftar Modul'}
+          </h2>
 
           {/* Filter topik — tombol, bukan dropdown, karena hanya 4 pilihan */}
-          <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter topik">
+          <div
+            className="flex flex-wrap gap-1.5"
+            role="group"
+            aria-label={en ? 'Filter topics' : 'Filter topik'}
+          >
             <TombolFilter
               aktif={filterTopik === 'semua'}
               onClick={() => setFilterTopik('semua')}
-              label="Semua"
+              label={en ? 'All' : 'Semua'}
             />
             {(['array', 'struct', 'pointer'] as const).map((t) => (
               <TombolFilter
                 key={t}
                 aktif={filterTopik === t}
                 onClick={() => setFilterTopik(t)}
-                label={LABEL_TOPIK[t]}
+                label={
+                  en
+                    ? { array: 'Array', struct: 'Structs', pointer: 'Pointers' }[t]
+                    : LABEL_TOPIK[t]
+                }
               />
             ))}
           </div>
@@ -189,34 +220,60 @@ export default function DashboardPage() {
       <div className="dashboard-details">
         {/* Statistik */}
         <section>
-          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Statistik</h2>
+          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">
+            {en ? 'Statistics' : 'Statistik'}
+          </h2>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <StatCard
               nilai={statistik.modulSelesai}
-              label="modul selesai"
-              keterangan={`dari ${jumlahModul}`}
-              ajakan={statistik.modulSelesai === 0 ? 'Mulai modul pertama' : ''}
+              label={en ? 'modules completed' : 'modul selesai'}
+              keterangan={en ? `of ${jumlahModul}` : `dari ${jumlahModul}`}
+              ajakan={
+                statistik.modulSelesai === 0
+                  ? en
+                    ? 'Start the first module'
+                    : 'Mulai modul pertama'
+                  : ''
+              }
               warna="var(--primary)"
             />
             <StatCard
               nilai={statistik.kartuDikuasai}
-              label="kartu dikuasai"
-              keterangan={`dari ${totalKartu}`}
-              ajakan={statistik.kartuDikuasai === 0 ? 'Hafalkan kartu' : ''}
+              label={en ? 'cards mastered' : 'kartu dikuasai'}
+              keterangan={en ? `of ${totalKartu}` : `dari ${totalKartu}`}
+              ajakan={
+                statistik.kartuDikuasai === 0 ? (en ? 'Review flashcards' : 'Hafalkan kartu') : ''
+              }
               warna="var(--success)"
             />
             <StatCard
               nilai={`${statistik.akurasiQuiz}%`}
-              label="akurasi quiz"
-              keterangan={statistik.akurasiQuiz === 0 ? 'belum ada quiz' : 'rata-rata'}
-              ajakan={statistik.akurasiQuiz === 0 ? 'Kerjakan quiz' : ''}
+              label={en ? 'quiz accuracy' : 'akurasi quiz'}
+              keterangan={
+                statistik.akurasiQuiz === 0
+                  ? en
+                    ? 'no quizzes yet'
+                    : 'belum ada quiz'
+                  : en
+                    ? 'average'
+                    : 'rata-rata'
+              }
+              ajakan={statistik.akurasiQuiz === 0 ? (en ? 'Take a quiz' : 'Kerjakan quiz') : ''}
               warna="var(--topik-pointer)"
             />
             <StatCard
               nilai={statistik.streak}
-              label="hari beruntun"
-              keterangan={statistik.streak === 0 ? 'mulai hari ini' : 'terus jaga'}
-              ajakan={statistik.streak === 0 ? 'Belajar hari ini' : ''}
+              label={en ? 'day streak' : 'hari beruntun'}
+              keterangan={
+                statistik.streak === 0
+                  ? en
+                    ? 'start today'
+                    : 'mulai hari ini'
+                  : en
+                    ? 'keep it up'
+                    : 'terus jaga'
+              }
+              ajakan={statistik.streak === 0 ? (en ? 'Study today' : 'Belajar hari ini') : ''}
               warna="var(--topik-struct)"
             />
           </div>
@@ -224,7 +281,9 @@ export default function DashboardPage() {
 
         {/* Progres per topik */}
         <section>
-          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">Progres per Topik</h2>
+          <h2 className="mb-4 font-heading text-lg font-semibold text-fg">
+            {en ? 'Progress by topic' : 'Progres per Topik'}
+          </h2>
           <Card className="space-y-5 p-5">
             {progresTopik.map((t) => (
               <BarisTopik
@@ -287,18 +346,20 @@ function BarisModulDashboard({
   modul: ModulRingkas;
   progresModul: ReturnType<ReturnType<typeof useProgres>['ambilModul']>;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const status = statusSemuaTahap(progresModul);
   const warnaTopik = `var(--topik-${modul.topik})`;
 
   // CTA sesuai tahap berikutnya
   const cta =
     status[0] !== 'selesai'
-      ? { label: 'Baca Modul', ke: `/materi/${modul.slug}` }
+      ? { label: en ? 'Read module' : 'Baca Modul', ke: `/materi/${modul.slug}` }
       : status[1] === 'tersedia'
-        ? { label: 'Flashcard', ke: `/soal/flashcard/${modul.slug}` }
+        ? { label: en ? 'Flashcards' : 'Flashcard', ke: `/soal/flashcard/${modul.slug}` }
         : status[2] === 'tersedia'
-          ? { label: 'Quiz', ke: `/soal/quiz/${modul.slug}` }
-          : { label: 'Ulangi', ke: `/materi/${modul.slug}` };
+          ? { label: en ? 'Start quiz' : 'Mulai Quiz', ke: `/soal/quiz/${modul.slug}` }
+          : { label: en ? 'Review' : 'Ulangi', ke: `/materi/${modul.slug}` };
 
   const persen = persenProgresModul(progresModul);
   return (
@@ -309,16 +370,34 @@ function BarisModulDashboard({
       <div className="module-row-copy">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h3>{modul.judul}</h3>
-          <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
+          <Badge warna={warnaTopik}>
+            {en
+              ? { array: 'Array', struct: 'Structs', pointer: 'Pointers' }[modul.topik]
+              : LABEL_TOPIK[modul.topik]}
+          </Badge>
         </div>
         <p>{modul.deskripsi}</p>
       </div>
       <div className="module-row-progress">
         <span>
-          {persen === 0 ? 'Belum dimulai' : persen === 100 ? 'Selesai' : 'Sedang dipelajari'}
+          {persen === 0
+            ? en
+              ? 'Not started'
+              : 'Belum dimulai'
+            : persen === 100
+              ? en
+                ? 'Completed'
+                : 'Selesai'
+              : en
+                ? 'In progress'
+                : 'Sedang dipelajari'}
         </span>
         <div className="flex items-center gap-3">
-          <ProgressBar nilai={persen} label={`Progres ${modul.judul}`} tanpaLabelVisual />
+          <ProgressBar
+            nilai={persen}
+            label={`${en ? 'Progress' : 'Progres'} ${modul.judul}`}
+            tanpaLabelVisual
+          />
           <span>{persen}%</span>
         </div>
       </div>

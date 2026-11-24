@@ -15,6 +15,8 @@ import {
   type StateQuiz,
 } from './sesi';
 import { useProgres } from '@/features/progres/context';
+import { useBahasa } from '@/app/BahasaProvider';
+import { digitFromKeyboardEvent } from '@/lib/keyboard';
 
 /**
  * Hook sesi quiz.
@@ -30,6 +32,7 @@ import { useProgres } from '@/features/progres/context';
  * hasil akhir.
  */
 export function useSesiQuiz(slugModul: string) {
+  const { bahasa } = useBahasa();
   const { simpanHasilQuiz, tandaiQuizSelesai } = useProgres();
 
   const [state, dispatch] = useReducer(reducerQuiz, undefined, () => stateAwal([]));
@@ -43,8 +46,8 @@ export function useSesiQuiz(slugModul: string) {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['quiz', slugModul],
-    queryFn: () => ambilSoalModul(slugModul),
+    queryKey: ['quiz', slugModul, bahasa],
+    queryFn: () => ambilSoalModul(slugModul, bahasa),
     enabled: Boolean(slugModul),
   });
 
@@ -105,7 +108,14 @@ export function useSesiQuiz(slugModul: string) {
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement;
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
+      if (
+        target.isContentEditable ||
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) ||
+        e.altKey ||
+        e.ctrlKey ||
+        e.metaKey
+      )
+        return;
 
       // Sudah dijawab: Enter/Space untuk lanjut
       if (state.sudahDijawab) {
@@ -124,8 +134,8 @@ export function useSesiQuiz(slugModul: string) {
         return;
       }
 
-      const nomor = Number(e.key);
-      if (nomor >= 1 && nomor <= 4) {
+      const nomor = digitFromKeyboardEvent(e);
+      if (nomor !== null && nomor <= 4) {
         const opsi = urutkanOpsi(soal?.opsi_soal)?.[nomor - 1];
         if (opsi) {
           e.preventDefault();
@@ -134,8 +144,8 @@ export function useSesiQuiz(slugModul: string) {
       }
     }
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown, true);
+    return () => window.removeEventListener('keydown', onKeyDown, true);
   }, [state.sudahDijawab, soal, jawab, lanjut]);
 
   return {

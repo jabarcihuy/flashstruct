@@ -7,6 +7,7 @@ import { useDaftarModul } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
 import { LABEL_TOPIK } from '@/lib/constants';
 import type { ModulRingkas, TopikModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 const PILIHAN = [30, 40, 50] as const;
 const TOPIK: TopikModul[] = ['array', 'struct', 'pointer'];
@@ -18,7 +19,14 @@ const MODUL_PEMBUKA: Record<TopikModul, string> = {
 
 /** Halaman publik. Navigasi belajar dan progres dimulai di /dashboard. */
 export default function LandingPage() {
-  useJudulHalaman('FlashStruct — Pahami, Hafalkan, Buktikan Struktur Data', true);
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  useJudulHalaman(
+    en
+      ? 'FlashStruct — Understand, Remember, Prove Data Structures'
+      : 'FlashStruct — Pahami, Hafalkan, Buktikan Struktur Data',
+    true,
+  );
   const { data: daftarModul } = useDaftarModul();
   const { progres } = useProgres();
   const [jawaban, setJawaban] = useState<number | null>(null);
@@ -50,35 +58,55 @@ export default function LandingPage() {
       <section className="landing-hero container-wide">
         <div className="landing-hero-copy">
           <h1>
-            Bisa menulis kodenya.
+            {en ? 'You can write the code.' : 'Bisa menulis kodenya.'}
             <br />
-            <span>Bisa menjelaskan hasilnya?</span>
+            <span>{en ? 'Can you explain the result?' : 'Bisa menjelaskan hasilnya?'}</span>
           </h1>
-          <p>Latihan singkat untuk mengingat dan menguji Array, Struct, dan Pointer.</p>
+          <p>
+            {en
+              ? 'Short practice to remember and test Arrays, Structs, and Pointers.'
+              : 'Latihan singkat untuk mengingat dan menguji Array, Struct, dan Pointer.'}
+          </p>
           <div className="landing-hero-actions">
             <Link to={mulaiKe} className="landing-primary-action">
-              {adaProgres ? 'Lanjutkan belajar' : 'Mulai belajar'}
+              {adaProgres
+                ? en
+                  ? 'Continue learning'
+                  : 'Lanjutkan belajar'
+                : en
+                  ? 'Start learning'
+                  : 'Mulai belajar'}
               <ArrowRight size={18} aria-hidden="true" />
             </Link>
             <a href="#cara-kerja" className="landing-text-action">
-              Lihat cara belajar <ArrowRight size={16} aria-hidden="true" />
+              {en ? 'See how it works' : 'Lihat cara belajar'}{' '}
+              <ArrowRight size={16} aria-hidden="true" />
             </a>
           </div>
         </div>
 
         <div className="landing-demo" ref={demoRef}>
           <div className="landing-demo-top">
-            <span>Contoh singkat dari modul Array</span>
+            <span>
+              {en ? 'A quick example from the Array module' : 'Contoh singkat dari modul Array'}
+            </span>
             <span>C++</span>
           </div>
           <div className="landing-demo-body">
-            <h2>Apa hasil yang dicetak?</h2>
+            <h2>{en ? 'What gets printed?' : 'Apa hasil yang dicetak?'}</h2>
             <pre className="landing-code" aria-label="Contoh kode C++">
               <code>
                 {'int nilai[5] = {10, 20, 30, 40, 50};\nint* p = nilai;\ncout << *(p + 3);'}
               </code>
             </pre>
-            <div className="landing-memory" aria-label="Isi Array nilai, indeks nol sampai empat">
+            <div
+              className="landing-memory"
+              aria-label={
+                en
+                  ? 'Array values, indices zero through four'
+                  : 'Isi Array nilai, indeks nol sampai empat'
+              }
+            >
               {[10, 20, 30, 40, 50].map((nilai, indeks) => (
                 <div
                   key={nilai}
@@ -89,7 +117,11 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-            <div className="landing-question-actions" role="group" aria-label="Pilih hasil kode">
+            <div
+              className="landing-question-actions"
+              role="group"
+              aria-label={en ? 'Choose the code output' : 'Pilih hasil kode'}
+            >
               {PILIHAN.map((nilai) => (
                 <button
                   key={nilai}
@@ -105,19 +137,42 @@ export default function LandingPage() {
             {jawaban !== null ? (
               <div className="landing-feedback" role="status" aria-live="polite">
                 <div className="landing-feedback-heading">
-                  <strong>{jawaban === 40 ? 'Tepat. Hasilnya 40.' : 'Hasilnya 40.'}</strong>
+                  <strong>
+                    {jawaban === 40
+                      ? en
+                        ? 'Correct. The result is 40.'
+                        : 'Tepat. Hasilnya 40.'
+                      : en
+                        ? 'The result is 40.'
+                        : 'Hasilnya 40.'}
+                  </strong>
                   {jawaban === 40 && <Check size={17} aria-hidden="true" />}
                 </div>
                 <p>
-                  <code>p</code> menunjuk indeks 0. <code>p + 3</code> berpindah ke indeks 3, lalu{' '}
-                  <code>*(p + 3)</code> membaca nilainya: 40.
+                  {en ? (
+                    <>
+                      {' '}
+                      <code>p</code> points to index 0. <code>p + 3</code> moves to index 3, then{' '}
+                      <code>*(p + 3)</code> reads its value: 40.
+                    </>
+                  ) : (
+                    <>
+                      {' '}
+                      <code>p</code> menunjuk indeks 0. <code>p + 3</code> berpindah ke indeks 3,
+                      lalu <code>*(p + 3)</code> membaca nilainya: 40.
+                    </>
+                  )}
                 </p>
                 <button type="button" onClick={() => setJawaban(null)}>
-                  <RotateCcw size={14} aria-hidden="true" /> Coba lagi
+                  <RotateCcw size={14} aria-hidden="true" /> {en ? 'Try again' : 'Coba lagi'}
                 </button>
               </div>
             ) : (
-              <p className="landing-demo-hint">Pilih jawaban untuk melihat penjelasannya.</p>
+              <p className="landing-demo-hint">
+                {en
+                  ? 'Choose an answer to see the explanation.'
+                  : 'Pilih jawaban untuk melihat penjelasannya.'}
+              </p>
             )}
           </div>
         </div>
@@ -126,26 +181,36 @@ export default function LandingPage() {
       <section className="landing-path" id="cara-kerja">
         <div className="container-wide">
           <div className="landing-section-heading">
-            <h2>Hafalkan, lalu buktikan.</h2>
+            <h2>{en ? 'Remember, then prove it.' : 'Hafalkan, lalu buktikan.'}</h2>
           </div>
           <div className="landing-stage-list">
             <article className="landing-stage-row">
               <span className="landing-stage-number">1</span>
               <div>
-                <h3>Hafalkan</h3>
+                <h3>{en ? 'Remember' : 'Hafalkan'}</h3>
                 <p>
-                  Uji ingatan dengan flashcard. Tandai Lupa atau Ingat, lalu ulangi yang belum kuat.
+                  {en
+                    ? 'Test your memory with flashcards. Mark what you forgot or remembered, then review what needs work.'
+                    : 'Uji ingatan dengan flashcard. Tandai Lupa atau Ingat, lalu ulangi yang belum kuat.'}
                 </p>
               </div>
-              <span className="landing-stage-proof">Flashcard & pengulangan</span>
+              <span className="landing-stage-proof">
+                {en ? 'Flashcards & review' : 'Flashcard & pengulangan'}
+              </span>
             </article>
             <article className="landing-stage-row">
               <span className="landing-stage-number">2</span>
               <div>
-                <h3>Buktikan</h3>
-                <p>Kerjakan quiz dan baca penjelasan jawabannya untuk menemukan celah pemahaman.</p>
+                <h3>{en ? 'Prove it' : 'Buktikan'}</h3>
+                <p>
+                  {en
+                    ? 'Take quizzes and read the explanations to find gaps in your understanding.'
+                    : 'Kerjakan quiz dan baca penjelasan jawabannya untuk menemukan celah pemahaman.'}
+                </p>
               </div>
-              <span className="landing-stage-proof">Quiz & umpan balik</span>
+              <span className="landing-stage-proof">
+                {en ? 'Quizzes & feedback' : 'Quiz & umpan balik'}
+              </span>
             </article>
           </div>
         </div>
@@ -153,10 +218,15 @@ export default function LandingPage() {
 
       <section className="landing-curriculum container-wide" id="kurikulum">
         <div className="landing-section-heading">
-          <h2>Mulai dari konsep yang akan terus kamu pakai.</h2>
+          <h2>
+            {en
+              ? 'Start with concepts you will keep using.'
+              : 'Mulai dari konsep yang akan terus kamu pakai.'}
+          </h2>
           <p>
-            Array menyiapkan cara berpikir tentang indeks dan memori. Struct menyusun data. Pointer
-            menghubungkan nilai dengan alamatnya.
+            {en
+              ? 'Arrays build intuition for indices and memory. Structs organize data. Pointers connect values to their addresses.'
+              : 'Array menyiapkan cara berpikir tentang indeks dan memori. Struct menyusun data. Pointer menghubungkan nilai dengan alamatnya.'}
           </p>
         </div>
         <div className="landing-topic-list">
@@ -165,17 +235,28 @@ export default function LandingPage() {
           ))}
         </div>
         <Link to="/materi" className="landing-inline-link">
-          Lihat seluruh materi <ArrowUpRight size={17} aria-hidden="true" />
+          {en ? 'Explore all lessons' : 'Lihat seluruh materi'}{' '}
+          <ArrowUpRight size={17} aria-hidden="true" />
         </Link>
       </section>
 
       <section className="landing-close">
         <div className="container-wide landing-close-inner">
           <div>
-            <h2>Belajar berurutan. Ulangi sampai ingat.</h2>
+            <h2>
+              {en
+                ? 'Learn in sequence. Review until it sticks.'
+                : 'Belajar berurutan. Ulangi sampai ingat.'}
+            </h2>
           </div>
           <Link to={mulaiKe} className="landing-primary-action">
-            {adaProgres ? 'Kembali belajar' : 'Mulai dari modul pertama'}
+            {adaProgres
+              ? en
+                ? 'Resume learning'
+                : 'Kembali belajar'
+              : en
+                ? 'Start with the first module'
+                : 'Mulai dari modul pertama'}
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
@@ -184,12 +265,16 @@ export default function LandingPage() {
       <footer className="landing-footer container-wide">
         <div>
           <strong>FlashStruct</strong>
-          <p>Belajar Struktur Data, satu konsep pada satu waktu.</p>
+          <p>
+            {en
+              ? 'Learn data structures, one concept at a time.'
+              : 'Belajar Struktur Data, satu konsep pada satu waktu.'}
+          </p>
         </div>
         <div className="landing-footer-links">
-          <Link to="/dashboard">Aplikasi</Link>
-          <Link to="/materi">Materi</Link>
-          <Link to="/soal">Soal</Link>
+          <Link to="/dashboard">{en ? 'App' : 'Aplikasi'}</Link>
+          <Link to="/materi">{en ? 'Lessons' : 'Materi'}</Link>
+          <Link to="/soal">{en ? 'Quizzes' : 'Soal'}</Link>
         </div>
       </footer>
     </div>

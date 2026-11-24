@@ -1,11 +1,13 @@
 import { Suspense, useEffect } from 'react';
 import { Link, Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { ThemeToggle } from './Header';
+import { LanguageToggle, ThemeToggle } from './Header';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /** Kerangka publik: navigasi penjelasan produk terpisah dari navigasi belajar. */
 export function LandingLayout() {
   const { pathname } = useLocation();
+  const { bahasa } = useBahasa();
 
   useEffect(() => {
     const heading = document.querySelector('h1');
@@ -17,27 +19,38 @@ export function LandingLayout() {
   return (
     <div className="landing-shell min-h-dvh bg-bg text-fg">
       <a href="#konten-utama" className="skip-link">
-        Lewati ke konten utama
+        {bahasa === 'en' ? 'Skip to main content' : 'Lewati ke konten utama'}
       </a>
       <header className="landing-header safe-top safe-x">
         <div className="landing-header-inner container-wide">
           <Link to="/" className="landing-brand" aria-label="FlashStruct — halaman depan">
             FlashStruct
           </Link>
-          <nav aria-label="Navigasi landing" className="landing-header-nav">
-            <a href="#cara-kerja">Cara belajar</a>
-            <a href="#kurikulum">Kurikulum</a>
+          <nav
+            aria-label={bahasa === 'en' ? 'Landing navigation' : 'Navigasi landing'}
+            className="landing-header-nav"
+          >
+            <a href="#cara-kerja">{bahasa === 'en' ? 'How it works' : 'Cara belajar'}</a>
+            <a href="#kurikulum">{bahasa === 'en' ? 'Curriculum' : 'Kurikulum'}</a>
           </nav>
           <div className="landing-header-actions">
+            <LanguageToggle />
             <ThemeToggle />
             <Link to="/dashboard" className="landing-app-link">
-              Dashboard <ArrowRight size={16} aria-hidden="true" />
+              {bahasa === 'en' ? 'Open app' : 'Dashboard'}{' '}
+              <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
       </header>
       <main id="konten-utama" tabIndex={-1} className="outline-none">
-        <Suspense fallback={<div className="container-base py-12">Memuat halaman…</div>}>
+        <Suspense
+          fallback={
+            <div className="container-base py-12">
+              {bahasa === 'en' ? 'Loading page…' : 'Memuat halaman…'}
+            </div>
+          }
+        >
           <Outlet />
         </Suspense>
       </main>

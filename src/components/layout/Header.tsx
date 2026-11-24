@@ -3,10 +3,34 @@ import { Monitor, Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useTema, URUTAN_TEMA } from '@/app/tema';
 import { NAV_ITEMS } from './nav-items';
+import { useBahasa } from '@/app/BahasaProvider';
+
+const LABEL_NAV_EN: Record<string, string> = { Materi: 'Learn', Soal: 'Quizzes' };
+
+export function LanguageToggle() {
+  const { bahasa, setBahasa } = useBahasa();
+  const ubahKe = bahasa === 'id' ? 'en' : 'id';
+  return (
+    <button
+      type="button"
+      onClick={() => setBahasa(ubahKe)}
+      aria-label={
+        bahasa === 'id' ? 'Switch language to English' : 'Ganti bahasa ke Bahasa Indonesia'
+      }
+      title={bahasa === 'id' ? 'English' : 'Bahasa Indonesia'}
+      className={cn(
+        'inline-flex h-10 min-w-10 items-center justify-center rounded-md px-2 text-sm font-semibold text-fg-muted transition-colors hover:bg-surface hover:text-fg',
+      )}
+    >
+      {ubahKe.toUpperCase()}
+    </button>
+  );
+}
 
 /** Tombol pengalih tema: terang -> gelap -> ikuti sistem */
 export function ThemeToggle() {
   const { tema, setTema } = useTema();
+  const { bahasa } = useBahasa();
 
   const berikutnya = () => {
     const idx = URUTAN_TEMA.indexOf(tema);
@@ -14,14 +38,29 @@ export function ThemeToggle() {
   };
 
   const Ikon = tema === 'terang' ? Sun : tema === 'gelap' ? Moon : Monitor;
-  const label = tema === 'terang' ? 'Terang' : tema === 'gelap' ? 'Gelap' : 'Ikuti Sistem';
+  const label =
+    bahasa === 'en'
+      ? tema === 'terang'
+        ? 'Light'
+        : tema === 'gelap'
+          ? 'Dark'
+          : 'System'
+      : tema === 'terang'
+        ? 'Terang'
+        : tema === 'gelap'
+          ? 'Gelap'
+          : 'Ikuti Sistem';
 
   return (
     <button
       type="button"
       onClick={berikutnya}
-      aria-label={`Tema: ${label}. Klik untuk mengubah.`}
-      title={`Tema: ${label}`}
+      aria-label={
+        bahasa === 'en'
+          ? `Theme: ${label}. Click to change.`
+          : `Tema: ${label}. Klik untuk mengubah.`
+      }
+      title={bahasa === 'en' ? `Theme: ${label}` : `Tema: ${label}`}
       className={cn(
         'inline-flex size-11 items-center justify-center rounded-md md:size-10',
         'cursor-pointer text-fg-muted transition-colors duration-150',
@@ -34,6 +73,7 @@ export function ThemeToggle() {
 }
 
 export function Header() {
+  const { bahasa } = useBahasa();
   return (
     <header className="site-header safe-top safe-x sticky top-0 z-40 border-b border-border bg-bg">
       <div className="site-header-inner container-wide flex items-center gap-10">
@@ -65,7 +105,7 @@ export function Header() {
                 >
                   {({ isActive }) => (
                     <>
-                      {label}
+                      {bahasa === 'en' ? (LABEL_NAV_EN[label] ?? label) : label}
                       {/* Penanda aktif: garis bawah + warna, bukan warna saja */}
                       {isActive && (
                         <span
@@ -81,7 +121,8 @@ export function Header() {
           </ul>
         </nav>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <LanguageToggle />
           <ThemeToggle />
         </div>
       </div>

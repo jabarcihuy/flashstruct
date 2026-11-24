@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { AlertTriangle, Inbox, RefreshCw } from 'lucide-react';
 import { Button } from './Button';
 import { cn } from '@/lib/cn';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Keadaan kosong.
@@ -53,6 +54,7 @@ export function ErrorState({
   onCobaLagi?: () => void;
   className?: string;
 }) {
+  const { bahasa } = useBahasa();
   return (
     <div
       role="alert"
@@ -69,7 +71,7 @@ export function ErrorState({
           onClick={onCobaLagi}
           ikonKiri={<RefreshCw className="size-4" aria-hidden="true" />}
         >
-          Coba lagi
+          {bahasa === 'en' ? 'Try again' : 'Coba lagi'}
         </Button>
       )}
     </div>

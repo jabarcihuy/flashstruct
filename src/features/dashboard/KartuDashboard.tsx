@@ -8,6 +8,7 @@ import { ProgressBar } from '@/components/ui/Progress';
 import { statusSemuaTahap, persenProgresModul } from '@/features/progres/aturan';
 import type { ProgresModul } from '@/features/progres/schema';
 import type { Rekomendasi } from './rekomendasi';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Kartu rekomendasi — komponen terpenting di Dashboard.
@@ -25,15 +26,24 @@ export function KartuRekomendasi({
   rekomendasi: Rekomendasi;
   progresModul?: ProgresModul;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const persen = persenProgresModul(progresModul);
   return (
-    <section className="recommendation" aria-label="Modul yang disarankan">
+    <section
+      className="recommendation"
+      aria-label={en ? 'Recommended module' : 'Modul yang disarankan'}
+    >
       <div className="recommendation-copy">
-        <p className="recommendation-label">Modul yang disarankan</p>
+        <p className="recommendation-label">{en ? 'Recommended next' : 'Modul yang disarankan'}</p>
         <h2>{rekomendasi.modulJudul}</h2>
-        <p className="recommendation-reason">{rekomendasi.alasan}</p>
+        <p className="recommendation-reason">
+          {en
+            ? alasanInggris(rekomendasi.tahap, progresModul, rekomendasi.jenis)
+            : rekomendasi.alasan}
+        </p>
         <Link to={rekomendasi.ctaRute} className="action-link">
-          {rekomendasi.ctaLabel}
+          {en ? labelAksiInggris(rekomendasi.tahap, rekomendasi.jenis) : rekomendasi.ctaLabel}
         </Link>
       </div>
       <div className="recommendation-stages">
@@ -41,11 +51,21 @@ export function KartuRekomendasi({
             jarak 22px ke kartu tahap. Nilai ini diukur dari spec.json
             region lesson-progress (y=216 h=45) dan stage-1 (y=283). */}
         <div className="progress-head">
-          <span>Progres modul</span>
-          <span>{persen === 0 ? 'Belum dimulai' : `${persen}% selesai`}</span>
+          <span>{en ? 'Module progress' : 'Progres modul'}</span>
+          <span>
+            {persen === 0
+              ? en
+                ? 'Not started'
+                : 'Belum dimulai'
+              : `${persen}% ${en ? 'complete' : 'selesai'}`}
+          </span>
         </div>
         <div className="progress-bar">
-          <ProgressBar nilai={persen} label="Progres modul yang disarankan" tanpaLabelVisual />
+          <ProgressBar
+            nilai={persen}
+            label={en ? 'Recommended module progress' : 'Progres modul yang disarankan'}
+            tanpaLabelVisual
+          />
           <span className="tabular-nums">{persen}%</span>
         </div>
         <LearningStages tahap={statusSemuaTahap(progresModul)} />
@@ -64,6 +84,8 @@ export function KartuSemuaSelesai({
 }: {
   modulTerlemah: { slug: string; judul: string; akurasi: number } | null;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   return (
     <Card className="border-success/40 bg-success/5 p-5 sm:p-6">
       <div className="flex items-start gap-4">
@@ -75,21 +97,24 @@ export function KartuSemuaSelesai({
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-wide text-success">Selesai</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-success">
+            {en ? 'Complete' : 'Selesai'}
+          </p>
 
           <h2 className="mt-1.5 font-heading text-lg font-semibold text-fg">
-            Semua modul sudah tuntas
+            {en ? 'All modules are complete' : 'Semua modul sudah tuntas'}
           </h2>
 
           <p className="mt-2 text-sm leading-relaxed text-fg">
-            Kamu sudah menuntaskan seluruh modul. Untuk memperkuat, ulangi quiz dengan akurasi
-            terendah atau ulangi deck yang sudah lama tidak dibuka.
+            {en
+              ? 'You have completed every module. To reinforce your learning, retake the quiz with your lowest score or review a deck you have not opened recently.'
+              : 'Kamu sudah menuntaskan seluruh modul. Untuk memperkuat, ulangi quiz dengan akurasi terendah atau ulangi deck yang sudah lama tidak dibuka.'}
           </p>
 
           {modulTerlemah && (
             <div className="mt-4 border-t border-border pt-3">
               <p className="text-sm text-fg">
-                <span className="font-medium">Akurasi terendah: </span>
+                <span className="font-medium">{en ? 'Lowest score: ' : 'Akurasi terendah: '}</span>
                 {modulTerlemah.judul} ({modulTerlemah.akurasi}%)
               </p>
               <Link
@@ -97,7 +122,7 @@ export function KartuSemuaSelesai({
                 className="mt-3 inline-block no-underline"
               >
                 <Button ukuran="sm" varian="secondary">
-                  Ulangi Quiz Terlemah
+                  {en ? 'Retake lowest-scoring quiz' : 'Ulangi Quiz Terlemah'}
                 </Button>
               </Link>
             </div>
@@ -112,16 +137,22 @@ export function KartuSemuaSelesai({
  * Saran tambahan saat semua selesai — memperkuat tanpa menghakimi.
  */
 export function SaranMemperkuat() {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const saran = [
     {
       ikon: Lightbulb,
-      judul: 'Ulangi deck lama',
-      pesan: 'Kartu yang sudah lama tidak dibuka akan muncul lebih awal di sesi berikutnya.',
+      judul: en ? 'Review an older deck' : 'Ulangi deck lama',
+      pesan: en
+        ? 'Cards you have not seen recently appear earlier in your next session.'
+        : 'Kartu yang sudah lama tidak dibuka akan muncul lebih awal di sesi berikutnya.',
     },
     {
       ikon: Check,
-      judul: 'Fokus ke topik lemah',
-      pesan: 'Lihat analisis topik di hasil quiz — bagian di bawah 50% perlu diulang.',
+      judul: en ? 'Focus on weaker topics' : 'Fokus ke topik lemah',
+      pesan: en
+        ? 'Check the topic analysis in your quiz results — review topics below 50%.'
+        : 'Lihat analisis topik di hasil quiz — bagian di bawah 50% perlu diulang.',
     },
   ];
 
@@ -156,12 +187,13 @@ export function BarisTopik({
   persen: number;
   warna: string;
 }) {
+  const { bahasa } = useBahasa();
   return (
     <div>
       <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
         <span className="font-medium text-fg">{label}</span>
         <span className="shrink-0 tabular-nums text-fg-muted">
-          {selesai} dari {total} modul
+          {bahasa === 'en' ? `${selesai} of ${total} modules` : `${selesai} dari ${total} modul`}
         </span>
       </div>
       <div
@@ -179,6 +211,31 @@ export function BarisTopik({
       </div>
     </div>
   );
+}
+
+function alasanInggris(
+  tahap: number,
+  progresModul: ProgresModul | undefined,
+  jenis: Rekomendasi['jenis'],
+) {
+  if (tahap === 1) {
+    return jenis === 'mulai'
+      ? 'You have not started this module yet. Read it first to build your foundation.'
+      : 'Continue reading this module to strengthen your understanding.';
+  }
+  if (tahap === 2) {
+    return progresModul?.tahap1Selesai
+      ? 'You have finished reading this module. Now recall the concepts with its flashcards.'
+      : 'Review the key concepts in this module with flashcards.';
+  }
+  return 'You have mastered the flashcards. Prove your understanding with the quiz.';
+}
+
+function labelAksiInggris(tahap: number, jenis: Rekomendasi['jenis']) {
+  if (jenis === 'selesai') return 'Review module';
+  if (tahap === 1) return 'Read module';
+  if (tahap === 2) return 'Start flashcards';
+  return 'Start quiz';
 }
 
 /** Kartu statistik satu angka */

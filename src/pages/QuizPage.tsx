@@ -14,6 +14,7 @@ import { HasilQuiz } from '@/features/quiz/HasilQuiz';
 import { useDaftarModul } from '@/features/materi/hooks';
 import { useProgres } from '@/features/progres/context';
 import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progres/aturan';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman sesi quiz — Tahap 3 (Buktikan).
@@ -27,6 +28,8 @@ import { alasanTerkunci, statusSemuaTahap, statusTahap } from '@/features/progre
  * hanya pembukaan tahap ini, bukan kelulusannya.
  */
 export default function QuizPage() {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   useJudulHalaman('Quiz');
   const { slug = '' } = useParams();
   const {
@@ -86,8 +89,12 @@ export default function QuizPage() {
     return (
       <div className="container-narrow py-8">
         <ErrorState
-          judul="Gagal memuat soal"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load quiz' : 'Gagal memuat soal'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && error && (
@@ -106,11 +113,31 @@ export default function QuizPage() {
   if (statusTahap3 === 'terkunci') {
     return (
       <StageGate
-        judul="Quiz masih terkunci"
+        judul={en ? 'Quiz is locked' : 'Quiz masih terkunci'}
         modulJudul={modul?.judul}
-        alasan={modul ? alasanTerkunci(3) : 'Modul tidak ditemukan.'}
-        penjelasan="Kuasai semua kartu di tahap menghafal sebelum mengerjakan quiz. Kartu yang lupa dapat diulang sampai siap."
-        aksiLabel={statusTahap(progresModul, 2) === 'terkunci' ? 'Baca Modul' : 'Mulai Flashcard'}
+        alasan={
+          modul
+            ? en
+              ? 'Complete the previous learning stage to unlock this quiz.'
+              : alasanTerkunci(3)
+            : en
+              ? 'Module not found.'
+              : 'Modul tidak ditemukan.'
+        }
+        penjelasan={
+          en
+            ? 'Master all flashcards before taking the quiz. You can review cards you forgot until you are ready.'
+            : 'Kuasai semua kartu di tahap menghafal sebelum mengerjakan quiz. Kartu yang lupa dapat diulang sampai siap.'
+        }
+        aksiLabel={
+          statusTahap(progresModul, 2) === 'terkunci'
+            ? en
+              ? 'Read module'
+              : 'Baca Modul'
+            : en
+              ? 'Start flashcards'
+              : 'Mulai Flashcard'
+        }
         aksiKe={
           statusTahap(progresModul, 2) === 'terkunci'
             ? `/materi/${slug}`
@@ -130,15 +157,21 @@ export default function QuizPage() {
       <div className="container-narrow py-8">
         <EmptyState
           ikon={<ClipboardCheck className="size-12" strokeWidth={1.5} />}
-          judul="Modul ini belum punya soal"
-          pesan="Bank soal untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca ulang modulnya."
+          judul={en ? 'This module has no quiz questions yet' : 'Modul ini belum punya soal'}
+          pesan={
+            en
+              ? 'Quiz questions for this module are being prepared. For now, you can reread the module.'
+              : 'Bank soal untuk modul ini sedang disiapkan. Untuk sekarang, kamu bisa membaca ulang modulnya.'
+          }
           aksi={
             <div className="flex flex-wrap justify-center gap-2">
               <Link to={`/materi/${slug}`} className="inline-flex no-underline">
-                <Button>Baca Modul</Button>
+                <Button>{en ? 'Read module' : 'Baca Modul'}</Button>
               </Link>
               <Link to="/soal" className="inline-flex no-underline">
-                <Button varian="secondary">Pilih Modul Lain</Button>
+                <Button varian="secondary">
+                  {en ? 'Choose another module' : 'Pilih Modul Lain'}
+                </Button>
               </Link>
             </div>
           }
@@ -180,13 +213,15 @@ export default function QuizPage() {
           className="inline-flex h-11 items-center gap-2 text-sm text-fg-muted no-underline hover:text-fg md:h-9"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
-          <span className="hidden sm:inline">Kembali</span>
+          <span className="hidden sm:inline">{en ? 'Back' : 'Kembali'}</span>
         </Link>
 
         <div className="min-w-0 flex-1 text-center">
           <p className="truncate text-sm font-medium text-fg">{modul?.judul ?? ''}</p>
           <p className="text-xs text-fg-muted">
-            Soal {state.indeks + 1} dari {totalSoal}
+            {en
+              ? `Question ${state.indeks + 1} of ${totalSoal}`
+              : `Soal ${state.indeks + 1} dari ${totalSoal}`}
           </p>
         </div>
 
@@ -195,7 +230,7 @@ export default function QuizPage() {
           onClick={cobaKeluar}
           className="inline-flex h-11 cursor-pointer items-center px-3 text-sm text-fg-muted hover:text-fg"
         >
-          Keluar
+          {en ? 'Exit' : 'Keluar'}
         </button>
       </div>
 
@@ -204,7 +239,11 @@ export default function QuizPage() {
         <ProgressBar
           nilai={sudahDijawab}
           maks={totalSoal}
-          label={`Soal ${state.indeks + 1} dari ${totalSoal}`}
+          label={
+            en
+              ? `Question ${state.indeks + 1} of ${totalSoal}`
+              : `Soal ${state.indeks + 1} dari ${totalSoal}`
+          }
           tanpaLabelVisual
         />
       </div>
@@ -244,7 +283,7 @@ export default function QuizPage() {
           <kbd className="rounded border border-border bg-surface-raised px-1.5 py-0.5 font-mono">
             4
           </kbd>{' '}
-          untuk memilih jawaban
+          {en ? 'to choose an answer' : 'untuk memilih jawaban'}
         </p>
       )}
 
@@ -252,13 +291,17 @@ export default function QuizPage() {
       <Dialog
         terbuka={dialogKeluar}
         onTutup={() => setDialogKeluar(false)}
-        judul="Keluar dari quiz?"
-        deskripsi={`Kamu sudah menjawab ${sudahDijawab} dari ${totalSoal} soal. Jawaban akan hilang.`}
+        judul={en ? 'Leave the quiz?' : 'Keluar dari quiz?'}
+        deskripsi={
+          en
+            ? `You have answered ${sudahDijawab} of ${totalSoal} questions. Your answers will be lost.`
+            : `Kamu sudah menjawab ${sudahDijawab} dari ${totalSoal} soal. Jawaban akan hilang.`
+        }
         ukuran="sm"
       >
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button varian="secondary" onClick={() => setDialogKeluar(false)}>
-            Lanjut Mengerjakan
+            {en ? 'Keep working' : 'Lanjut Mengerjakan'}
           </Button>
           <Button
             varian="danger"
@@ -266,7 +309,7 @@ export default function QuizPage() {
               window.location.href = '/soal';
             }}
           >
-            Keluar
+            {en ? 'Leave' : 'Keluar'}
           </Button>
         </div>
       </Dialog>
@@ -275,9 +318,10 @@ export default function QuizPage() {
 }
 
 function QuizSkeleton() {
+  const { bahasa } = useBahasa();
   return (
     <div className="container-narrow py-6" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat quiz…</span>
+      <span className="sr-only">{bahasa === 'en' ? 'Loading quiz…' : 'Memuat quiz…'}</span>
       <div className="flex items-center justify-between">
         <Skeleton className="h-9 w-24" />
         <Skeleton className="h-5 w-32" />

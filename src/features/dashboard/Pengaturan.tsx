@@ -9,6 +9,7 @@ import { useToast } from '@/components/ui/toast-context';
 import { bacaBerkasImpor, unduhProgres } from '@/features/progres/store';
 import { cn } from '@/lib/cn';
 import { useState as useStateAlias } from 'react';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Pengaturan Dashboard: tema, ekspor/impor, reset progres.
@@ -27,6 +28,8 @@ const OPSI_TEMA: { nilai: Tema; label: string; ikon: typeof Sun }[] = [
 ];
 
 export function Pengaturan() {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const { tema, setTema } = useTema();
   const { progres, resetProgres, gantiProgres, penyimpananTersedia } = useProgres();
   const { tampilkan } = useToast();
@@ -38,9 +41,9 @@ export function Pengaturan() {
   function ekspor() {
     try {
       unduhProgres(progres);
-      tampilkan('Progres berhasil diunduh', 'sukses');
+      tampilkan(en ? 'Progress downloaded' : 'Progres berhasil diunduh', 'sukses');
     } catch {
-      tampilkan('Gagal mengunduh progres', 'error');
+      tampilkan(en ? 'Could not download progress' : 'Gagal mengunduh progres', 'error');
     }
   }
 
@@ -57,32 +60,41 @@ export function Pengaturan() {
       }
 
       gantiProgres(hasil.progres);
-      tampilkan('Progres berhasil dipulihkan', 'sukses');
+      tampilkan(en ? 'Progress restored' : 'Progres berhasil dipulihkan', 'sukses');
     };
 
-    pembaca.onerror = () => tampilkan('Gagal membaca berkas', 'error');
+    pembaca.onerror = () => tampilkan(en ? 'Could not read file' : 'Gagal membaca berkas', 'error');
     pembaca.readAsText(berkas);
   }
 
   return (
     <Card className="p-5 sm:p-6">
-      <h2 className="font-heading text-lg font-semibold text-fg">Pengaturan</h2>
+      <h2 className="font-heading text-lg font-semibold text-fg">
+        {en ? 'Settings' : 'Pengaturan'}
+      </h2>
 
       {/* Peringatan penyimpanan tidak tersedia */}
       {!penyimpananTersedia && (
         <div className="mt-4 rounded-lg border border-danger/40 bg-danger/5 p-3">
-          <p className="text-sm font-medium text-fg">Progres tidak bisa disimpan</p>
+          <p className="text-sm font-medium text-fg">
+            {en ? 'Progress cannot be saved' : 'Progres tidak bisa disimpan'}
+          </p>
           <p className="mt-1 text-xs text-fg-muted">
-            Browser ini memblokir penyimpanan lokal (mungkin mode privat). Progres akan hilang saat
-            tab ditutup.
+            {en
+              ? 'This browser blocks local storage (possibly private browsing). Progress will be lost when the tab closes.'
+              : 'Browser ini memblokir penyimpanan lokal (mungkin mode privat). Progres akan hilang saat tab ditutup.'}
           </p>
         </div>
       )}
 
       {/* Tema */}
       <div className="mt-5">
-        <p className="mb-2 text-sm font-medium text-fg">Tema</p>
-        <div className="flex flex-wrap gap-2" role="group" aria-label="Pilih tema">
+        <p className="mb-2 text-sm font-medium text-fg">{en ? 'Theme' : 'Tema'}</p>
+        <div
+          className="flex flex-wrap gap-2"
+          role="group"
+          aria-label={en ? 'Choose a theme' : 'Pilih tema'}
+        >
           {OPSI_TEMA.map(({ nilai, label, ikon: Ikon }) => {
             const aktif = tema === nilai;
             return (
@@ -100,7 +112,7 @@ export function Pengaturan() {
                 )}
               >
                 <Ikon className="size-4" aria-hidden="true" />
-                {label}
+                {en ? { terang: 'Light', gelap: 'Dark', sistem: 'System' }[nilai] : label}
               </button>
             );
           })}
@@ -109,9 +121,13 @@ export function Pengaturan() {
 
       {/* Ekspor / impor */}
       <div className="mt-6">
-        <p className="mb-1 text-sm font-medium text-fg">Cadangkan Progres</p>
+        <p className="mb-1 text-sm font-medium text-fg">
+          {en ? 'Back up progress' : 'Cadangkan Progres'}
+        </p>
         <p className="mb-3 text-xs text-fg-muted">
-          Progres disimpan di browser ini saja. Ekspor untuk memindahkannya ke perangkat lain.
+          {en
+            ? 'Progress is stored only in this browser. Export it to move it to another device.'
+            : 'Progres disimpan di browser ini saja. Ekspor untuk memindahkannya ke perangkat lain.'}
         </p>
 
         <div className="flex flex-wrap gap-2">
@@ -122,7 +138,7 @@ export function Pengaturan() {
             disabled={!adaProgres}
             ikonKiri={<Download className="size-4" aria-hidden="true" />}
           >
-            Ekspor Progres
+            {en ? 'Export progress' : 'Ekspor Progres'}
           </Button>
 
           <label
@@ -132,7 +148,7 @@ export function Pengaturan() {
             )}
           >
             <Upload className="size-4" aria-hidden="true" />
-            Impor Progres
+            {en ? 'Import progress' : 'Impor Progres'}
             <input
               type="file"
               accept="application/json,.json"
@@ -149,9 +165,13 @@ export function Pengaturan() {
 
       {/* Reset */}
       <div className="mt-6 border-t border-border pt-5">
-        <p className="mb-1 text-sm font-medium text-fg">Reset Progres</p>
+        <p className="mb-1 text-sm font-medium text-fg">
+          {en ? 'Reset progress' : 'Reset Progres'}
+        </p>
         <p className="mb-3 text-xs text-fg-muted">
-          Menghapus semua progres: modul selesai, kartu dikuasai, dan riwayat quiz.
+          {en
+            ? 'Removes all progress: completed modules, mastered cards, and quiz history.'
+            : 'Menghapus semua progres: modul selesai, kartu dikuasai, dan riwayat quiz.'}
         </p>
 
         <Button
@@ -161,7 +181,7 @@ export function Pengaturan() {
           disabled={!adaProgres}
           ikonKiri={<Trash2 className="size-4" aria-hidden="true" />}
         >
-          Reset Semua Progres
+          {en ? 'Reset all progress' : 'Reset Semua Progres'}
         </Button>
       </div>
 
@@ -174,7 +194,7 @@ export function Pengaturan() {
         onKonfirmasi={() => {
           resetProgres();
           setDialogReset(false);
-          tampilkan('Progres direset', 'sukses');
+          tampilkan(en ? 'Progress reset' : 'Progres direset', 'sukses');
         }}
       />
     </Card>
@@ -198,6 +218,9 @@ function DialogResetProgres({
   onEkspor: () => void;
   onKonfirmasi: () => void;
 }) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
+  const kataKonfirmasi = en ? 'DELETE' : 'HAPUS';
   const [langkah, setLangkah] = useStateAlias<1 | 2>(1);
   const [teksKonfirmasi, setTeksKonfirmasi] = useStateAlias('');
 
@@ -228,23 +251,33 @@ function DialogResetProgres({
       <Dialog
         terbuka={terbuka}
         onTutup={tutup}
-        judul="Reset semua progres?"
-        deskripsi="Tindakan ini tidak bisa dibatalkan."
+        judul={en ? 'Reset all progress?' : 'Reset semua progres?'}
+        deskripsi={en ? 'This action cannot be undone.' : 'Tindakan ini tidak bisa dibatalkan.'}
         ukuran="sm"
       >
         <div className="rounded-lg border border-danger/30 bg-danger/5 p-3">
-          <p className="text-sm font-medium text-fg">Kamu akan kehilangan:</p>
+          <p className="text-sm font-medium text-fg">
+            {en ? 'You will lose:' : 'Kamu akan kehilangan:'}
+          </p>
           <ul className="mt-2 space-y-1 text-sm text-fg-muted">
-            <li>• {jumlahModulSelesai} modul yang sudah selesai</li>
-            <li>• {jumlahKartu} kartu yang sudah dikuasai</li>
-            <li>• {jumlahQuiz} riwayat quiz</li>
+            <li>
+              • {jumlahModulSelesai} {en ? 'completed modules' : 'modul yang sudah selesai'}
+            </li>
+            <li>
+              • {jumlahKartu} {en ? 'mastered cards' : 'kartu yang sudah dikuasai'}
+            </li>
+            <li>
+              • {jumlahQuiz} {en ? 'quiz attempts' : 'riwayat quiz'}
+            </li>
           </ul>
         </div>
 
         {/* Tawaran ekspor SEBELUM menghapus */}
         <div className="mt-4 rounded-lg border border-border bg-surface-raised p-3">
           <p className="text-xs text-fg-muted">
-            Sebelum menghapus, kamu bisa menyimpannya dulu untuk dipulihkan nanti.
+            {en
+              ? 'Before deleting, you can export a backup to restore later.'
+              : 'Sebelum menghapus, kamu bisa menyimpannya dulu untuk dipulihkan nanti.'}
           </p>
           <Button
             varian="secondary"
@@ -253,16 +286,16 @@ function DialogResetProgres({
             onClick={onEkspor}
             ikonKiri={<Download className="size-4" aria-hidden="true" />}
           >
-            Ekspor Progres
+            {en ? 'Export progress' : 'Ekspor Progres'}
           </Button>
         </div>
 
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
           <Button varian="secondary" onClick={tutup}>
-            Batal
+            {en ? 'Cancel' : 'Batal'}
           </Button>
           <Button varian="danger" onClick={() => setLangkah(2)}>
-            Lanjutkan
+            {en ? 'Continue' : 'Lanjutkan'}
           </Button>
         </div>
       </Dialog>
@@ -270,23 +303,29 @@ function DialogResetProgres({
   }
 
   // Langkah 2: ketik HAPUS untuk konfirmasi
-  const cocok = teksKonfirmasi.trim().toUpperCase() === 'HAPUS';
+  const cocok = teksKonfirmasi.trim().toUpperCase() === kataKonfirmasi;
 
   return (
     <Dialog
       terbuka={terbuka}
       onTutup={tutup}
-      judul="Konfirmasi terakhir"
-      deskripsi="Ketik HAPUS untuk mengonfirmasi. Ini memaksa kamu berhenti dan berpikir."
+      judul={en ? 'Final confirmation' : 'Konfirmasi terakhir'}
+      deskripsi={
+        en
+          ? `Type ${kataKonfirmasi} to confirm. This gives you a moment to reconsider.`
+          : 'Ketik HAPUS untuk mengonfirmasi. Ini memaksa kamu berhenti dan berpikir.'
+      }
       ukuran="sm"
     >
       <label className="block">
-        <span className="sr-only">Ketik HAPUS untuk konfirmasi</span>
+        <span className="sr-only">
+          {en ? `Type ${kataKonfirmasi} to confirm` : 'Ketik HAPUS untuk konfirmasi'}
+        </span>
         <input
           type="text"
           value={teksKonfirmasi}
           onChange={(e) => setTeksKonfirmasi(e.target.value)}
-          placeholder="HAPUS"
+          placeholder={kataKonfirmasi}
           autoComplete="off"
           autoCapitalize="characters"
           className={cn(
@@ -299,10 +338,10 @@ function DialogResetProgres({
 
       <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button varian="secondary" onClick={tutup}>
-          Batal
+          {en ? 'Cancel' : 'Batal'}
         </Button>
         <Button varian="danger" onClick={onKonfirmasi} disabled={!cocok}>
-          Hapus Permanen
+          {en ? 'Delete permanently' : 'Hapus Permanen'}
         </Button>
       </div>
     </Dialog>

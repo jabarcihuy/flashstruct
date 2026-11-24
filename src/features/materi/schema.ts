@@ -42,6 +42,8 @@ export const ModulSchema = z.object({
   deskripsi: z.string(),
   estimasi_menit: z.number().int().positive(),
   urutan: z.number().int(),
+  judul_en: z.string().nullable().optional(),
+  deskripsi_en: z.string().nullable().optional(),
 });
 
 export const BagianModulSchema = z.object({
@@ -51,6 +53,8 @@ export const BagianModulSchema = z.object({
   judul: z.string().min(1),
   konten_md: z.string(),
   urutan: z.number().int(),
+  judul_en: z.string().nullable().optional(),
+  konten_md_en: z.string().nullable().optional(),
 });
 
 export const VideoSchema = z.object({
@@ -61,6 +65,8 @@ export const VideoSchema = z.object({
   deskripsi: z.string().nullable(),
   durasi_detik: z.number().int().positive().nullable(),
   urutan: z.number().int(),
+  judul_en: z.string().nullable().optional(),
+  deskripsi_en: z.string().nullable().optional(),
 });
 
 export const FlashcardSchema = z.object({
@@ -72,6 +78,8 @@ export const FlashcardSchema = z.object({
   kode: z.string().nullable(),
   bahasa_kode: BahasaKodeSchema.nullable(),
   urutan: z.number().int(),
+  depan_en: z.string().nullable().optional(),
+  belakang_en: z.string().nullable().optional(),
 });
 
 export const SoalSchema = z.object({
@@ -84,6 +92,8 @@ export const SoalSchema = z.object({
   card_type: TipeKartuSchema,
   penjelasan: z.string().min(1),
   urutan: z.number().int(),
+  pertanyaan_en: z.string().nullable().optional(),
+  penjelasan_en: z.string().nullable().optional(),
 });
 
 export const OpsiSoalSchema = z.object({
@@ -93,6 +103,7 @@ export const OpsiSoalSchema = z.object({
   teks: z.string(),
   benar: z.boolean(),
   urutan: z.number().int(),
+  teks_en: z.string().nullable().optional(),
 });
 
 /* =========================================================
@@ -114,6 +125,7 @@ export const KartuDenganModulSchema = FlashcardSchema.extend({
   modul: z.object({
     slug: z.string(),
     judul: z.string(),
+    judul_en: z.string().nullable().optional(),
     topik: TopikModulSchema,
   }),
 });
@@ -127,6 +139,7 @@ export const VideoDenganModulSchema = VideoSchema.extend({
   modul: z.object({
     slug: z.string(),
     judul: z.string(),
+    judul_en: z.string().nullable().optional(),
     topik: TopikModulSchema,
     urutan: z.number().int(),
   }),

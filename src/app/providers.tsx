@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TemaProvider } from './TemaProvider';
+import { BahasaProvider } from './BahasaProvider';
 import { ToastProvider } from '@/components/ui/Toast';
 import { ProgresProvider } from '@/features/progres/ProgresProvider';
 
@@ -36,9 +37,11 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <TemaProvider>
-        <ToastProvider>
-          <ProgresProvider>{children}</ProgresProvider>
-        </ToastProvider>
+        <BahasaProvider>
+          <ToastProvider>
+            <ProgresProvider>{children}</ProgresProvider>
+          </ToastProvider>
+        </BahasaProvider>
       </TemaProvider>
     </QueryClientProvider>
   );

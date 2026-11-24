@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import type { SoalDenganOpsi } from '@/types/database';
 import { SoalDenganOpsiSchema, validasiArray } from '@/features/materi/schema';
+import type { Bahasa } from '@/app/BahasaProvider';
 
 /**
  * Query soal quiz untuk satu modul.
@@ -15,22 +16,27 @@ import { SoalDenganOpsiSchema, validasiArray } from '@/features/materi/schema';
  * Rincian: docs/README.md §Ringkasan Keputusan
  */
 
-export async function ambilSoalModul(slugModul: string): Promise<SoalDenganOpsi[]> {
+export async function ambilSoalModul(
+  slugModul: string,
+  bahasa: Bahasa = 'id',
+): Promise<SoalDenganOpsi[]> {
   const { data, error } = await supabase
     .from('soal')
     .select(
       `
       id,
       modul_id,
-      pertanyaan,
+       pertanyaan,
+       pertanyaan_en,
       kode,
       bahasa_kode,
       tipe,
       card_type,
-      penjelasan,
+       penjelasan,
+       penjelasan_en,
       urutan,
       modul!inner ( slug ),
-      opsi_soal ( id, soal_id, label, teks, benar, urutan )
+       opsi_soal ( id, soal_id, label, teks, teks_en, benar, urutan )
     `,
     )
     .eq('modul.slug', slugModul)
@@ -40,5 +46,23 @@ export async function ambilSoalModul(slugModul: string): Promise<SoalDenganOpsi[
     throw new Error(`Gagal memuat soal: ${error.message}`);
   }
 
-  return validasiArray(SoalDenganOpsiSchema, data, 'ambilSoalModul');
+  const rows = (data ?? []) as unknown as Array<
+    SoalDenganOpsi & {
+      pertanyaan_en?: string | null;
+      penjelasan_en?: string | null;
+      opsi_soal: Array<
+        NonNullable<SoalDenganOpsi['opsi_soal']>[number] & { teks_en?: string | null }
+      > | null;
+    }
+  >;
+  const lokal = rows.map((soal) => ({
+    ...soal,
+    pertanyaan: bahasa === 'en' ? (soal.pertanyaan_en ?? soal.pertanyaan) : soal.pertanyaan,
+    penjelasan: bahasa === 'en' ? (soal.penjelasan_en ?? soal.penjelasan) : soal.penjelasan,
+    opsi_soal: soal.opsi_soal?.map((opsi) => ({
+      ...opsi,
+      teks: bahasa === 'en' ? (opsi.teks_en ?? opsi.teks) : opsi.teks,
+    })),
+  }));
+  return validasiArray(SoalDenganOpsiSchema, lokal, 'ambilSoalModul');
 }

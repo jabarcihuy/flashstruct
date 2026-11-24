@@ -4,6 +4,7 @@ import { cn } from '@/lib/cn';
 import type { SoalDenganOpsi } from '@/types/database';
 import { opsiBenar } from './sesi';
 import { barisKonten } from '@/lib/format';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Umpan balik setelah menjawab soal.
@@ -28,6 +29,8 @@ interface UmpanBalikProps {
 }
 
 export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalikProps) {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const containerRef = useRef<HTMLDivElement>(null);
   const benar = opsiBenar(soal);
   const betul = benar?.label === dipilih;
@@ -51,12 +54,12 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
         {betul ? (
           <>
             <Check className="size-5 text-success" aria-hidden="true" />
-            <p className="font-semibold text-success">Jawaban benar</p>
+            <p className="font-semibold text-success">{en ? 'Correct answer' : 'Jawaban benar'}</p>
           </>
         ) : (
           <>
             <X className="size-5 text-danger" aria-hidden="true" />
-            <p className="font-semibold text-danger">Jawaban salah</p>
+            <p className="font-semibold text-danger">{en ? 'Incorrect answer' : 'Jawaban salah'}</p>
           </>
         )}
       </div>
@@ -64,7 +67,7 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
       {/* Jika salah, tampilkan jawaban benar */}
       {!betul && benar && (
         <p className="mt-3 text-sm text-fg">
-          <span className="font-medium">Jawaban benar: </span>
+          <span className="font-medium">{en ? 'Correct answer: ' : 'Jawaban benar: '}</span>
           <span className="font-semibold">
             {benar.label}. {benar.teks}
           </span>
@@ -75,7 +78,7 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
       <div className="mt-4 border-t border-border pt-4">
         <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-fg-muted">
           <Info className="size-3.5" aria-hidden="true" />
-          Penjelasan
+          {en ? 'Explanation' : 'Penjelasan'}
         </p>
         <p className="whitespace-pre-wrap text-sm leading-relaxed text-fg">
           {barisKonten(soal.penjelasan)}
@@ -92,7 +95,13 @@ export function UmpanBalik({ soal, dipilih, onLanjut, soalTerakhir }: UmpanBalik
           'transition-opacity duration-150 hover:opacity-90',
         )}
       >
-        {soalTerakhir ? 'Lihat Hasil' : 'Soal Berikutnya'}
+        {soalTerakhir
+          ? en
+            ? 'View results'
+            : 'Lihat Hasil'
+          : en
+            ? 'Next question'
+            : 'Soal Berikutnya'}
         <span className="hidden text-xs opacity-70 md:inline">(Enter)</span>
       </button>
     </div>

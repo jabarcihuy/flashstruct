@@ -14,6 +14,7 @@ import { VideoPlayer } from '@/features/video/VideoPlayer';
 import { LABEL_TOPIK, YOUTUBE_ID_VIDEO_CONTOH } from '@/lib/constants';
 import { durasi, urutkan } from '@/lib/format';
 import type { BagianModul, VideoDenganModul } from '@/types/database';
+import { useBahasa } from '@/app/BahasaProvider';
 
 /**
  * Halaman baca modul — Tahap 1 (Pahami).
@@ -26,6 +27,8 @@ import type { BagianModul, VideoDenganModul } from '@/types/database';
  * dianggap dibaca setelah 60% isinya terlihat.
  */
 export default function ModulDetailPage() {
+  const { bahasa } = useBahasa();
+  const en = bahasa === 'en';
   const { slug = '' } = useParams();
   const { data: modul, isPending, isError, error, refetch } = useModulLengkap(slug);
   const { ambilModul, tandaiModulSelesai, batalkanModulSelesai } = useProgres();
@@ -59,12 +62,19 @@ export default function ModulDetailPage() {
     return items.length > 0 ? items : bagianAsli;
   }, [bagianAsli]);
 
-  const slugBagian = useMemo(() => bagian.map((b) => b.slug), [bagian]);
+  // Progres persisten memakai slug database, bukan slug heading sintetis.
+  const slugBagian = useMemo(() => bagianAsli.map((b) => b.slug), [bagianAsli]);
+  const kontenTerpadu = bagianAsli.length === 1 && bagian.length > 1 ? bagianAsli[0] : undefined;
 
   const progresModul = modul ? ambilModul(modul.id) : undefined;
   const tahap1Selesai = progresModul?.tahap1Selesai ?? false;
 
   const { bagianDibaca, persen } = useProgresBaca(modul?.id ?? '', slugBagian);
+  const bagianDibacaDaftarIsi = kontenTerpadu
+    ? bagianDibaca.includes(kontenTerpadu.slug)
+      ? bagian.map((b) => b.slug)
+      : []
+    : bagianDibaca;
 
   // Bagian yang sedang terlihat — untuk menandai item aktif di daftar isi
   const [bagianAktif, setBagianAktif] = useState<string | undefined>();
@@ -114,8 +124,12 @@ export default function ModulDetailPage() {
     return (
       <div className="container-narrow py-8">
         <ErrorState
-          judul="Gagal memuat modul"
-          pesan="Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi."
+          judul={en ? 'Could not load module' : 'Gagal memuat modul'}
+          pesan={
+            en
+              ? 'Could not connect to the server. Check your internet connection and try again.'
+              : 'Tidak bisa terhubung ke server. Periksa koneksi internet, lalu coba lagi.'
+          }
           onCobaLagi={() => void refetch()}
         />
         {import.meta.env.DEV && (
@@ -129,12 +143,16 @@ export default function ModulDetailPage() {
     return (
       <div className="container-narrow py-8">
         <EmptyState
-          judul="Modul tidak ditemukan"
-          pesan={`Tidak ada modul dengan alamat "${slug}". Mungkin tautannya salah.`}
+          judul={en ? 'Module not found' : 'Modul tidak ditemukan'}
+          pesan={
+            en
+              ? `No module found at "${slug}". The link may be incorrect.`
+              : `Tidak ada modul dengan alamat "${slug}". Mungkin tautannya salah.`
+          }
           aksi={
             <Link to="/materi" className="no-underline">
               <span className="inline-flex h-11 items-center rounded-md border border-border-strong px-4 text-sm md:h-9">
-                Kembali ke daftar materi
+                {en ? 'Back to lessons' : 'Kembali ke daftar materi'}
               </span>
             </Link>
           }
@@ -162,14 +180,22 @@ export default function ModulDetailPage() {
         className="mb-6 inline-flex h-11 items-center gap-2 text-sm text-fg-muted no-underline hover:text-fg md:h-9"
       >
         <ArrowLeft className="size-4" aria-hidden="true" />
-        Kembali ke daftar materi
+        {en ? 'Back to lessons' : 'Kembali ke daftar materi'}
       </Link>
 
       <div className="reader-heading">
-        <Badge warna={warnaTopik}>{LABEL_TOPIK[modul.topik]}</Badge>
+        <Badge warna={warnaTopik}>
+          {en
+            ? { array: 'Arrays', struct: 'Structs', pointer: 'Pointers' }[modul.topik]
+            : LABEL_TOPIK[modul.topik]}
+        </Badge>
         <PageHeader
           judul={modul.judul}
-          deskripsi={`${modul.estimasi_menit} menit baca · ${bagian.length} bagian${video.length > 0 ? ` · ${video.length} video` : ''}`}
+          deskripsi={
+            en
+              ? `${modul.estimasi_menit} min read · ${bagian.length} sections${video.length > 0 ? ` · ${video.length} videos` : ''}`
+              : `${modul.estimasi_menit} menit baca · ${bagian.length} bagian${video.length > 0 ? ` · ${video.length} video` : ''}`
+          }
         />
         <p className="reader-intro text-fg-muted">{modul.deskripsi}</p>
       </div>
@@ -181,7 +207,7 @@ export default function ModulDetailPage() {
         <div className="mb-6 lg:hidden">
           <TombolDaftarIsiMobile
             bagian={bagian}
-            bagianDibaca={bagianDibaca}
+            bagianDibaca={bagianDibacaDaftarIsi}
             bagianAktif={bagianAktif}
             persen={persen}
           />
@@ -194,7 +220,7 @@ export default function ModulDetailPage() {
           <div className="reader-sidebar hidden lg:block lg:w-60 lg:shrink-0">
             <SidebarDaftarIsi
               bagian={bagian}
-              bagianDibaca={bagianDibaca}
+              bagianDibaca={bagianDibacaDaftarIsi}
               bagianAktif={bagianAktif}
               persen={persen}
             />
@@ -202,22 +228,33 @@ export default function ModulDetailPage() {
         )}
 
         <div className="reader-body min-w-0 flex-1">
-          {bagian.map((b) => (
+          {kontenTerpadu ? (
             <article
-              key={b.id}
-              id={b.slug}
-              data-bagian-slug={b.slug}
+              data-bagian-slug={kontenTerpadu.slug}
               className="reader-section scroll-mt-20 border-b border-border py-8 first:pt-0 last:border-0"
             >
-              <h2 className="mb-4 font-heading text-2xl font-semibold text-fg">{b.judul}</h2>
-              <MarkdownRenderer konten={b.konten_md} />
+              <MarkdownRenderer konten={kontenTerpadu.konten_md} />
             </article>
-          ))}
+          ) : (
+            bagian.map((b) => (
+              <article
+                key={b.id}
+                id={b.slug}
+                data-bagian-slug={b.slug}
+                className="reader-section scroll-mt-20 border-b border-border py-8 first:pt-0 last:border-0"
+              >
+                <h2 className="mb-4 font-heading text-2xl font-semibold text-fg">{b.judul}</h2>
+                <MarkdownRenderer konten={b.konten_md} />
+              </article>
+            ))
+          )}
 
           {/* Video pendukung */}
           {video.length > 0 && (
             <section className="mt-10">
-              <h2 className="mb-4 font-heading text-xl font-semibold text-fg">Video Pendukung</h2>
+              <h2 className="mb-4 font-heading text-xl font-semibold text-fg">
+                {en ? 'Related videos' : 'Video Pendukung'}
+              </h2>
               <div className="space-y-4">
                 {video.map((v) => (
                   <Card key={v.id} className="overflow-hidden border border-border">
@@ -236,7 +273,7 @@ export default function ModulDetailPage() {
                           })
                         }
                         className="group relative block aspect-video w-full shrink-0 cursor-pointer overflow-hidden bg-surface-sunken sm:w-56"
-                        aria-label={`Putar video: ${v.judul}`}
+                        aria-label={`${en ? 'Play video' : 'Putar video'}: ${v.judul}`}
                       >
                         <img
                           src={`https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`}
@@ -290,7 +327,7 @@ export default function ModulDetailPage() {
                             className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-link hover:underline"
                           >
                             <PlayCircle className="size-3.5" aria-hidden="true" />
-                            Tonton Sekarang
+                            {en ? 'Watch now' : 'Tonton Sekarang'}
                           </button>
                           <span className="text-fg-muted/40" aria-hidden="true">
                             •
@@ -301,7 +338,7 @@ export default function ModulDetailPage() {
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-xs text-fg-muted hover:text-fg hover:underline"
                           >
-                            Buka di YouTube
+                            {en ? 'Open on YouTube' : 'Buka di YouTube'}
                             <ExternalLink className="size-3" aria-hidden="true" />
                           </a>
                         </div>
@@ -333,9 +370,10 @@ export default function ModulDetailPage() {
 }
 
 function ModulSkeleton() {
+  const { bahasa } = useBahasa();
   return (
     <div className="container-base py-8" aria-busy="true" aria-live="polite">
-      <span className="sr-only">Memuat modul…</span>
+      <span className="sr-only">{bahasa === 'en' ? 'Loading module…' : 'Memuat modul…'}</span>
       <Skeleton className="h-4 w-40" />
       <Skeleton className="mt-6 h-5 w-16" />
       <Skeleton className="mt-3 h-9 w-3/4" />

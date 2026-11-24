@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { useTema } from '@/app/tema';
+import { useBahasa } from '@/app/BahasaProvider';
 import { LABEL_BAHASA, bahasaDidukung, warnaiKode } from './shiki';
 
 /**
@@ -43,6 +44,8 @@ interface CodeBlockProps {
 
 export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: CodeBlockProps) {
   const { temaAktif } = useTema();
+  const { bahasa: bahasaUi } = useBahasa();
+  const en = bahasaUi === 'en';
   const [html, setHtml] = useState<string | null>(null);
   const [tersalin, setTersalin] = useState(false);
 
@@ -104,7 +107,9 @@ export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: C
           <button
             type="button"
             onClick={() => void salin()}
-            aria-label={tersalin ? 'Kode tersalin' : 'Salin kode'}
+            aria-label={
+              tersalin ? (en ? 'Code copied' : 'Kode tersalin') : en ? 'Copy code' : 'Salin kode'
+            }
             className={cn(
               'inline-flex cursor-pointer items-center gap-1.5 rounded px-2.5',
               // Target sentuh 44px di mobile, lebih rapat di desktop
@@ -116,12 +121,12 @@ export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: C
             {tersalin ? (
               <>
                 <Check className="size-3.5 text-success" aria-hidden="true" />
-                <span>Tersalin</span>
+                <span>{en ? 'Copied' : 'Tersalin'}</span>
               </>
             ) : (
               <>
                 <Copy className="size-3.5" aria-hidden="true" />
-                <span>Salin</span>
+                <span>{en ? 'Copy' : 'Salin'}</span>
               </>
             )}
           </button>
@@ -145,7 +150,9 @@ export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: C
              */
             tabIndex={0}
             role="region"
-            aria-label={label ? `Kode ${label}` : 'Blok kode'}
+            aria-label={
+              label ? `${en ? 'Code' : 'Kode'} ${label}` : en ? 'Code block' : 'Blok kode'
+            }
             // Aman: HTML dihasilkan Shiki dari konten yang kita kontrol
             dangerouslySetInnerHTML={{ __html: html }}
           />
@@ -154,7 +161,7 @@ export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: C
           <pre
             tabIndex={0}
             role="region"
-            aria-label={label ? `Kode ${label}` : 'Kode'}
+            aria-label={label ? `${en ? 'Code' : 'Kode'} ${label}` : en ? 'Code' : 'Kode'}
             className="overflow-x-auto p-4 font-mono text-sm text-code-fg"
           >
             <code>{kode}</code>
@@ -166,7 +173,9 @@ export function CodeBlock({ kode, bahasa, namaBerkas, nomorBaris, className }: C
           <button
             type="button"
             onClick={() => void salin()}
-            aria-label={tersalin ? 'Kode tersalin' : 'Salin kode'}
+            aria-label={
+              tersalin ? (en ? 'Code copied' : 'Kode tersalin') : en ? 'Copy code' : 'Salin kode'
+            }
             className={cn(
               'absolute right-2 top-2 cursor-pointer rounded p-1.5',
               'bg-surface/90 text-fg-muted opacity-0 transition-opacity duration-150',
